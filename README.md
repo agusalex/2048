@@ -1,0 +1,1 @@
+El jueguito del que jugaba del 2048 de los numeritos que me gustaba tanto y que te contaba cuando era pequeño... ahora disponible en tu repo de cofianza
