@@ -8,9 +8,9 @@ public class Mat2 {
 	public Mat2(int n){
 		//TODO chequear que no este out of bounds
 		Integer[][] Mat = new Integer [n][n];
-		boolean [][] MatBool = new boolean [n][n];
+
 		
-		Arrays.fill(MatBool, true); //Pone todo en true
+		
 	}
 	
 	
