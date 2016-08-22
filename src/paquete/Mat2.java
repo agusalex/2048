@@ -7,22 +7,30 @@ public class Mat2 {
 
 	
 	public static void main (String args [] ){
-		Mat2 ww= new Mat2(4);
+		Mat2 ww= new Mat2(6);
 		
 	
 		ww.mat[0][0] = new Int2048(1);
 		ww.mat[0][1] = new Int2048(1);
-		ww.mat[0][2] = new Int2048(1);
-		ww.mat[0][3] = new Int2048(1);
+		ww.mat[0][4] = new Int2048(2);
+		ww.mat[0][5] = new Int2048(3);
+		ww.mat[1][3] = new Int2048(2);
+		ww.mat[1][4] = new Int2048(1);
+		ww.mat[2][3] = new Int2048(2);
+		ww.mat[2][2] = new Int2048(2);
+		ww.mat[2][4] = new Int2048(2);
+		ww.mat[3][5] = new Int2048(2);
+		ww.mat[4][0] = new Int2048(1);
+		ww.mat[4][3] = new Int2048(1);
+		ww.mat[4][5] = new Int2048(2);
+		ww.mat[5][1] = new Int2048(1);
+		ww.mat[5][4] = new Int2048(2);
+		
 		
 		System.out.println(ww);
-		
-		ww.conbineCellsR(0);
-		
-		System.out.println(ww.moveR(0));
+		ww.moveUp();
 		System.out.println(ww);
-		ww.unlock();
-		System.out.println(ww.conbineCellsR(0));
+		ww.moveUp();
 		System.out.println(ww);
 		
 	}
@@ -40,12 +48,16 @@ public class Mat2 {
 		this(4);
 	}
 	
+	public Int2048 [][] getMat(){
+		return mat;
+	}
+
 	public String toString(){
 		String numeros = "";
 		for(int x = 0; x < this.mat.length; x++){
 			for(int y = 0; y < this.mat.length; y++){
 				if(this.mat[x][y] == null)
-					numeros += "0 | ";
+					numeros += "- | ";
 				else
 					numeros +=mat[x][y].toString() + " | ";
 			}
@@ -56,68 +68,60 @@ public class Mat2 {
 	}
 	
 	
+	
+	//DERECHA
 	public void moveRight(){ //Une los nnumeros que son iguales
-	
-	
-	
-	}
-
-	
-	public void moveLeft(){
-
-	}
-	public void moveDown(){
-		
-	}
-	public void moveUp(){
-		
+		   for(int i = 0; i< mat.length; i++){
+			   conbineCellsR(i);
+			   moveR(i);
+			   unlock();
+		   }
 	}
 	
-	// to' piola
-	public void unlock(){
-		for(int x=0;x<mat.length;x++)
-			for(int y=0;y<mat.length;y++)
-			    if(mat[x][y]!=null)
-			    	mat[x][y].setUnlocked(true);
-			
-	}
-	public boolean conbineCellsR(int fila){
-		boolean ret = false;
-		boolean nuevobkp = false;
-		Int2048 bkp = null;
-		Int2048 Actual = null;
+	
+	/**
+	 * combina las celdas que tengan mismo numero, revisa de derecha a izquierda, buscando un numero identico a la celda actual
+	 * una vez que los combina, pasa a buscar otra operacion
+	 * @param fila , la fila a combinar
+	 * @return booleano, este indica si se realizo alguna combinacion para poder pasar a reubicar los resultados
+	 */
+	private void conbineCellsR(int fila){
+		boolean comparable = true;           //indica si se puede combinar las dos celdas
+		Int2048 bkp = null;					//auxiliar para el numero con el cual operar
+		Int2048 Actual = null;   
 			for(int y = mat.length-1; y >= 0 ; y--){
-				nuevobkp = false;
-				Actual = mat[fila][y];
+				comparable = true;
+				Actual = mat[fila][y];      //el actual es el elemento en cuestion
 				
 				if(Actual != null){
 					
-					if(Actual.isUnlocked()){
+					if(Actual.isUnlocked()){     
 						
 						if(!Actual.equals(bkp)){
 							bkp = Actual;
-							nuevobkp = true;
+							comparable = false;   //para evitar que se combine el mismo numero con sigo mismo
 						}
 					
-						if(Actual.equals(bkp) &&! nuevobkp){  //Si se pueden conbinar
+						if(Actual.equals(bkp) && comparable){  //Si se pueden combinar
 							bkp.multiply();				//combinar
-							Actual = null;
-							mat[fila][y] = null;
+							mat[fila][y] = null;		
 							bkp.setUnlocked(false);     //bloqueo
-							ret = true;                 //para saber si se combinaron o no
+							bkp = null;					//para evitar que encuentre otro igual a ese
 						}	
-					
 					}
-					
 				}
 			}
-			return ret;
 	}
 	
-	public boolean moveR(int fila){
-		boolean ret = false;
+	/**
+	 * esta funcion mueve de izq a derecha todos los elementos de la fila, despues de que estos fueron combinados
+	 * 
+	 * @param fila
+	 * @return
+	 */
+	private void moveR(int fila){
 		Int2048 actual = null; 
-		int index=mat.length-1;
+		int index = mat.length-1;
 		Int2048 [] aux = new Int2048 [mat.length];
 		for(int y = mat.length-1; y >= 0; y-- ){
 			actual = mat [fila][y];
@@ -125,23 +129,201 @@ public class Mat2 {
 				aux [index] = actual;
 				index--;
 			}
-			else{
-				if (y > 0 && !ret){
-					if(mat[fila][y-1] != null)
-						ret = true;
-				}
-			}
 		}
 		mat[fila] = aux;
-		for(int y =0; y < aux.length; y++ ){
-			System.out.println(aux[y]);
-		}
-		return ret;
-	}
-	
-	public Int2048 [][] getMat(){
-		return mat;
 	}
 
 	
+	//IZQYUERDA
+	public void moveLeft(){
+		for(int i = 0; i< mat.length; i++){
+			   conbineCellsL(i);
+			   moveL(i);
+			   unlock();
+	    }
+	}
+	
+	/**
+	 * combina las celdas que tengan mismo numero, revisa de izquierda a derecha, buscando un numero identico a la celda actual
+	 * una vez que los combina, pasa a buscar otra operacion
+	 * @param fila , la fila a combinar
+	 * @return booleano, este indica si se realizo alguna combinacion para poder pasar a reubicar los resultados
+	 */
+	private void conbineCellsL(int fila) {
+		boolean comparable = true;         
+		Int2048 bkp = null;					
+		Int2048 Actual = null;   
+			for(int y = 0; y < mat.length ; y++){
+				comparable = true;
+				Actual = mat[fila][y];      
+				
+				if(Actual != null){
+					
+					if(Actual.isUnlocked()){     
+						
+						if(!Actual.equals(bkp)){
+							bkp = Actual;
+							comparable = false;   
+						}
+					
+						if(Actual.equals(bkp) && comparable){ 
+							bkp.multiply();				
+							mat[fila][y] = null;		
+							bkp.setUnlocked(false);     
+							bkp = null;					
+						}	
+					}
+				}
+			}
+		
+	}
+
+	/**
+	 * esta funcion mueve de izq a derecha todos los elementos de la fila, despues de que estos fueron combinados
+	 * @param fila
+	 * @return
+	 */
+	private void moveL(int fila) {
+		Int2048 actual = null; 
+		int index = 0;
+		Int2048 [] aux = new Int2048 [mat.length];
+		for(int y = 0; y < mat.length; y++ ){
+			actual = mat [fila][y];
+			if(actual != null){
+				aux [index] = actual;
+				index++;
+			}
+		}
+		mat[fila] = aux;
+	}
+
+   //ABAJO
+	public void moveDown(){
+		for(int col = 0; col < mat.length; col++){
+			 conbineCellsD(col);
+			 moveD(col);
+			 unlock();
+		}
+	}
+	
+	/**
+	 * combina las celdas que tengan mismo numero, revisa de izquierda a derecha, buscando un numero identico a la celda actual
+	 * una vez que los combina, pasa a buscar otra operacion
+	 * @param fila , la fila a combinar
+	 * @return booleano, este indica si se realizo alguna combinacion para poder pasar a reubicar los resultados
+	 */
+	private void conbineCellsD(int columna) {
+		boolean comparable = true;         
+		Int2048 bkp = null;					
+		Int2048 Actual = null;   
+			for(int x = mat.length-1; x >= 0 ; x--){
+				comparable = true;
+				Actual = mat[x][columna];      
+				
+				if(Actual != null){
+					
+					if(Actual.isUnlocked()){     
+						
+						if(!Actual.equals(bkp)){
+							bkp = Actual;
+							comparable = false;   
+						}
+					
+						if(Actual.equals(bkp) && comparable){ 
+							bkp.multiply();				
+							mat[x][columna] = null;		
+							bkp.setUnlocked(false);     
+							bkp = null;					
+						}	
+					}
+				}
+			}
+		
+	}
+
+	/**
+	 * esta funcion mueve de izq a derecha todos los elementos de la fila, despues de que estos fueron combinados
+	 * @param fila
+	 * @return
+	 */
+	private void moveD(int columna) {
+		Int2048 actual = null; 
+		int index = mat.length-1;
+		Int2048 [] aux = new Int2048 [mat.length];
+		for(int x = mat.length-1; x >= 0; x-- ){
+			actual = mat [x][columna];
+			if(actual != null){
+				aux [index] = actual;
+				index--;
+			}
+		}
+		for(int x = 0; x<aux.length; x++){
+			mat[x][columna] = aux[x];
+		}
+	}
+
+	
+	//ARRIBA
+	public void moveUp(){
+		for(int col = 0; col < mat.length; col++){
+			 conbineCellsU(col);
+			 moveU(col);
+			 unlock();
+		}
+	}
+	
+	private void conbineCellsU(int columna) {
+		boolean comparable = true;         
+		Int2048 bkp = null;					
+		Int2048 Actual = null;   
+			for(int x = 0; x <  mat.length; x++){
+				comparable = true;
+				Actual = mat[x][columna];      
+				
+				if(Actual != null){
+					
+					if(Actual.isUnlocked()){     
+						
+						if(!Actual.equals(bkp)){
+							bkp = Actual;
+							comparable = false;   
+						}
+					
+						if(Actual.equals(bkp) && comparable){ 
+							bkp.multiply();				
+							mat[x][columna] = null;		
+							bkp.setUnlocked(false);     
+							bkp = null;					
+						}	
+					}
+				}
+			}
+		
+	}
+
+
+	private void moveU(int columna) {
+		Int2048 actual = null; 
+		int index = 0;
+		Int2048 [] aux = new Int2048 [mat.length];
+		for(int x =0; x <  mat.length; x++ ){
+			actual = mat [x][columna];
+			if(actual != null){
+				aux [index] = actual;
+				index++;
+			}
+		}
+		for(int x = 0; x < aux.length; x++){
+			mat[x][columna] = aux[x];
+		}
+	}
+	
+	/** desbloquea todas las casillas luego de haber hecho un movimiento*/
+	private void unlock(){
+		for(int x=0;x<mat.length;x++)
+			for(int y=0;y<mat.length;y++)
+			    if(mat[x][y]!=null)
+			    	mat[x][y].setUnlocked(true);
+			
+	}
 }
