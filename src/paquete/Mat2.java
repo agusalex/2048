@@ -4,7 +4,9 @@ package paquete;
 
 public class Mat2 {
 	private Int2048[][] mat;
-
+	public enum direction{
+		Left,Right,Down,Up
+	}
 	
 	public static void main (String args [] ){
 		Mat2 ww= new Mat2(6);
@@ -68,12 +70,121 @@ public class Mat2 {
 	}
 	
 	
+	public void Move(direction dir){
+		for(int i = 0; i< mat.length; i++){
+			   combineCells(dir,i);
+			   Shift(dir,i);}
+		
+		
+		
+	}
+	
+	public void combineCells(direction dir,int i){
+		
+	}
+	
+	
+	
+	public void Shift(direction dir,int filaoCol ){
+		int x,y,from,to,indexDir;
+		boolean xaxis=false;
+		boolean yaxis=false;
+		
+		if (dir.equals(direction.Left)){
+			from=0;
+			to=mat.length-1;
+			indexDir=1;
+			x=filaoCol;
+			y=0;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.Right)){
+			from=mat.length-1;
+			to=0;
+			indexDir=-1;
+			x=filaoCol;
+			y=0;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.Up)){
+			from=0;
+			to=mat.length-1;
+			indexDir=1;
+			y=filaoCol;
+			x=0;
+			yaxis=true;
+		}
+		else{
+			from=mat.length-1;
+			to=0;
+			indexDir=-1;
+			y=filaoCol;
+			x=0;
+			yaxis=true;
+		}
+		
+		boolean comparable = true;         
+		Int2048 bkp = null;					
+		Int2048 Actual = null;   
+			
+			int i=from;
+			
+			while(i!=to){
+				comparable = true;
+				
+				////
+				Actual = mat[x][y];      
+				/////
+				
+				if(Actual != null){
+					
+						if(!Actual.equals(bkp)){
+							bkp = Actual;
+							comparable = false;   
+						}
+					
+						if(Actual.equals(bkp) && comparable){ 
+							bkp.multiply();	
+							//////
+							mat[x][y] = null;
+							/////
+							
+							bkp = null;					
+						}	
+					
+				}
+				
+				if(xaxis){
+					
+					x+=indexDir;
+				}
+				if(yaxis){
+					y+=indexDir;
+				}
+				
+				i+=indexDir;
+				
+				
+			}
+		
+	}
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//DERECHA
 	public void moveRight(){ //Une los nnumeros que son iguales
 		   for(int i = 0; i< mat.length; i++){
-			   conbineCellsR(i);
+			   combineCellsR(i);
 			   moveR(i);
+			   
 			   unlock();
 		   }
 	}
@@ -85,7 +196,7 @@ public class Mat2 {
 	 * @param fila , la fila a combinar
 	 * @return booleano, este indica si se realizo alguna combinacion para poder pasar a reubicar los resultados
 	 */
-	private void conbineCellsR(int fila){
+	private void combineCellsR(int fila){
 		boolean comparable = true;           //indica si se puede combinar las dos celdas
 		Int2048 bkp = null;					//auxiliar para el numero con el cual operar
 		Int2048 Actual = null;   
