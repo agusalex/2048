@@ -1,7 +1,7 @@
 package paquete;
 
 public class Int2048 {
-	private int num,power;
+	public int num,power;
 	private boolean unlocked;
 	
 	public Int2048(int power){

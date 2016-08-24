@@ -1,40 +1,207 @@
 package paquete;
 
-
+import java.util.Arrays;
 
 public class Mat2 {
 	private Int2048[][] mat;
 	public enum direction{
-		Left,Right,Down,Up
+		LEFT,RIGHT,DOWN,UP
+	}
+
+	public boolean esIgual(Mat2 otra){
+		
+		
+		if (otra==null){
+			return false;	
+		}
+		/*if(this.mat.length!=otra.mat.length){
+			return false;
+		}*/
+		
+		for(int x=0; x<mat.length;x++){
+			for(int y=0; y<mat.length;y++){
+				Int2048 actual=mat[x][y];
+				Int2048 actual2=otra.mat[x][y];
+		
+				
+				if(actual==null||actual2==null){
+					if(!(actual==null&&actual2==null)){
+						return false;
+					}
+					
+					
+				}
+				else{
+				if(actual.equals(actual2)){
+					
+					
+					return false;
+				}
+				}
+			}
+		}
+		
+		return true;
+		
+		
+		
+		
 	}
 	
-	public static void main (String args [] ){
-		Mat2 ww= new Mat2(6);
-		
 	
-		ww.mat[0][0] = new Int2048(1);
-		ww.mat[0][1] = new Int2048(1);
-		ww.mat[0][4] = new Int2048(2);
-		ww.mat[0][5] = new Int2048(3);
-		ww.mat[1][3] = new Int2048(2);
-		ww.mat[1][4] = new Int2048(1);
-		ww.mat[2][3] = new Int2048(2);
-		ww.mat[2][2] = new Int2048(2);
-		ww.mat[2][4] = new Int2048(2);
-		ww.mat[3][5] = new Int2048(2);
-		ww.mat[4][0] = new Int2048(1);
-		ww.mat[4][3] = new Int2048(1);
-		ww.mat[4][5] = new Int2048(2);
-		ww.mat[5][1] = new Int2048(1);
-		ww.mat[5][4] = new Int2048(2);
+
+	public static void main (String args [] ){
+		
+		test();
+		
+	}
+	
+	
+	public static Int2048[][] matTest(){
+		Int2048[][] ww= new Int2048[6][6];
+		ww[0][0] = new Int2048(1);
+		ww[0][1] = new Int2048(1);
+		ww[0][4] = new Int2048(2);
+		ww[0][5] = new Int2048(3);
+		ww[1][3] = new Int2048(2);
+		ww[1][4] = new Int2048(1);
+		ww[2][3] = new Int2048(2);
+		ww[2][2] = new Int2048(2);
+		ww[2][4] = new Int2048(2);
+		ww[3][5] = new Int2048(2);
+		ww[4][0] = new Int2048(1);
+		ww[4][3] = new Int2048(1);
+		ww[4][5] = new Int2048(2);
+		ww[5][1] = new Int2048(1);
+		ww[5][4] = new Int2048(2);
+		return ww;
 		
 		
-		System.out.println(ww);
-		ww.moveUp();
-		System.out.println(ww);
-		ww.moveUp();
-		System.out.println(ww);
+	}
+	
+	public static void test(){
+		Mat2 original= new Mat2(6);
+		original.mat=matTest();
 		
+		
+		Mat2 Up= new Mat2(6);
+		Up.mat=matTest();
+		/////
+		Up.moveUp();
+		
+		Mat2 Up2= new Mat2(6);
+		Up2.mat=matTest();
+		System.out.println("COMIENZA EL TEST");
+		
+		
+		
+		try{
+			Up2.Shift(direction.UP);
+			if(Up.esIgual(Up2)){
+				System.out.println("Up:OK"); 
+			} 
+			
+			else{
+				System.out.println("Original:\n"+original);
+				System.out.println("Up:Error");
+				System.out.println("Mat 1");
+				System.out.println(Up);
+				System.out.println("Mat a testear");
+				System.out.println(Up2);
+			}
+			
+		}
+		catch (Exception e){
+			System.out.println("Up:EXCEPTION Error");
+			e.printStackTrace(System.out);
+		}
+		
+		
+		///DOWN
+		Mat2 Down= new Mat2(6);
+		Down.mat=matTest();
+		Down.moveDown();
+		Mat2 Down2= new Mat2(6);
+		Down2.mat=matTest();
+		
+		try{
+			Down2.Shift(direction.DOWN);
+			if(Down.equals(Down2)){
+				System.out.println("Down:OK"); 
+			} 
+			
+			else{
+				System.out.println("Original:\n"+original);
+				System.out.println("Down:Error");
+				System.out.println("Mat 1");
+				System.out.println(Down);
+				System.out.println("Mat a testear");
+				System.out.println(Down2);
+			}
+			
+		}
+		catch (Exception e){
+			System.out.println("DOWN:EXCEPTION Error");
+			e.printStackTrace(System.out);
+		}
+		
+		//LEFT
+		Mat2 Left= new Mat2(6);
+		Left.mat=matTest();
+		Left.moveLeft();
+		Mat2 Left2= new Mat2(6);
+		Left2.mat=matTest();
+		
+		try{
+			Left2.Shift(direction.LEFT);
+			if(Left.equals(Left2)){
+				System.out.println("Left:OK"); 
+			} 
+			
+			else{
+				System.out.println("Original:\n"+original);
+				System.out.println("Left:Error");
+				System.out.println("Mat 1");
+				System.out.println(Left);
+				System.out.println("Mat a testear");
+				System.out.println(Left2);
+			}
+			
+		}
+		catch (Exception e){
+			System.out.println("LEFT:EXCEPTION Error");
+			e.printStackTrace(System.out);
+		}
+		
+		//RIGHT
+				Mat2 Right= new Mat2(6);
+				Right.mat=matTest();
+				Right.moveRight();
+				Mat2 Right2= new Mat2(6);
+				Right2.mat=matTest();
+				
+				try{
+					Right2.Shift(direction.RIGHT);
+					if(Right.equals(Right2)){
+						System.out.println("Right:OK"); 
+					} 
+					
+					else{
+						System.out.println("Original:\n"+original);
+						System.out.println("Right:Error");
+						System.out.println("Mat 1");
+						System.out.println(Right);
+						System.out.println("Mat a testear");
+						System.out.println(Right2);
+					}
+					
+				}
+				catch (Exception e){
+					System.out.println("RIGHT:EXCEPTION Error");
+					e.printStackTrace(System.out);
+					
+				}
+					
 	}
 	
 	
@@ -70,70 +237,139 @@ public class Mat2 {
 	}
 	
 	
-	public void Move(direction dir){
-		for(int i = 0; i< mat.length; i++){
-			   combineCells(dir,i);
-			   Shift(dir,i);}
+	public void Move(direction dir, int filaoCol){
+		int y,x,from,to,indexDir,indexAux = 0;
 		
-		
-		
-	}
-	
-	public void combineCells(direction dir,int i){
-		
-	}
-	
-	
-	
-	public void Shift(direction dir,int filaoCol ){
-		int x,y,from,to,indexDir;
 		boolean xaxis=false;
 		boolean yaxis=false;
-		
-		if (dir.equals(direction.Left)){
-			from=0;
-			to=mat.length-1;
-			indexDir=1;
-			x=filaoCol;
-			y=0;
-			xaxis=true;
-		}
-		else if (dir.equals(direction.Right)){
-			from=mat.length-1;
-			to=0;
-			indexDir=-1;
-			x=filaoCol;
-			y=0;
-			xaxis=true;
-		}
-		else if (dir.equals(direction.Up)){
+		Int2048 [] aux = new Int2048 [mat.length];
+		Int2048 actualElem = null;
+		if (dir.equals(direction.LEFT)){
 			from=0;
 			to=mat.length-1;
 			indexDir=1;
 			y=filaoCol;
-			x=0;
+			x=from;
+			xaxis=true;
+
+		}
+		else if (dir.equals(direction.RIGHT)){
+			from=mat.length-1;
+			to=0;
+			indexDir=-1;
+			y=filaoCol;
+			x=from;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.UP)){
+			from=0;
+			to=mat.length;
+			indexDir=1;
+			x=filaoCol;
+			y=from;
 			yaxis=true;
 		}
 		else{
 			from=mat.length-1;
 			to=0;
 			indexDir=-1;
+			x=filaoCol;
+			y=from;
+			yaxis=true;
+		}
+		indexAux=from;
+		
+		while(from!=to){
+			actualElem = mat [y][x];
+			if(actualElem != null){
+				aux [indexAux] = actualElem;
+				indexAux+=indexDir;
+				}
+			
+			
+			if(xaxis){
+				
+				x+=indexDir;
+			}
+			else if(yaxis){
+				y+=indexDir;
+			}
+			
+			from+=indexDir;
+			
+	
+		}
+		if(xaxis)
+			mat[y] = aux;
+		
+		else if(yaxis){
+		
+			for(int ind = 0; ind < mat.length;ind++){
+				mat[ind][x] = aux[ind];
+			}
+		}
+		
+		
+	}
+	
+	public void Shift(direction dir){
+		for(int x=0;x<mat.length;x++){
+				combineCells(dir,x);
+				Move(dir,x);
+		}
+		
+	}
+	
+	
+	
+	public void combineCells(direction dir,int filaoCol ){
+		int y,x,from,to,indexDir;
+		
+		boolean xaxis=false;
+		boolean yaxis=false;
+		
+		if (dir.equals(direction.LEFT)){
+			from=0;
+			to=mat.length-1;
+			indexDir=1;
 			y=filaoCol;
-			x=0;
+			x=from;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.RIGHT)){
+			from=mat.length-1;
+			to=0;
+			indexDir=-1;
+			y=filaoCol;
+			x=from;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.UP)){
+			from=0;
+			to=mat.length;
+			indexDir=1;
+			x=filaoCol;
+			y=0;
+			yaxis=true;
+		}
+		else{
+			from=mat.length-1;
+			to=0;
+			indexDir=-1;
+			x=filaoCol;
+			y=from;
 			yaxis=true;
 		}
 		
 		boolean comparable = true;         
 		Int2048 bkp = null;					
 		Int2048 Actual = null;   
-			
-			int i=from;
-			
-			while(i!=to){
-				comparable = true;
+		
+			while(from!=to){
 				
+				comparable = true;		
 				////
-				Actual = mat[x][y];      
+				Actual = mat[y][x];      
 				/////
 				
 				if(Actual != null){
@@ -146,7 +382,7 @@ public class Mat2 {
 						if(Actual.equals(bkp) && comparable){ 
 							bkp.multiply();	
 							//////
-							mat[x][y] = null;
+							mat[y][x] = null;
 							/////
 							
 							bkp = null;					
@@ -162,10 +398,11 @@ public class Mat2 {
 					y+=indexDir;
 				}
 				
-				i+=indexDir;
-				
+				from+=indexDir;
 				
 			}
+			
+		
 		
 	}
 		
