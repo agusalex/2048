@@ -1,6 +1,6 @@
 package paquete;
 
-import java.util.Arrays;
+
 
 
 
@@ -119,7 +119,7 @@ public class Mat2 {
 		boolean xaxis=false;
 		boolean yaxis=false;
 		Integer [] aux = new Integer [mat.length];
-		Integer actualElem = null;
+		Integer Current = null;
 		
 		if (dir.equals(direction.LEFT)){
 			from=0;
@@ -157,11 +157,14 @@ public class Mat2 {
 		indexAux=from;
 		
 		while(from!=to){
+			//////
+			Current = mat [y][x]; //ELemeto Actual
+			///////
 			
-			actualElem = mat [y][x];
-			if(actualElem != null){
+			
+			if(Current != null){
 				
-				aux [indexAux] = actualElem;
+				aux [indexAux] = Current;
 				indexAux += indexDir;
 			}
 			
@@ -200,9 +203,9 @@ public class Mat2 {
 	 * @return booleano este indica si se realizo alguna combinacion para poder pasar a reubicar los resultados
 	 */
 	
-	public void combineCells(direction dir,int filaoCol ){
+	
+	public Object[] directionParameters(direction dir,int filaoCol){
 		int y,x,from,to,indexDir;
-		
 		boolean xaxis=false;
 		boolean yaxis=false;
 		
@@ -239,79 +242,122 @@ public class Mat2 {
 			yaxis=true;
 		}
 		
-		boolean comparable = true;         
-		Integer bkp = null;					
-		Integer Actual = null;   
+		
+		
+		return  new Object[]{from,to,indexDir,x,y,xaxis,yaxis};
+		
+	}
+	
+	
+	
+	public void combineCells(direction dir,int filaoCol ){
+		int from,to,indexDir,x,y;
+		boolean xaxis,yaxis;
+		Object[] parameters=directionParameters(dir,filaoCol);
+		xaxis=false;
+		yaxis=false;
+		
+		
+		
+		
+		
+		if (dir.equals(direction.LEFT)){
+			from=0;
+			to=mat.length;
+			indexDir=1;
+			y=filaoCol;
+			x=from;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.RIGHT)){
+			from=mat.length-1;
+			to=-1;
+			indexDir=-1;
+			y=filaoCol;
+			x=from;
+			xaxis=true;
+		}
+		else if (dir.equals(direction.UP)){
+			from=0;
+			to=mat.length;
+			indexDir=1;
+			x=filaoCol;
+			y=from;
+			yaxis=true;
+		}
+		else{
+			from=mat.length-1;
+			to=-1;
+			indexDir=-1;
+			x=filaoCol;
+			y=from;
+			yaxis=true;
+		}
+		
+		boolean checkIfEquals = true;         
+		int bkp = -1;					
+		Integer Current = null;   
 		
 		
 			while(from!=to){
 				
-				comparable = true;		
+				checkIfEquals = true;		
 				////
-				Actual = mat[y][x];      
+				Current = mat[y][x];      
 				/////
 				
-				if(Actual != null){
+				if(Current != null){
 
 					
+					if(bkp==-1){
+						bkp=from;
+						checkIfEquals=false;
+					}
 					
 					if(xaxis){  //Si se mueve en el eje x
 						
-						if(bkp==null){   //SI recien inicia bk inicializa en el primer elemento no nulo
-							bkp=x;
-							comparable = false;   
-						}	
-						
-						
-						else if(!Actual.equals(mat[y][bkp])){      //SI EL ACTUAL ES DIFERENTE DEL BKPA
-							bkp =y ;
+						if(!Current.equals(mat[y][bkp])){      //SI no es igual setea nuevo Bkp
 							
-							comparable = false;   
-						}
-						}
-						
-						if(yaxis){   //Si se mueve en el eje y
-							if(bkp==null){  //SI recien inicia bk inicializa en el primer elemento no nulo
-								bkp=y;
-								comparable = false;   
+							bkp =x ;
+							checkIfEquals = false;   
 							}
-							
-							else if(!Actual.equals(mat[bkp][x])){
-								bkp = x;
-								
-								comparable = false;   
-							}
+						
+						else if(checkIfEquals){   //Si es igual
+				
+							Current=null;
+							mat[y][x]=null;
+							mat[y][bkp]=mat[y][bkp]*2;
 							
 							
 						}
-						
-						if(xaxis){
-						
-						if(Actual.compareTo(mat[y][bkp])==0 && comparable){ 
-							
-							mat[y][bkp]*=2;
-							mat[y][x] = null;
-							bkp = null;					
-						}	
-					
-				}
+					}
 						
 						if(yaxis){
+							//Si se mueve en el eje y
 							
-							if(Actual.compareTo(mat[bkp][y])==0 && comparable){ 
+						if(!Current.equals(mat[bkp][x])){  //SI no es igual setea nuevo Bkp
+			
+								bkp = y;
+								checkIfEquals = false;   
+							}
+							
+							else if(checkIfEquals){   //Si es igual
+								Current=null;
+								mat[y][x]=null;
+								mat[bkp][x]=mat[bkp][x]*2;
 								
-								mat[bkp][y]*=2;
-								mat[y][x] = null;
-								bkp = null;					
-							}	
-						
-					}
+								}
+						}
+					
 				}
-				if(xaxis){	
+				
+				if(xaxis){					//Incremante el x
+					
 					x+=indexDir;
-				}
+				}							// O
+				
 				if(yaxis){
-					y+=indexDir;
+					y+=indexDir;			//Incrementa el y
 				}
 				
 				from+=indexDir;
