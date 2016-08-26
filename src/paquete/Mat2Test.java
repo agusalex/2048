@@ -2,6 +2,8 @@ package paquete;
 
 
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import paquete.Mat2.direction;
@@ -18,7 +20,8 @@ public class Mat2Test {
 	
 	
 	public static Mat2 matTestRan(){
-		Mat2 MET= new Mat2(4);
+		
+		Mat2 MET= new Mat2(6);
 		Integer[][] ww=MET.mat;
 		ww[0][0] = new Integer(aleatorio());
 		ww[0][1] = new Integer(aleatorio());
@@ -40,7 +43,8 @@ public class Mat2Test {
 		
 	}
 	public static Mat2 matTest(){
-		Mat2 MET= new Mat2(4);
+		
+		Mat2 MET= new Mat2(6);
 		Integer[][] ww=MET.mat;
 		ww[0][0] = new Integer(2);
 		ww[0][1] = new Integer(4);
@@ -63,6 +67,7 @@ public class Mat2Test {
 	}
 	
 	public static Mat2 matrizGameOver(){
+		
 		Mat2 MET= new Mat2(4);
 		Integer[][] mat=MET.mat;
 		mat[0][0] = new Integer(4);
@@ -125,7 +130,7 @@ public static boolean testDOWN(Mat2 test){
 		System.out.println("Original:\n"+test);
 		System.out.println("Mat a testear");
 		System.out.println(DOWN2);		
-		System.out.println("///////////////////////////////////////");
+
 	}
 	catch (Exception e){
 		ok=false;
@@ -190,14 +195,20 @@ public static boolean testRIGHT(Mat2 test){
 	
 	public static boolean testGameOver(){
 		try{
+			System.out.println("Checking game over...");
 			boolean ok=true&testUP(matrizGameOver())&testRIGHT(ultima)&testLEFT(ultima)&&testDOWN(ultima);
 			
 			if(matrizGameOver().equals(ultima)){
-			return ok;}
+				
+				if(ok)
+				System.out.println("////***////***//TEST OK///***///***///");
+				
+				return ok;}
 			System.out.println("Matriz de GO no coincide");
 			return false;
 		}
 		catch (Exception e){
+			e.printStackTrace(System.out);
 			return false;
 		}
 		
@@ -206,20 +217,32 @@ public static boolean testRIGHT(Mat2 test){
 	
 	public static boolean testfijo(){
 		try{
+			System.out.println("Checking control case matTest...");
 			boolean ok=true&testUP(matTest())&testRIGHT(matTest())&testLEFT(matTest())&&testDOWN(matTest());
+			if(ok)
+				System.out.println("////***////***//TEST OK///***///***///");
+			else{
+				System.out.println("////***////***//TEST Error///***///***///");
+			}
 			return ok;
+			
 		}
 		catch (Exception e){
+			e.printStackTrace(System.out);
 			return false;
 		}
 		
 	}
 	public static boolean testRandom(){
 		try{
+			System.out.println("Checking Random Matrix...");
 			boolean ok=true&testUP(matTestRan())&testRIGHT(matTestRan())&testLEFT(matTestRan())&&testDOWN(matTestRan());
+			System.out.println("////***////***//TEST OK///***///***///");
+			
 			return ok;
 		}
 		catch (Exception e){
+			e.printStackTrace(System.out);
 			return false;
 		}
 		
@@ -231,16 +254,25 @@ public static boolean testRIGHT(Mat2 test){
 	@Test
 	public void test() {
 		boolean ok=testGameOver()&&testfijo()&&testRandom();
-		
+		try{
+			if(!matTest().equals(matTest())){
+			ok=false;
+			System.out.println("///error en el equals///");
+			}}
+			catch(Exception e){
+				e.printStackTrace(System.out);
+			}
 		
 		if(ok){
-			System.out.println("All system check, green across the board. \n Test finalized");
+			System.out.println("\n All system check.....green across the board. \n Test finalized \n .");
+			
 		}	
 		
 		else{
-			System.out.println("Error");
+			System.out.println("error");
+			fail("some error in test refer to test");
 		}
-//		fail("Not yet implemented");
+		
 	}
 
 }

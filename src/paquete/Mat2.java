@@ -13,44 +13,53 @@ public class Mat2 {
 	public enum direction{
 		LEFT,RIGHT,DOWN,UP
 	}
-
+//TODO ARREGLAR EQUALS
 	@Override
 	public boolean equals(Object otra1){
 		Mat2 otra=(Mat2) otra1;
 		
 		if(otra==null){
+			System.out.println("otra=null");
 			return false;	
+			
 		}
 		
 		else{
 			if(otra.mat==null||mat==null){
 				if(otra.mat==null&&mat==null){
+					
 					return true;
 				}
 				else{
+					System.out.println("alguna=null");
 					return false;
 				}
 				
 			}
 		}
-		if(otra.mat.length!=mat.length){
+		if(otra.mat.length!=mat.length){ //
+			System.out.println("length mismatch");
 		return false;
 		}
 		
 		
 		for(int x=0; x<otra.mat.length; x++){
+			
 			for(int y=0; y<otra.mat.length; y++){
-				if(otra.mat[y][x]!=mat[y][x]){
-					return false;
+				
+				if(otra.mat[y][x]==null||mat[y][x]==null){
+					if(!(otra.mat[y][x]==null&&mat[y][x]==null)){
+						return false;
+					}	
 				}
+				
+				else if(otra.mat[y][x].intValue()!=mat[y][x].intValue()){
+							
+							return false;
+					}
 			}
-		}
-		
-		
-		
-		
-		
-		return true;
+			}
+	return true;
 	}
 	
 	public Mat2(int n){
