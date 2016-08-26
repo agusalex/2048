@@ -6,16 +6,20 @@ import org.junit.Test;
 
 import paquete.Mat2.direction;
 
+
 public class Mat2Test {
 
+	public static Mat2 ultima;
+	
 	public static int aleatorio(){
 		int num = (int) (Math.random()*4-2) +2;
 		return  num % 2 == 0 ? num : num+1;
 	}
 	
 	
-	public static Integer[][] matTestRanu(){
-		Integer[][] ww= new Integer[6][6];
+	public static Mat2 matTestRan(){
+		Mat2 MET= new Mat2(4);
+		Integer[][] ww=MET.mat;
 		ww[0][0] = new Integer(aleatorio());
 		ww[0][1] = new Integer(aleatorio());
 		ww[0][4] = new Integer(aleatorio());
@@ -31,12 +35,13 @@ public class Mat2Test {
 		ww[4][5] = new Integer(aleatorio());
 		ww[5][1] = new Integer(aleatorio());
 		ww[5][4] = new Integer(aleatorio());
-		return ww;
+		return MET;
 		
 		
 	}
-	public static Integer[][] matTest(){
-		Integer[][] ww= new Integer[6][6];
+	public static Mat2 matTest(){
+		Mat2 MET= new Mat2(4);
+		Integer[][] ww=MET.mat;
 		ww[0][0] = new Integer(2);
 		ww[0][1] = new Integer(4);
 		ww[0][4] = new Integer(4);
@@ -52,104 +57,189 @@ public class Mat2Test {
 		ww[4][5] = new Integer(2);
 		ww[5][1] = new Integer(4);
 		ww[5][4] = new Integer(2);
-		return ww;
+		return MET;
 		
 		
+	}
+	
+	public static Mat2 matrizGameOver(){
+		Mat2 MET= new Mat2(4);
+		Integer[][] mat=MET.mat;
+		mat[0][0] = new Integer(4);
+		mat[0][1] = new Integer(8);
+		mat[0][2] = new Integer(4);
+		mat[0][3] = new Integer(2);
+		mat[1][0] = new Integer(2);
+		mat[1][1] = new Integer(4);
+		mat[1][2] = new Integer(2);
+		mat[1][3] = new Integer(4);
+		mat[2][0] = new Integer(4);
+		mat[2][1] = new Integer(8);
+		mat[2][2] = new Integer(4);
+		mat[2][3] = new Integer(8);
+		mat[3][0] = new Integer(2);
+		mat[3][1] = new Integer(4);
+		mat[3][2] = new Integer(8);
+		mat[3][3] = new Integer(2);
+		
+		ultima=MET;
+		return MET;
+
 	}
 	
 
-	
-	
-	public static void test1(){
-		Mat2 original= new Mat2(6);
-		original.mat=matTest();
+public static boolean testUP(Mat2 test){
+		
 		boolean ok=true;
-		
-		Mat2 Up2= new Mat2(6);
-		Up2.mat=matTest();
-		System.out.println("COMIENZA EL TEST");
-		
-		
+		Mat2 UP2= new Mat2(6);
+		UP2.mat=test.mat;
+
 		
 		try{
-			Up2.Shift(direction.UP);
+			UP2.Shift(direction.UP);
 			System.out.println("UP");
-			System.out.println("Original:\n"+original);
+			System.out.println("Original:\n"+test);
 			System.out.println("Mat a testear");
-			System.out.println(Up2);
+			System.out.println(UP2);		
 			System.out.println("///////////////////////////////////////");
 		}
 		catch (Exception e){
 			ok=false;
-			System.out.println("Up:EXCEPTION Error");
+			System.out.println("UP:EXCEPTION Error");
 			e.printStackTrace(System.out);
 		}
-		
-		///DOWN
-		Mat2 Down2= new Mat2(6);
-		Down2.mat=matTest();
-		
-		try{
-			Down2.Shift(direction.DOWN);
-			System.out.println("DOWN");
-			System.out.println("Original:\n"+original);
-			System.out.println("Mat a testear");
-			System.out.println(Down2);		
-			System.out.println("///////////////////////////////////////");
-		}
-		catch (Exception e){
-			ok=false;
-			System.out.println("DOWN:EXCEPTION Error");
-			e.printStackTrace(System.out);
-		}
-		
-		//LEFT
-		Mat2 Left2= new Mat2(6);
-		Left2.mat=matTest();
-		
-		try{
-			Left2.Shift(direction.LEFT);
-			System.out.println("LEFT");
-			System.out.println("Original:\n"+original);
-			System.out.println("Mat a testear");
-			System.out.println(Left2);		
-			System.out.println("///////////////////////////////////////");
-		}
-		catch (Exception e){
-			ok=false;
-			System.out.println("LEFT:EXCEPTION Error");
-			e.printStackTrace(System.out);
-		}
-		
-		//RIGHT
-		Mat2 Right2= new Mat2(6);
-		Right2.mat=matTest();
-		try{
-			Right2.Shift(direction.RIGHT);
-			System.out.println("RIGHT");
-			System.out.println("Right:OK"); 
-		 	System.out.println("Original:\n"+original);
-			System.out.println("Mat a testear");
-			System.out.println(Right2);
-			System.out.println("///////////////////////////////////////");
-					
+		ultima=UP2;
+		return ok;
 	}
-		catch (Exception e){
-			ok=false;
-			System.out.println("RIGHT:EXCEPTION Error");
-			e.printStackTrace(System.out);
-		}
-			if(ok){
-				System.out.println("All system check, green across the board. \n Test finalized");
-			}		
+	
+public static boolean testDOWN(Mat2 test){
+	
+	boolean ok=true;
+	Mat2 DOWN2= new Mat2(6);
+	DOWN2.mat=test.mat;
+
+	
+	try{
+		DOWN2.Shift(direction.DOWN);
+		System.out.println("DOWN");
+		System.out.println("Original:\n"+test);
+		System.out.println("Mat a testear");
+		System.out.println(DOWN2);		
+		System.out.println("///////////////////////////////////////");
 	}
+	catch (Exception e){
+		ok=false;
+		System.out.println("DOWN:EXCEPTION Error");
+		e.printStackTrace(System.out);
+	}
+	ultima=DOWN2;
+	return ok;
+}
+
+public static boolean testLEFT(Mat2 test){
+	
+	boolean ok=true;
+	Mat2 LEFT2= new Mat2(6);
+	LEFT2.mat=test.mat;
+
+	
+	try{
+		LEFT2.Shift(direction.LEFT);
+		System.out.println("LEFT");
+		System.out.println("Original:\n"+test);
+		System.out.println("Mat a testear");
+		System.out.println(LEFT2);		
+		System.out.println("///////////////////////////////////////");
+	}
+	catch (Exception e){
+		ok=false;
+		System.out.println("LEFT:EXCEPTION Error");
+		e.printStackTrace(System.out);
+	}
+	ultima=LEFT2;
+	return ok;
+}
+public static boolean testRIGHT(Mat2 test){
+	
+	boolean ok=true;
+	Mat2 RIGHT2= new Mat2(6);
+	RIGHT2.mat=test.mat;
+
+	
+	try{
+		RIGHT2.Shift(direction.RIGHT);
+		System.out.println("RIGHT");
+		System.out.println("Original:\n"+test);
+		System.out.println("Mat a testear");
+		System.out.println(RIGHT2);		
+		System.out.println("///////////////////////////////////////");
+	}
+	catch (Exception e){
+		ok=false;
+		System.out.println("RIGHT:EXCEPTION Error");
+		e.printStackTrace(System.out);
+	}
+	ultima=RIGHT2;
+	return ok;
+}
+
+
+
+
+	
+	
+	public static boolean testGameOver(){
+		try{
+			boolean ok=true&testUP(matrizGameOver())&testRIGHT(ultima)&testLEFT(ultima)&&testDOWN(ultima);
+			
+			if(matrizGameOver().equals(ultima)){
+			return ok;}
+			System.out.println("Matriz de GO no coincide");
+			return false;
+		}
+		catch (Exception e){
+			return false;
+		}
+		
+	}
+	
+	
+	public static boolean testfijo(){
+		try{
+			boolean ok=true&testUP(matTest())&testRIGHT(matTest())&testLEFT(matTest())&&testDOWN(matTest());
+			return ok;
+		}
+		catch (Exception e){
+			return false;
+		}
+		
+	}
+	public static boolean testRandom(){
+		try{
+			boolean ok=true&testUP(matTestRan())&testRIGHT(matTestRan())&testLEFT(matTestRan())&&testDOWN(matTestRan());
+			return ok;
+		}
+		catch (Exception e){
+			return false;
+		}
+		
+	}
+	
+	
+	
 	
 	@Test
 	public void test() {
-		test1();
+		boolean ok=testGameOver()&&testfijo()&&testRandom();
 		
 		
+		if(ok){
+			System.out.println("All system check, green across the board. \n Test finalized");
+		}	
 		
+		else{
+			System.out.println("Error");
+		}
 //		fail("Not yet implemented");
 	}
 
