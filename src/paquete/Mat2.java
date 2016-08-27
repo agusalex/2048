@@ -13,53 +13,35 @@ public class Mat2 {
 	public enum direction{
 		LEFT,RIGHT,DOWN,UP
 	}
+	
+	
+
 //TODO ARREGLAR EQUALS
 	@Override
-	public boolean equals(Object otra1){
-		Mat2 otra=(Mat2) otra1;
+	public boolean equals(Object another){
+		if(another == null)
+			return false;
 		
-		if(otra==null){
-			System.out.println("otra=null");
-			return false;	
-			
-		}
-		
-		else{
-			if(otra.mat==null||mat==null){
-				if(otra.mat==null&&mat==null){
-					
-					return true;
-				}
-				else{
-					System.out.println("alguna=null");
-					return false;
-				}
-				
-			}
-		}
-		if(otra.mat.length!=mat.length){ //
-			System.out.println("length mismatch");
-		return false;
-		}
-		
-		
-		for(int x=0; x<otra.mat.length; x++){
-			
-			for(int y=0; y<otra.mat.length; y++){
-				
-				if(otra.mat[y][x]==null||mat[y][x]==null){
-					if(!(otra.mat[y][x]==null&&mat[y][x]==null)){
-						return false;
-					}	
-				}
-				
-				else if(otra.mat[y][x].intValue()!=mat[y][x].intValue()){
-							
+		if(another instanceof Mat2){
+			Mat2 matrix =(Mat2) another;
+			for(int x = 0; x< mat.length;x++){
+				for(int y =0; y< mat.length;y++){
+					Integer actualMat = mat[x][y];
+					Integer actualOther = matrix.mat[x][y];
+					if(actualMat != null && actualOther != null){
+						if(!actualMat.equals(actualOther))
 							return false;
 					}
+					else if(actualMat == null && actualOther != null)	
+						return false;
+
+					else if(actualMat != null && actualOther == null)	
+						return false;
+				}
 			}
-			}
-	return true;
+		}
+		return true;
+	
 	}
 	
 	public Mat2(int n){
@@ -77,12 +59,36 @@ public class Mat2 {
 	 */
 	public Mat2(){
 		this(4);
+		this.initialize();
+	}
+	
+	/**
+	 * asigna dos numeros 2 en la matriz en una posicion aleatoria
+	 * @param x     en alguna fila
+	 * @param y		en alguna columna
+	 */
+	private void initialize(){
+		generateRandomPositions();
+		generateRandomPositions();
+	}
+
+	private void generateRandomPositions() {
+		int x = aleatorio();
+		int y = aleatorio();
+		if (x == y){
+			y = x+1 % mat.length;
+		}
+		if(this.mat[x][y] == 0)
+			this.mat[x][y] = 2;
+		else
+			generateRandomPositions();
 	}
 	
 	public Integer [][] getMat(){
 		return mat;
 	}
-
+	
+	@Override
 	public String toString(){
 		String numeros = "";
 		for(int x = 0; x < this.mat.length; x++){
@@ -128,7 +134,6 @@ public class Mat2 {
 			Current = mat [y][x]; //ELemeto Actual
 			///////
 			
-			
 			if(Current != null){
 				
 				aux [indexAux] = Current;
@@ -150,8 +155,6 @@ public class Mat2 {
 				mat[ind][x] = aux[ind];
 			}
 		}
-		
-		
 	}
 	
 	/**
@@ -165,9 +168,7 @@ public class Mat2 {
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
-		
 	}
-
 
 	/**
 	 * Devuelve los parametros para recorrer el arreglo en la direccion y orientacion correctas
@@ -212,9 +213,7 @@ public class Mat2 {
 			y=from;
 			yaxis=true;
 		}
-		
-		
-		
+
 		return  new Object[]{from,to,indexDir,x,y,xaxis,yaxis};
 		
 	}
@@ -244,79 +243,95 @@ public class Mat2 {
 		int bkp = -1;					
 		Integer Current = null;   
 		
-		
-			while(from!=to){
+		while(from!=to){
 				
-				checkIfEquals = true;		
-				////
-				Current = mat[y][x];      
-				/////
+			checkIfEquals = true;		
+			////
+			Current = mat[y][x];      
+			/////
 				
-				if(Current != null){
+			if(Current != null){
 
-					
-					if(bkp==-1){
-						bkp=from;
-						checkIfEquals=false;
-					}
-					
-					if(xaxis){  //Si se mueve en el eje x
-						
-						if(!Current.equals(mat[y][bkp])){      //SI no es igual setea nuevo Bkp
-							
-							bkp =x ;
-							checkIfEquals = false;   
-							}
-						
-						else if(checkIfEquals){   //Si es igual
-				
-							Current=null;
-							mat[y][x]=null;
-							mat[y][bkp]=mat[y][bkp]*2;
-							
-							
-						}
-					}
-						
-						if(yaxis){
-							//Si se mueve en el eje y
-							
-						if(!Current.equals(mat[bkp][x])){  //SI no es igual setea nuevo Bkp
-			
-								bkp = y;
-								checkIfEquals = false;   
-							}
-							
-							else if(checkIfEquals){   //Si es igual
-								Current=null;
-								mat[y][x]=null;
-								mat[bkp][x]=mat[bkp][x]*2;
-								
-								}
-						}
-					
+				if(bkp==-1){
+					bkp=from;
+					checkIfEquals=false;
 				}
-				
-				if(xaxis){					//Incremante el x
 					
-					x+=indexDir;
-				}							// O
+				if(xaxis){  //Si se mueve en el eje x
+						
+					if(!Current.equals(mat[y][bkp])){      //SI no es igual setea nuevo Bkp
+		
+						bkp =x ;
+						checkIfEquals = false;   
+					}
+						
+					else if(checkIfEquals){   //Si es igual
 				
+						Current=null;
+						mat[y][x]=null;
+						mat[y][bkp]=mat[y][bkp]*2;
+					}
+				}
+						
 				if(yaxis){
-					y+=indexDir;			//Incrementa el y
+							//Si se mueve en el eje y
+					if(!Current.equals(mat[bkp][x])){  //SI no es igual setea nuevo Bkp
+						bkp = y;
+						checkIfEquals = false;   
+					}
+							
+					else if(checkIfEquals){   //Si es igual
+						
+						Current=null;
+						mat[y][x]=null;
+						mat[bkp][x]=mat[bkp][x]*2;
+					}
 				}
+					
+			}
 				
-				from+=indexDir;
+			if(xaxis){					//Incremante el x
+					
+			   x+=indexDir;
+			}							// O
+				
+			if(yaxis){
+				y+=indexDir;			//Incrementa el y
+			}
+				
+			from+=indexDir;
 				
 			
 		
-	}
+		}
 			
 
 	}
 
+	
+	private void checkEdgeBounds(int vert1, int vert2){
+		if(vert1 <= -1 || vert1 >= this.mat.length || vert2 <= -1 || vert2 >= this.mat.length )
+			throw new IllegalArgumentException("out of bounds");
+	}
 
-
-
+	private static int aleatorio(){
+		int num = (int) (Math.random()*4);
+		return  num;
+	}
+	
+	private Integer [] copyRow0(){
+		Integer []ret = new Integer[mat.length]; 
+		for(int i = 0; i < mat.length; i++){
+			ret [i] = mat[0][i];
+		}
+		return ret;
+	}
+	
+	public boolean gameOver(){
+		return false;
+		
+	}
+	
+	
 
 }
