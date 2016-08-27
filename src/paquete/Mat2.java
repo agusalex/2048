@@ -1,7 +1,25 @@
 package paquete;
 
 public class Mat2 {
+	
 	public Integer[][] mat;
+	private int elements;           //para decir si esta llena o no
+	private boolean hasCombined;    //para saber si se combina o no
+	
+	public int getElements() {
+		return elements;
+	}
+
+	public void setElements(int elements) {
+		this.elements = elements;
+	}
+	
+	public Integer [][] getMat(){
+		return mat;
+	}
+	
+	
+
 	/**
 	 * Mueve la matriz
 	 * @param LEFT
@@ -10,13 +28,12 @@ public class Mat2 {
 	 * @param UP
 
 	 */
+	
 	public enum direction{
 		LEFT,RIGHT,DOWN,UP
 	}
 	
-	
 
-//TODO ARREGLAR EQUALS
 	@Override
 	public boolean equals(Object another){
 		if(another == null)
@@ -52,10 +69,11 @@ public class Mat2 {
 		
 		
 		this.mat = new Integer [n][n];	
+//		this.initialize();
 	}
 	
 	/**
-	 * constructor de 4x4
+	 *  Constructor de 4x4
 	 */
 	public Mat2(){
 		this(4);
@@ -71,23 +89,29 @@ public class Mat2 {
 		generateRandomPositions();
 		generateRandomPositions();
 	}
-
-	private void generateRandomPositions() {
+	
+	
+	/**
+	 * busca una posicion al azar y agrega un 2 en la matriz
+	 * de existir un numero en esa posicion busca otra
+	 */
+	public void generateRandomPositions() {
+		if(this.elements == mat.length*mat.length)    //si esta llena no hace nada
+ 			return ;
 		int x = aleatorio();
 		int y = aleatorio();
 		if (x == y){
 			y = x+1 % mat.length;
 		}
-		if(this.mat[x][y] == 0)
+		if(this.mat[x][y] == null){
 			this.mat[x][y] = 2;
+			this.elements++;
+		}
 		else
 			generateRandomPositions();
 	}
 	
-	public Integer [][] getMat(){
-		return mat;
-	}
-	
+
 	@Override
 	public String toString(){
 		String numeros = "";
@@ -114,22 +138,22 @@ public class Mat2 {
 		
 		boolean xaxis,yaxis;
 		
-		Object[] parameters=getDirectionParameters(dir,filaoCol);
+		Object[] parameters = getDirectionParameters(dir,filaoCol);
 		
-		from=(int) parameters[0];
-		to=(int) parameters[1];
-		indexDir=(int) parameters[2];
-		x=(int) parameters[3];
-		y=(int) parameters[4];
-		xaxis=(boolean) parameters[5];
-		yaxis=(boolean) parameters[6];
+		from = (int) parameters[0];
+		to = (int) parameters[1];
+		indexDir = (int) parameters[2];
+		x = (int) parameters[3];
+		y = (int) parameters[4];
+		xaxis = (boolean) parameters[5];
+		yaxis = (boolean) parameters[6];
 		////
 		Integer [] aux = new Integer [mat.length];
 		Integer Current = null;
 		
-		indexAux=from;
+		indexAux = from;
 		
-		while(from!=to){
+		while(from != to){
 			//////
 			Current = mat [y][x]; //ELemeto Actual
 			///////
@@ -164,10 +188,11 @@ public class Mat2 {
 
 	 */
 	public void Shift(direction Direction){
-		for(int x=0;x<mat.length;x++){
+		for(int x = 0; x < mat.length; x++){
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
+		generateRandomPositions();
 	}
 
 	/**
@@ -213,9 +238,8 @@ public class Mat2 {
 			y=from;
 			yaxis=true;
 		}
-
-		return  new Object[]{from,to,indexDir,x,y,xaxis,yaxis};
 		
+		return  new Object[]{from,to,indexDir,x,y,xaxis,yaxis};
 	}
 	
 	
@@ -224,20 +248,23 @@ public class Mat2 {
 	 * una vez que los combina, pasa a buscar otra operacion
 	 * @param dir la direccion en la que se mueve
 	 * @param filaoCol la fila o columna sobre la que se opera
+	 * @return true si se realizo por lo menos una combinacion en alguna fila, o columna
 	 */
 	public void combineCells(direction dir,int filaoCol ){
 		int from,to,indexDir,x,y;
 		boolean xaxis,yaxis;
 		
-		Object[] parameters=getDirectionParameters(dir,filaoCol);
+		Object[] parameters = getDirectionParameters(dir,filaoCol);
 		
-		from=(int) parameters[0];
-		to=(int) parameters[1];
-		indexDir=(int) parameters[2];
-		x=(int) parameters[3];
-		y=(int) parameters[4];
-		xaxis=(boolean) parameters[5];
-		yaxis=(boolean) parameters[6];
+		hasCombined = false;  //revisa si se combino alguna
+		
+		from = (int) parameters[0];
+		to = (int) parameters[1];
+		indexDir = (int) parameters[2];
+		x = (int) parameters[3];
+		y = (int) parameters[4];
+		xaxis = (boolean) parameters[5];
+		yaxis = (boolean) parameters[6];
 	
 		boolean checkIfEquals = true;         
 		int bkp = -1;					
@@ -266,11 +293,12 @@ public class Mat2 {
 					}
 						
 					else if(checkIfEquals){   //Si es igual
-				
 						Current=null;
 						mat[y][x]=null;
 						mat[y][bkp]=mat[y][bkp]*2;
-					}
+						hasCombined = true;    //de combinarse, se cambia
+						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
+					} 
 				}
 						
 				if(yaxis){
@@ -300,37 +328,42 @@ public class Mat2 {
 			}
 				
 			from+=indexDir;
-				
-			
-		
 		}
-			
+
 
 	}
-
 	
-	private void checkEdgeBounds(int vert1, int vert2){
-		if(vert1 <= -1 || vert1 >= this.mat.length || vert2 <= -1 || vert2 >= this.mat.length )
-			throw new IllegalArgumentException("out of bounds");
-	}
-
-	private static int aleatorio(){
-		int num = (int) (Math.random()*4);
+	/**
+	 * usada para buscar una posicion al azar de la matrizz para agregar 2
+	 * @return  el numero entre el rango de la matriz que representa la posicion
+	 */
+	private int aleatorio(){
+		int num = (int) (Math.random()*mat.length-1);
 		return  num;
 	}
 	
-	private Integer [] copyRow0(){
-		Integer []ret = new Integer[mat.length]; 
-		for(int i = 0; i < mat.length; i++){
-			ret [i] = mat[0][i];
-		}
-		return ret;
+	
+	/**
+	 * @return devuelve si esta llena la matriz
+	 */
+	public boolean isFull(){
+		return this.elements == mat.length*mat.length;
 	}
 	
+	/**
+	 * revisa si esta llena y si se combino alguna celda
+	 * @param dir
+	 * @param rowOrColumn
+	 * @return  true si esta llena y no se combino, false si no esta llena o si se combino alguna 
+	 */
 	public boolean gameOver(){
+		if( isFull() && !hasCombined)
+			return true;
+		if( !isFull() || hasCombined)
+			return false;
 		return false;
-		
 	}
+
 	
 	
 
