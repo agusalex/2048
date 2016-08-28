@@ -13,7 +13,7 @@ public class Jugador implements Exportable{
 		this.movements++;
 	}
 	
-	public void increaseScore(int record){
+	public void increaseScore(int record){ //TODO porque le sumas el record anterior al nuevo? la idea no seria que se reemplaze?
 		if(record < 0)
 			throw new IllegalArgumentException("Invalid score for user");
 		this.record += record;

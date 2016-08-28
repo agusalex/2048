@@ -5,15 +5,11 @@ public class Mat2 {
 	public Integer[][] mat;
 	private int elements;           //para decir si esta llena o no
 	private boolean hasCombined;    //para saber si se combina o no
-	
-	public int getElements() {
-		return elements;
-	}
 
-	public void setElements(int elements) {
-		this.elements = elements;
-	}
+
 	
+
+
 	public Integer [][] getMat(){
 		return mat;
 	}
@@ -94,8 +90,8 @@ public class Mat2 {
 	 * @param y		en alguna columna
 	 */
 	private void initialize(){
-		generateRandomPositions();
-		generateRandomPositions();
+		addNewRandomCell();
+		addNewRandomCell();
 	}
 	
 	
@@ -103,39 +99,24 @@ public class Mat2 {
 	 * busca una posicion al azar y agrega un 2 en la matriz
 	 * de existir un numero en esa posicion busca otra
 	 */
-	public void generateRandomPositions() {
-		if(this.elements == mat.length*mat.length)    //si esta llena no hace nada
- 			return ;
-		int x = aleatorio();
-		int y = aleatorio();
-		if (x == y){
-			y = x+1 % mat.length;
-		}
+	public void addNewRandomCell() {  // le cambie el nombre 
+		if(isFull())    //si esta llena no hace nada
+ 			return ;				//TODO La complejidad de pero caso es O(INFINITO) es aleatorio pero puede llegar a caer mas de una vez en la misma posicion
+		int x = randomPosition();   //TODO una mejor opcion seria recorrer el arreglo y agregar un num en el X (contador) lugar que encuentre vacio
+		int y = randomPosition();	//siendo X un numero aleatorio
+									
+		if (x == y){					
+			y = x+1 % mat.length;  // WTF Despues contame que hace eso que posta no lo pude descifrar
+		}						  
 		if(this.mat[x][y] == null){
-			this.mat[x][y] = 2;
+			this.mat[x][y] = 2;     //TODO Agregar mas numeros 4 y 8 que aparezcan aleatoriamente
 			this.elements++;
 		}
 		else
-			generateRandomPositions();
+			addNewRandomCell();   
 	}
 	
 
-	@Override
-	public String toString(){
-		String numeros = "";
-		for(int x = 0; x < this.mat.length; x++){
-			for(int y = 0; y < this.mat.length; y++){
-				if(this.mat[x][y] == null)
-					numeros += "- | ";
-				else
-					numeros +=mat[x][y].toString() + " | ";
-			}
-			numeros += "\n";
-		}
-		
-		return numeros;
-	}
-	
 	/**
 	 * esta funcion mueve de izq a derecha todos los elementos de la fila, despues de que estos fueron combinados
 	 * @param dir la direccion en la que se mueve la funcion
@@ -200,7 +181,7 @@ public class Mat2 {
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
-		generateRandomPositions();
+		addNewRandomCell();
 	}
 
 	/**
@@ -345,11 +326,10 @@ public class Mat2 {
 	 * usada para buscar una posicion al azar de la matrizz para agregar 2
 	 * @return  el numero entre el rango de la matriz que representa la posicion
 	 */
-	private int aleatorio(){
+	private int randomPosition(){
 		int num = (int) (Math.random()*mat.length-1);
 		return  num;
 	}
-	
 	
 	/**
 	 * @return devuelve si esta llena la matriz
@@ -358,13 +338,32 @@ public class Mat2 {
 		return this.elements == mat.length*mat.length;
 	}
 	
+
+
+	@Override
+	public String toString(){
+		String numeros = "";
+		for(int x = 0; x < this.mat.length; x++){
+			for(int y = 0; y < this.mat.length; y++){
+				if(this.mat[x][y] == null)
+					numeros += "- | ";
+				else
+					numeros +=mat[x][y].toString() + " | ";
+			}
+			numeros += "\n";
+		}
+		
+		return numeros;
+	}
+	
+	
 	/**
 	 * revisa si esta llena y si se combino alguna celda
 	 * @param dir
 	 * @param rowOrColumn
 	 * @return  true si esta llena y no se combino, false si no esta llena o si se combino alguna 
 	 */
-	public boolean gameOver(){
+	public boolean gameOver(){      //TODO cambiar implementacion
 		if( isFull() && !hasCombined)
 			return true;
 		if( !isFull() || hasCombined)
@@ -372,7 +371,16 @@ public class Mat2 {
 		return false;
 	}
 
+	public int getElements() {
+		return elements;
+	}
+
+	public void setElements(int elements) {
+		this.elements = elements;
+	}
+
 	
+
 	
 
 }

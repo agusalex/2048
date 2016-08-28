@@ -20,6 +20,7 @@ public class JugadorTest {
 	public void setScoreExceptiontest() {
 		j1.increaseScore(-1);
 		j2.increaseScore(0);
+		
 	}
 	
 	@Test

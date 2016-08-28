@@ -93,7 +93,7 @@ public class Mat2Test {
 	public void agregarTest(){
 		Mat2 a = new Mat2();
 		assertEquals(2,a.getElements());
-		a.generateRandomPositions();
+		a.addNewRandomCell();
 		assertEquals(3,a.getElements());	
 	}
 	
@@ -109,15 +109,15 @@ public class Mat2Test {
 	public void gameOverTest(){
 		Mat2 a = matTest();
 		
-		System.out.println(a);
+		System.out.println(a);     //TODO HARDCODEAR RESULTADOS ASI NOS ENTERAMOS SI CAMBIA ALGO
 		a.Shift(direction.UP);
 		System.out.println("up\n"+a);
 		a.Shift(direction.DOWN);
-		System.out.println("down\n"+a);
+		System.out.println("down\n"+a);  //TODO QUE SI PASO EL TEST DEVUELVA OK
 		a.Shift(direction.LEFT);
 		System.out.println("left\n"+a);
 		a.Shift(direction.RIGHT);
-		System.out.println("right\n"+a);
+		System.out.println("right\n"+a);  //TODO PESANR MAS TESTS?
 		
 		assertFalse(a.gameOver());
 		
