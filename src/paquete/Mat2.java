@@ -41,11 +41,15 @@ public class Mat2 {
 		
 		if(another instanceof Mat2){
 			Mat2 matrix =(Mat2) another;
+			
 			for(int x = 0; x< mat.length;x++){
-				for(int y =0; y< mat.length;y++){
+				for(int y =0 ; y < mat.length; y++ ){
+					
 					Integer actualMat = mat[x][y];
 					Integer actualOther = matrix.mat[x][y];
+					
 					if(actualMat != null && actualOther != null){
+						
 						if(!actualMat.equals(actualOther))
 							return false;
 					}
@@ -57,6 +61,10 @@ public class Mat2 {
 				}
 			}
 		}
+		
+		else{
+			return false;}  //Si another no es un objeto de tipo Mat2
+		
 		return true;
 	
 	}
