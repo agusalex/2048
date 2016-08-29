@@ -3,11 +3,16 @@ package paquete;
 public class Mat2 {
 	
 	public Integer[][] mat;
-	private int elements;           //para decir si esta llena o no
-	private boolean hasCombined;    //para saber si se combina o no
-
-
+	private int elements =0;           //para decir si esta llena o no
 	
+
+	public int getElements() {
+		return elements;
+	}
+
+	public void setElements(int elements) {
+		this.elements = elements;
+	}
 
 
 	public Integer [][] getMat(){
@@ -28,6 +33,7 @@ public class Mat2 {
 	public enum direction{
 		LEFT,RIGHT,DOWN,UP
 	}
+	
 	
 
 	@Override
@@ -73,7 +79,7 @@ public class Mat2 {
 		
 		
 		this.mat = new Integer [n][n];	
-//		this.initialize();
+		this.initialize();
 	}
 	
 	/**
@@ -81,7 +87,6 @@ public class Mat2 {
 	 */
 	public Mat2(){
 		this(4);
-		this.initialize();
 	}
 	
 	/**
@@ -95,25 +100,56 @@ public class Mat2 {
 	}
 	
 	
+	private void addNewRandomCell(int coordinate, int x, int y){
+		Integer elem = mat[x][y];
+		//si llego a su destino
+		if(elem == null && coordinate == 0){
+			this.mat[x][y] = 2;
+			this.elements++;
+		}
+		else if( x == this.mat.length-1 && y == this.mat.length-1)
+			return;
+		
+		else if(this.isFull())
+			return ;
+		
+		//esto es para que, como el valor de coordinate se obtiene a traves de random(),
+		//se use para no buscar siempre la primer celda vacia, y busque varias de acuerdo al valor de coordinate
+		else if(elem == null){
+			if(y == this.mat.length-1 && x < this.mat.length-1)   //si llegue al final de una fila y no coloca
+				addNewRandomCell(coordinate-1, x+1, y-y);     //pasa a la siguiente
+			else 
+				addNewRandomCell(coordinate-1, x, y+1);
+		}
+		//lo mismo pasa si encuentra casillas llenas, solo que no disminuya coordinate
+		//es mas para el caso en que queden pocas celdas vacias
+		else if (elem != null){								
+			if(y == this.mat.length-1 && x < this.mat.length-1)   
+				addNewRandomCell(coordinate, x+1, y-y);
+			else 
+				addNewRandomCell(coordinate, x, y+1);
+		}
+	}
+	
+	
+	
+	/**
+	 * usada para buscar una posicion al azar de la matriz para agregar 2
+	 * @return  el numero entre 0 y la cantidad de celdas vacias que se usa para ubicar un 2 en alguna de ellas
+	 */
+	private int randomPosition(){
+		int totalElements = mat.length*mat.length;
+		int num = (int) (Math.random()*(totalElements - this.elements));
+		return  num;
+	}
+	
+	
 	/**
 	 * busca una posicion al azar y agrega un 2 en la matriz
 	 * de existir un numero en esa posicion busca otra
 	 */
 	public void addNewRandomCell() {  // le cambie el nombre 
-		if(isFull())    //si esta llena no hace nada
- 			return ;				//TODO La complejidad de pero caso es O(INFINITO) es aleatorio pero puede llegar a caer mas de una vez en la misma posicion
-		int x = randomPosition();   //TODO una mejor opcion seria recorrer el arreglo y agregar un num en el X (contador) lugar que encuentre vacio
-		int y = randomPosition();	//siendo X un numero aleatorio
-									
-		if (x == y){					
-			y = x+1 % mat.length;  // WTF Despues contame que hace eso que posta no lo pude descifrar
-		}						  
-		if(this.mat[x][y] == null){
-			this.mat[x][y] = 2;     //TODO Agregar mas numeros 4 y 8 que aparezcan aleatoriamente
-			this.elements++;
-		}
-		else
-			addNewRandomCell();   
+		this.addNewRandomCell(randomPosition(),0,0);   
 	}
 	
 
@@ -182,6 +218,8 @@ public class Mat2 {
 				Move(Direction,x);
 		}
 		addNewRandomCell();
+		gameOver();
+		
 	}
 
 	/**
@@ -192,40 +230,40 @@ public class Mat2 {
 	 */
 	private Object[] getDirectionParameters(direction dir,int filaoCol){
 		int y,x,from,to,indexDir;
-		boolean xaxis=false;
-		boolean yaxis=false;
+		boolean xaxis = false;
+		boolean yaxis = false;
 		
 		if (dir.equals(direction.LEFT)){
-			from=0;
-			to=mat.length;
-			indexDir=1;
-			y=filaoCol;
-			x=from;
-			xaxis=true;
+			from = 0;
+			to = mat.length;
+			indexDir = 1;
+			y = filaoCol;
+			x = from;
+			xaxis = true;
 		}
 		else if (dir.equals(direction.RIGHT)){
-			from=mat.length-1;
-			to=-1;
-			indexDir=-1;
-			y=filaoCol;
-			x=from;
-			xaxis=true;
+			from = mat.length-1;
+			to =- 1;
+			indexDir =- 1;
+			y = filaoCol;
+			x = from;
+			xaxis = true;
 		}
 		else if (dir.equals(direction.UP)){
-			from=0;
-			to=mat.length;
-			indexDir=1;
-			x=filaoCol;
-			y=from;
-			yaxis=true;
+			from = 0;
+			to = mat.length;
+			indexDir = 1;
+			x = filaoCol;
+			y = from;
+			yaxis = true;
 		}
 		else{
-			from=mat.length-1;
-			to=-1;
-			indexDir=-1;
-			x=filaoCol;
-			y=from;
-			yaxis=true;
+			from = mat.length-1;
+			to =- 1;
+			indexDir =- 1;
+			x = filaoCol;
+			y = from;
+			yaxis = true;
 		}
 		
 		return  new Object[]{from,to,indexDir,x,y,xaxis,yaxis};
@@ -245,7 +283,6 @@ public class Mat2 {
 		
 		Object[] parameters = getDirectionParameters(dir,filaoCol);
 		
-		hasCombined = false;  //revisa si se combino alguna
 		
 		from = (int) parameters[0];
 		to = (int) parameters[1];
@@ -268,9 +305,9 @@ public class Mat2 {
 				
 			if(Current != null){
 
-				if(bkp==-1){
-					bkp=from;
-					checkIfEquals=false;
+				if(bkp == -1){
+					bkp = from;
+					checkIfEquals = false;
 				}
 					
 				if(xaxis){  //Si se mueve en el eje x
@@ -282,16 +319,15 @@ public class Mat2 {
 					}
 						
 					else if(checkIfEquals){   //Si es igual
-						Current=null;
-						mat[y][x]=null;
-						mat[y][bkp]=mat[y][bkp]*2;
-						hasCombined = true;    //de combinarse, se cambia
+						Current = null;
+						mat[y][x] = null;
+						mat[y][bkp] = mat[y][bkp]*2;
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
 					} 
 				}
 						
-				if(yaxis){
-							//Si se mueve en el eje y
+				if(yaxis){ //Si se mueve en el eje y
+							
 					if(!Current.equals(mat[bkp][x])){  //SI no es igual setea nuevo Bkp
 						bkp = y;
 						checkIfEquals = false;   
@@ -299,9 +335,10 @@ public class Mat2 {
 							
 					else if(checkIfEquals){   //Si es igual
 						
-						Current=null;
-						mat[y][x]=null;
-						mat[bkp][x]=mat[bkp][x]*2;
+						Current = null;
+						mat[y][x] = null;
+						mat[bkp][x] = mat[bkp][x]*2;
+						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
 					}
 				}
 					
@@ -322,14 +359,6 @@ public class Mat2 {
 
 	}
 	
-	/**
-	 * usada para buscar una posicion al azar de la matrizz para agregar 2
-	 * @return  el numero entre el rango de la matriz que representa la posicion
-	 */
-	private int randomPosition(){
-		int num = (int) (Math.random()*mat.length-1);
-		return  num;
-	}
 	
 	/**
 	 * @return devuelve si esta llena la matriz
@@ -363,24 +392,100 @@ public class Mat2 {
 	 * @param rowOrColumn
 	 * @return  true si esta llena y no se combino, false si no esta llena o si se combino alguna 
 	 */
-	public boolean gameOver(){      //TODO cambiar implementacion
-		if( isFull() && !hasCombined)
+	public boolean gameOver(){      
+		if( isFull() && !isCombinable())
 			return true;
-		if( !isFull() || hasCombined)
+		if( !isFull() || isCombinable())
 			return false;
 		return false;
 	}
-
-	public int getElements() {
-		return elements;
-	}
-
-	public void setElements(int elements) {
-		this.elements = elements;
-	}
-
 	
-
+	/**
+	 * revisa si hay filas o columnas por combinar
+	 * @return  true si existe al menos una fila o columna para combinar 
+	 */
+	public boolean isCombinable(){
+		boolean ret = false;
+		for(int row = 0; row < mat.length; row++){
+			ret = ret || isCombinable(direction.RIGHT,row) || isCombinable(direction.DOWN,row);
+		}
+		return ret;
+	}
 	
+	/**
+	 * revisa si hay filas o columnas por combinar en la direccion especificada
+	 * @return  true si existe al menos una fila o columna para combinar 
+	 */	
+	public boolean isCombinable(direction dir, int row_Column){
+		int from,to,indexDir,x,y;
+		boolean xaxis,yaxis;
+		Object [] parameters = null; 
+		
+		if(dir.equals(direction.LEFT) || dir.equals(direction.RIGHT))
+			parameters = getDirectionParameters(direction.RIGHT,row_Column);
+		else
+			parameters = getDirectionParameters(direction.DOWN,row_Column);
+
+		from = (int) parameters[0];
+		to = (int) parameters[1];
+		indexDir = (int) parameters[2];
+		x = (int) parameters[3];
+		y = (int) parameters[4];
+		xaxis = (boolean) parameters[5];
+		yaxis = (boolean) parameters[6];
+		
+		boolean checkIfEquals = true;         
+		int bkp = -1;					
+		Integer Current = null;   
+		
+		while(from!=to){	
+			checkIfEquals = true;		
+			////
+			Current = mat[y][x];      
+			/////
+			if(Current != null){
+				
+				if(bkp == -1){
+					bkp = from;
+					checkIfEquals = false;
+				}
+					
+				if(xaxis){  //Si se mueve en el eje x
+						
+					if(!Current.equals(mat[y][bkp]))      //SI no es igual setea nuevo Bkp
+						bkp = x ;
+					
+					else if(checkIfEquals)   //Si es igual
+						return true;
+					
+				}
+						
+				if(yaxis){ //Si se mueve en el eje y
+							
+					if(!Current.equals(mat[bkp][x]))  //SI no es igual setea nuevo Bkp
+						bkp = y;
+					  
+					else if(checkIfEquals)   //Si es igual
+						return true;
+					
+				}
+					
+			}
+			
+				
+			if(xaxis){					
+					
+			   x+=indexDir;
+			}							
+				
+			if(yaxis){
+				y+=indexDir;			
+			}
+				
+			from+=indexDir;
+		}
+
+	return false;
+	}	
 
 }
