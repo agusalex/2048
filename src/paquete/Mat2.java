@@ -3,9 +3,10 @@ package paquete;
 public class Mat2 {
 	
 	public Integer[][] mat;
-	private int elements =0;           //para decir si esta llena o no
+	private int elements = 0;           //para decir si esta llena o no
+	private boolean hasCombined;        //para decir si se combinaron o no
 	
-
+	
 	public int getElements() {
 		return elements;
 	}
@@ -33,6 +34,53 @@ public class Mat2 {
 	public enum direction{
 		LEFT,RIGHT,DOWN,UP
 	}
+	
+	
+	public Integer[][] copiarMatriz(){
+		Integer [][] copy = new Integer [mat.length][mat.length];
+		for(int x = 0; x < mat.length; x++){
+			for( int y = 0; y < mat.length; y++){
+				copy [x][y] = mat[x][y];
+			}
+		}
+		return copy;
+	}
+	
+	private boolean win(){
+		for(int x = 0; x< mat.length;x++){
+			for(int y =0 ; y < mat.length; y++ ){
+				Integer actualMat = mat[x][y];
+				if(actualMat != null)
+					if(actualMat.equals(2048))
+						return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean esIgual(Integer [][] mat1, Integer [][] mat2){
+		for(int x = 0; x< mat1.length;x++){
+			for(int y =0 ; y < mat2.length; y++ ){
+	
+				Integer actualMat = mat1[x][y];
+				Integer actualOther = mat2[x][y];
+				
+				if(actualMat != null && actualOther != null){
+					
+					if(!actualMat.equals(actualOther))
+						return false;
+				}
+				else if(actualMat == null && actualOther != null)	
+					return false;
+
+				else if(actualMat != null && actualOther == null)	
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	
 	
 
@@ -177,6 +225,7 @@ public class Mat2 {
 		Integer Current = null;
 		
 		indexAux = from;
+	
 		
 		while(from != to){
 			//////
@@ -188,7 +237,7 @@ public class Mat2 {
 				aux [indexAux] = Current;
 				indexAux += indexDir;
 			}
-			
+		
 			if(xaxis)
 				x += indexDir;
 			else if(yaxis)
@@ -196,9 +245,9 @@ public class Mat2 {
 			
 			from+=indexDir;
 		}
-		if(xaxis)
+		if(xaxis){
 			mat[y] = aux;
-		
+		}
 		else if(yaxis){
 			for(int ind = 0; ind < mat.length;ind++){
 				mat[ind][x] = aux[ind];
@@ -213,11 +262,15 @@ public class Mat2 {
 
 	 */
 	public void Shift(direction Direction){
+		Integer [] [] copy = copiarMatriz();
 		for(int x = 0; x < mat.length; x++){
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
-		addNewRandomCell();
+		if(!esIgual(this.mat,copy) && !hasCombined )   //si se movio y si no se combino nada, de ser igual la mtriz actual que la copia quiere decir que no se hicieron cambios
+			addNewRandomCell();
+		else if (hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
+			addNewRandomCell();
 		gameOver();
 		
 	}
@@ -295,6 +348,7 @@ public class Mat2 {
 		boolean checkIfEquals = true;         
 		int bkp = -1;					
 		Integer Current = null;   
+		hasCombined = false;              //supongoi que no se combinan
 		
 		while(from!=to){
 				
@@ -323,6 +377,7 @@ public class Mat2 {
 						mat[y][x] = null;
 						mat[y][bkp] = mat[y][bkp]*2;
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
+						hasCombined = true;
 					} 
 				}
 						
@@ -339,6 +394,7 @@ public class Mat2 {
 						mat[y][x] = null;
 						mat[bkp][x] = mat[bkp][x]*2;
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
+						hasCombined = true;
 					}
 				}
 					
@@ -392,10 +448,12 @@ public class Mat2 {
 	 * @param rowOrColumn
 	 * @return  true si esta llena y no se combino, false si no esta llena o si se combino alguna 
 	 */
-	public boolean gameOver(){      
-		if( isFull() && !isCombinable())
+	public boolean gameOver(){     
+		if(win())
 			return true;
-		if( !isFull() || isCombinable())
+		else if( isFull() && !isCombinable())
+			return true;
+		else if( !isFull() || isCombinable())
 			return false;
 		return false;
 	}
@@ -488,4 +546,5 @@ public class Mat2 {
 	return false;
 	}	
 
+	
 }
