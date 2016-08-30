@@ -389,6 +389,7 @@ public class Mat2 {
 						mat[y][x] = null;
 						mat[y][bkp] = mat[y][bkp]*2;
 						
+						
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
 						hasCombined = true;
 					} 

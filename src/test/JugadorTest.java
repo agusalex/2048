@@ -1,9 +1,13 @@
-package paquete;
+package test;
+import paquete.*;
+
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import paquete.Jugador;
 
 public class JugadorTest {
 
@@ -23,10 +27,11 @@ public class JugadorTest {
 		
 	}
 	
-	@Test
+	
 	public void setScoreTest(){
 		j1.increaseScore(500);
 		j1.increaseScore(100);
+		System.out.print(j1.obtainStatus());
 		assertEquals("Nombre: Esteban Quito Puntuacion: 600 Cant. movimientos: 0",j1.obtainStatus());
 	}
 	

@@ -1,9 +1,10 @@
-package paquete;
-
+package test;
+import paquete.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import paquete.Mat2;
 import paquete.Mat2.direction;
 
 /*

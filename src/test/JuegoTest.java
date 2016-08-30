@@ -1,10 +1,13 @@
-package paquete;
-
+package test;
+import paquete.*;
 import static org.junit.Assert.*;
 
 import java.util.Scanner;
 
 import org.junit.Test;
+
+import paquete.Juego;
+import paquete.Jugador;
 
 public class JuegoTest {
 
