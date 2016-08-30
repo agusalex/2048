@@ -15,13 +15,11 @@ public class Mat2 {
 		this.elements = elements;
 	}
 
-
 	public Integer [][] getMat(){
 		return mat;
 	}
 	
 	
-
 	/**
 	 * Mueve la matriz
 	 * @param LEFT
@@ -72,7 +70,6 @@ public class Mat2 {
 		addNewRandomCell();
 		addNewRandomCell();
 	}
-	
 	
 
 
@@ -142,7 +139,7 @@ public class Mat2 {
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
-		if(!esIgual(this.mat,copy) && !hasCombined )   //si se movio y si no se combino nada, de ser igual la mtriz actual que la copia quiere decir que no se hicieron cambios
+		if(!this.mat.equals(copy) && !hasCombined )   //si se movio y si no se combino nada, de ser igual la mtriz actual que la copia quiere decir que no se hicieron cambios
 			addNewRandomCell();
 		else if (hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
 			addNewRandomCell();
@@ -299,41 +296,43 @@ public class Mat2 {
 
 
 	}
+		
 	
-	
-	private void addNewRandomCell(int coordinate, int x, int y){
+	private void addNewRandomCell(int cont, int x, int y){
 		Integer elem = mat[x][y];
 		//si llego a su destino
-		if(elem == null && coordinate == 0){
+		if(this.isFull())
+			return ;
+		
+		if(elem == null && cont == 0){  //CASO BASE1
 			this.mat[x][y] = 2;
 			this.elements++;
-		}
-		else if( x == this.mat.length-1 && y == this.mat.length-1)
 			return;
-		
-		else if(this.isFull())
-			return ;
+			
+		}
+		if( x == this.mat.length-1 && y == this.mat.length-1)  //CASO BASE2
+			return;
+
 		
 		//esto es para que, como el valor de coordinate se obtiene a traves de random(),
 		//se use para no buscar siempre la primer celda vacia, y busque varias de acuerdo al valor de coordinate
-		else if(elem == null){
-			if(y == this.mat.length-1 && x < this.mat.length-1)   //si llegue al final de una fila y no coloca
-				addNewRandomCell(coordinate-1, x+1, y-y);     //pasa a la siguiente
-			else 
-				addNewRandomCell(coordinate-1, x, y+1);
+		int addOrNot=0;
+		if(elem==null){
+			addOrNot=1;
 		}
+		
+			if(y == this.mat.length-1 && x < this.mat.length-1)   //si llegue al final de una fila y no coloca
+				addNewRandomCell(cont-addOrNot, x+1, y-y);     //pasa a la siguiente
+			else 
+				addNewRandomCell(cont-addOrNot, x, y+1);
+		
 		//lo mismo pasa si encuentra casillas llenas, solo que no disminuya coordinate
 		//es mas para el caso en que queden pocas celdas vacias
-		else if (elem != null){								
-			if(y == this.mat.length-1 && x < this.mat.length-1)   
-				addNewRandomCell(coordinate, x+1, y-y);
-			else 
-				addNewRandomCell(coordinate, x, y+1);
-		}
-	}
+								
+
+	}	
 	
-	
-	
+		
 	/**
 	 * usada para buscar una posicion al azar de la matriz para agregar 2
 	 * @return  el numero entre 0 y la cantidad de celdas vacias que se usa para ubicar un 2 en alguna de ellas
@@ -354,8 +353,6 @@ public class Mat2 {
 	}
 	
 	
-	
-	
 	public Integer[][] copiarMatriz(){
 		Integer [][] copy = new Integer [mat.length][mat.length];
 		for(int x = 0; x < mat.length; x++){
@@ -365,33 +362,6 @@ public class Mat2 {
 		}
 		return copy;
 	}
-	
-	
-	
-	
-	private boolean esIgual(Integer [][] mat1, Integer [][] mat2){
-		for(int x = 0; x< mat1.length;x++){
-			for(int y =0 ; y < mat2.length; y++ ){
-	
-				Integer actualMat = mat1[x][y];
-				Integer actualOther = mat2[x][y];
-				
-				if(actualMat != null && actualOther != null){
-					
-					if(!actualMat.equals(actualOther))
-						return false;
-				}
-				else if(actualMat == null && actualOther != null)	
-					return false;
-
-				else if(actualMat != null && actualOther == null)	
-					return false;
-			}
-		}
-		return true;
-	}
-	
-	
 	
 	
 
@@ -435,7 +405,6 @@ public class Mat2 {
 	}
 	
 
-	
 	/**
 	 * @return devuelve si esta llena la matriz
 	 */

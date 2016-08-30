@@ -59,7 +59,7 @@ public class JuegoTest {
 			}
 			game.play(opcion);
 			System.out.println(game.getMatJuego());
-			if(game.gameOVer()){
+			if(game.gameOver()){
 				over = true;
 				scan.close();
 			}

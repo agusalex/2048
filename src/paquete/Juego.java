@@ -38,7 +38,7 @@ public class Juego {
 		this.matJuego = new Mat2(size); //TODO manejar exception
 	}
 
-	public boolean gameOVer(){
+	public boolean gameOver(){
 		return this.matJuego.gameOver();
 	}
 	
