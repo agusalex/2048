@@ -92,6 +92,10 @@ public class Mat2 {
 		if(another instanceof Mat2){
 			Mat2 matrix =(Mat2) another;
 			
+			if(matrix.mat.length!=mat.length){
+				return false;
+			}
+			
 			for(int x = 0; x< mat.length;x++){
 				for(int y =0 ; y < mat.length; y++ ){
 					
@@ -127,14 +131,22 @@ public class Mat2 {
 		
 		
 		this.mat = new Integer [n][n];	
-		this.initialize();
+	
 	}
 	
 	/**
 	 *  Constructor de 4x4
 	 */
 	public Mat2(){
+		
 		this(4);
+		initialize();
+	}
+	
+	public Mat2(String TEST,int n){
+		
+		this(n);
+		initialize();
 	}
 	
 	/**
@@ -376,6 +388,7 @@ public class Mat2 {
 						Current = null;
 						mat[y][x] = null;
 						mat[y][bkp] = mat[y][bkp]*2;
+						
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
 						hasCombined = true;
 					} 

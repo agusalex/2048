@@ -89,9 +89,15 @@ public class Mat2Test {
 		assertTrue(a.equals(b));
 	}
 	
+	public void agregarCelda(Mat2 esta, int x, int y, int carga){
+		 esta.mat[x][y] = new Integer(carga);
+		
+	}
+	
+	
 	@Test
 	public void agregarTest(){
-		Mat2 a = new Mat2();
+		Mat2 a = new Mat2("Test",4);
 		assertEquals(2,a.getElements());
 		a.addNewRandomCell();
 		assertEquals(3,a.getElements());	
