@@ -1,10 +1,12 @@
-package paquete;
+package test;
+
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import paquete.Mat2.direction;
+import paquete.Direction;
+import paquete.Mat2;
+
 
 public class Mat2Test {
 
@@ -89,9 +91,15 @@ public class Mat2Test {
 		assertTrue(a.equals(b));
 	}
 	
+	public void agregarCelda(Mat2 esta, int x, int y, int carga){
+		 esta.mat[x][y] = new Integer(carga);
+		
+	}
+	
+	
 	@Test
 	public void agregarTest(){
-		Mat2 a = new Mat2();
+		Mat2 a = new Mat2("Test",4);
 		assertEquals(2,a.getElements());
 		a.addNewRandomCell();
 		assertEquals(3,a.getElements());	
@@ -110,13 +118,13 @@ public class Mat2Test {
 		Mat2 a = matTest();
 		
 		System.out.println(a);     //TODO HARDCODEAR RESULTADOS ASI NOS ENTERAMOS SI CAMBIA ALGO
-		a.Shift(direction.UP);
+		a.Shift(Direction.UP);
 		System.out.println("up\n"+a);
-		a.Shift(direction.DOWN);
+		a.Shift(Direction.DOWN);
 		System.out.println("down\n"+a);  //TODO QUE SI PASO EL TEST DEVUELVA OK
-		a.Shift(direction.LEFT);
+		a.Shift(Direction.LEFT);
 		System.out.println("left\n"+a);
-		a.Shift(direction.RIGHT);
+		a.Shift(Direction.RIGHT);
 		System.out.println("right\n"+a);  //TODO PESANR MAS TESTS?
 		
 		assertFalse(a.gameOver());
@@ -124,13 +132,13 @@ public class Mat2Test {
 		Mat2 b = matrizGameOver();
 		
 		System.out.println(b);
-		b.Shift(direction.UP);
+		b.Shift(Direction.UP);
 		System.out.println("up\n"+b);
-		b.Shift(direction.DOWN);
+		b.Shift(Direction.DOWN);
 		System.out.println("down\n"+b);
-		b.Shift(direction.LEFT);
+		b.Shift(Direction.LEFT);
 		System.out.println("left\n"+b);
-		b.Shift(direction.RIGHT);
+		b.Shift(Direction.RIGHT);
 		System.out.println("right\n"+b);
 		
 		assertTrue(b.gameOver());
