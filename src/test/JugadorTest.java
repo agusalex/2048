@@ -1,5 +1,5 @@
 package test;
-import paquete.*;
+
 
 
 import static org.junit.Assert.*;

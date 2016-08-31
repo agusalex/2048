@@ -1,12 +1,12 @@
 package test;
-import paquete.*;
+
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
+import paquete.Direction;
 import paquete.Mat2;
-import paquete.Mat2.direction;
+
 
 public class Mat2Test {
 
@@ -118,13 +118,13 @@ public class Mat2Test {
 		Mat2 a = matTest();
 		
 		System.out.println(a);     //TODO HARDCODEAR RESULTADOS ASI NOS ENTERAMOS SI CAMBIA ALGO
-		a.Shift(direction.UP);
+		a.Shift(Direction.UP);
 		System.out.println("up\n"+a);
-		a.Shift(direction.DOWN);
+		a.Shift(Direction.DOWN);
 		System.out.println("down\n"+a);  //TODO QUE SI PASO EL TEST DEVUELVA OK
-		a.Shift(direction.LEFT);
+		a.Shift(Direction.LEFT);
 		System.out.println("left\n"+a);
-		a.Shift(direction.RIGHT);
+		a.Shift(Direction.RIGHT);
 		System.out.println("right\n"+a);  //TODO PESANR MAS TESTS?
 		
 		assertFalse(a.gameOver());
@@ -132,13 +132,13 @@ public class Mat2Test {
 		Mat2 b = matrizGameOver();
 		
 		System.out.println(b);
-		b.Shift(direction.UP);
+		b.Shift(Direction.UP);
 		System.out.println("up\n"+b);
-		b.Shift(direction.DOWN);
+		b.Shift(Direction.DOWN);
 		System.out.println("down\n"+b);
-		b.Shift(direction.LEFT);
+		b.Shift(Direction.LEFT);
 		System.out.println("left\n"+b);
-		b.Shift(direction.RIGHT);
+		b.Shift(Direction.RIGHT);
 		System.out.println("right\n"+b);
 		
 		assertTrue(b.gameOver());

@@ -1,11 +1,12 @@
 package test;
-import paquete.*;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import paquete.Direction;
 import paquete.Mat2;
-import paquete.Mat2.direction;
+
 
 /*
  * NUEVA CLASE MATTEST REVISADO CADA METODO, TODOS FUNCIONAN PERFECTAMENTE, EN CASO DE QUERER REVISAR, ASEGURARSE DE LA FUNCION INITIALIZE DE LOS CONSTRUCTORES 
@@ -130,28 +131,28 @@ public class Mat2Test1 {
 
 	//metodos para mover
 	private void MoveLeft(Mat2 a) {
-		a.Move(direction.LEFT, 0);
-		a.Move(direction.LEFT, 1);
-		a.Move(direction.LEFT, 2);
-		a.Move(direction.LEFT, 3);
+		a.Move(Direction.LEFT, 0);
+		a.Move(Direction.LEFT, 1);
+		a.Move(Direction.LEFT, 2);
+		a.Move(Direction.LEFT, 3);
 	}
 	private void MoveRight(Mat2 a) {
-		a.Move(direction.RIGHT, 0);
-		a.Move(direction.RIGHT, 1);
-		a.Move(direction.RIGHT, 2);
-		a.Move(direction.RIGHT, 3);
+		a.Move(Direction.RIGHT, 0);
+		a.Move(Direction.RIGHT, 1);
+		a.Move(Direction.RIGHT, 2);
+		a.Move(Direction.RIGHT, 3);
 	}
 	private void MoveUp(Mat2 a) {
-		a.Move(direction.UP, 0);
-		a.Move(direction.UP, 1);
-		a.Move(direction.UP, 2);
-		a.Move(direction.UP, 3);
+		a.Move(Direction.UP, 0);
+		a.Move(Direction.UP, 1);
+		a.Move(Direction.UP, 2);
+		a.Move(Direction.UP, 3);
 	}
 	private void MoveDown(Mat2 a) {
-		a.Move(direction.DOWN, 0);
-		a.Move(direction.DOWN, 1);
-		a.Move(direction.DOWN, 2);
-		a.Move(direction.DOWN, 3);
+		a.Move(Direction.DOWN, 0);
+		a.Move(Direction.DOWN, 1);
+		a.Move(Direction.DOWN, 2);
+		a.Move(Direction.DOWN, 3);
 	}
 	//fin metodos para mover
 	@Test
@@ -190,28 +191,28 @@ public class Mat2Test1 {
 */
 	//metodos para combinar
 		private void combineLeft(Mat2 a) {
-			a.combineCells(direction.LEFT, 0);
-			a.combineCells(direction.LEFT, 1);
-			a.combineCells(direction.LEFT, 2);
-			a.combineCells(direction.LEFT, 3);
+			a.combineCells(Direction.LEFT, 0);
+			a.combineCells(Direction.LEFT, 1);
+			a.combineCells(Direction.LEFT, 2);
+			a.combineCells(Direction.LEFT, 3);
 		}
 		private void combineRight(Mat2 a) {
-		a.combineCells(direction.RIGHT, 0);
-		a.combineCells(direction.RIGHT, 1);
-		a.combineCells(direction.RIGHT, 2);
-		a.combineCells(direction.RIGHT, 3);
+		a.combineCells(Direction.RIGHT, 0);
+		a.combineCells(Direction.RIGHT, 1);
+		a.combineCells(Direction.RIGHT, 2);
+		a.combineCells(Direction.RIGHT, 3);
 		}
 		private void combineUp(Mat2 a) {
-			a.combineCells(direction.UP, 0);
-			a.combineCells(direction.UP, 1);
-			a.combineCells(direction.UP, 2);
-			a.combineCells(direction.UP, 3);
+			a.combineCells(Direction.UP, 0);
+			a.combineCells(Direction.UP, 1);
+			a.combineCells(Direction.UP, 2);
+			a.combineCells(Direction.UP, 3);
 		}
 		private void combineDown(Mat2 a) {
-			a.combineCells(direction.DOWN, 0);
-			a.combineCells(direction.DOWN, 1);
-			a.combineCells(direction.DOWN, 2);
-			a.combineCells(direction.DOWN, 3);	
+			a.combineCells(Direction.DOWN, 0);
+			a.combineCells(Direction.DOWN, 1);
+			a.combineCells(Direction.DOWN, 2);
+			a.combineCells(Direction.DOWN, 3);	
 		}
 		//fin metodos para combinar
 	@Test
@@ -243,19 +244,19 @@ public class Mat2Test1 {
 		Mat2 a = matTest();
 		System.out.println(a.getElements());
 		System.out.println(a);
-		a.Shift(direction.RIGHT);
+		a.Shift(Direction.RIGHT);
 		System.out.println("prueba shift derecha");
 		System.out.println(a);
 		System.out.println(a.getElements());
-		a.Shift(direction.LEFT);
+		a.Shift(Direction.LEFT);
 		System.out.println("prueba shift izquierda");
 		System.out.println(a);
 		System.out.println(a.getElements());
-		a.Shift(direction.UP);
+		a.Shift(Direction.UP);
 		System.out.println("prueba shift arriba");
 		System.out.println(a);
 		System.out.println(a.getElements());
-		a.Shift(direction.DOWN);
+		a.Shift(Direction.DOWN);
 		System.out.println("prueba shift abajo");
 		System.out.println(a);
 		System.out.println(a.getElements());
@@ -269,10 +270,10 @@ public class Mat2Test1 {
 		System.out.println(a);
 		assertTrue(a.isFull());
 		assertTrue(a.gameOver());
-		a.Shift(direction.RIGHT);
-		a.Shift(direction.LEFT);
-		a.Shift(direction.DOWN);
-		a.Shift(direction.UP);
+		a.Shift(Direction.RIGHT);
+		a.Shift(Direction.LEFT);
+		a.Shift(Direction.DOWN);
+		a.Shift(Direction.UP);
 		System.out.println(a);
 		assertTrue(a.isFull());
 		assertTrue(a.gameOver());
@@ -288,10 +289,10 @@ public class Mat2Test1 {
 		System.out.println(a);
 		Mat2 b = matTest();
 		System.out.println(b);
-		b.Shift(direction.RIGHT);
-		b.Shift(direction.LEFT);
-		b.Shift(direction.DOWN);
-		b.Shift(direction.UP);
+		b.Shift(Direction.RIGHT);
+		b.Shift(Direction.LEFT);
+		b.Shift(Direction.DOWN);
+		b.Shift(Direction.UP);
 		System.out.println(b);
 		assertTrue(b.isCombinable());
 		System.out.println("prueba combinable ok");

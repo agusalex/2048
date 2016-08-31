@@ -1,11 +1,14 @@
 package test;
-import paquete.*;
+
 import static org.junit.Assert.*;
 
-import java.util.Scanner;
+import java.util.Random;
+
+
 
 import org.junit.Test;
 
+import paquete.Direction;
 import paquete.Juego;
 import paquete.Jugador;
 
@@ -13,8 +16,8 @@ public class JuegoTest {
 
 	@Test
 	public void gameTest() {
-		Juego game = new Juego("Esteban Quito");
-		assertTrue(game.getJugador().equals(new Jugador("Esteban Quito")));
+		Juego game = new Juego();
+		assertTrue(game.getJugador().equals(new Jugador("Default")));
 		assertEquals(0,game.getJugador().getMovements());
 		assertEquals(0,game.getJugador().getRecord());
 		game.getJugador().madeMovement();
@@ -28,40 +31,27 @@ public class JuegoTest {
 	
 	@Test
 	public void gameFullTest(){
-		Juego game = new Juego("Dolores de Barriga");
+		Juego game = new Juego();
 		System.out.println(game.getMatJuego());
-		Scanner scan = new Scanner(System.in);
-		boolean over = false, correct = false;
-		char opcion ;
+	
+		boolean over = false;
+		Direction opcion ;
+		Direction[] opciones={Direction.UP,Direction.DOWN,Direction.LEFT,Direction.RIGHT};
+		Random r=new Random();
+		int indice;
+
 		while(!over){
-			System.out.println("Ingrese A para izquierda\n "
-								+ "D para derecha\n "
-								+ "S para abajo\n "
-								+ "W para arriba");
-			opcion = scan.nextLine().charAt(0);
-			if (!(opcion == 'a' || opcion == 'A' || opcion == 'W' || opcion == 'w' || opcion == 'D' 
-					|| opcion == 'd' || opcion == 'S' || opcion == 's'))
-				correct = false;
-			else 
-				correct = true;
-				
-			while(!correct){
-				System.out.println("Ingrese A para izquierda\n "
-						+ "D para derecha\n "
-						+ "S para abajo\n "
-						+ "W para arriba");
-				opcion = scan.nextLine().charAt(0);
-				if (!(opcion == 'a' || opcion == 'A' || opcion == 'W' || opcion == 'w' || opcion == 'D' 
-						|| opcion == 'd' || opcion == 'S' || opcion == 's'))
-					correct = false;
-				else 
-					correct = true;
-			}
+
+			indice=r.nextInt(opciones.length);
+			opcion =opciones[indice];
+			
+			System.out.println(opcion);
+		
 			game.play(opcion);
 			System.out.println(game.getMatJuego());
 			if(game.gameOver()){
 				over = true;
-				scan.close();
+			
 			}
 	    }
 	}

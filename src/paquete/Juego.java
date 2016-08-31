@@ -1,8 +1,7 @@
 package paquete;
 
-import java.util.Scanner;
 
-import paquete.Mat2.direction;
+
 
 public class Juego {
 
@@ -12,28 +11,21 @@ public class Juego {
 	private Jugador j1;
 	private Mat2 matJuego;
 	private int score = 0;
-	boolean estaEnBasedeDatos = false; //BOrrar 
-	Jugador jugenDB = new Jugador("Pepe el bug");
+
 	
 	
-	public Juego(String j1){      //TODO la idea es que se cree en la clase de la interfaz ? 
+	public Juego(){      //TODO la idea es que se cree en la clase de la interfaz ? 
 		
-		if(estaEnBasedeDatos){//TODO REVISAR si el jugador no existe ya en base de datos
-			this.j1 = jugenDB;//SI existe cargar su puntaje record
-			this.matJuego = new Mat2();
-		}                   
-		else{
-			this.j1=new Jugador(j1); //nuevo jugador
-		}
+
+			this.j1=new Jugador("Default"); //nuevo jugador
+
 			this.matJuego = new Mat2();
 	}
-	public Juego(String j1, int size){      
-		if(estaEnBasedeDatos){//TODO REVISAR si el jugador no existe ya en base de datos
-			this.j1 = jugenDB;//SI existe cargar su puntaje record 
-		}                   
-		else{
-			this.j1=new Jugador(j1); //nuevo jugador
-		}
+	public Juego(int size){      
+          
+	
+			this.j1=new Jugador("Default"); //nuevo jugador
+	
 		
 		this.matJuego = new Mat2(size); //TODO manejar exception
 	}
@@ -43,24 +35,31 @@ public class Juego {
 	}
 	
 	public void increaseScore(int value){
+		if(value<0){
+			throw new IllegalArgumentException("Cannot increase negative value");
+		}
 		this.score += value;
 	}
 	
 	public int getRecord(){
+		//TODO BUSCAR EN LA BASE DE DATOS
 		return this.score;
 	}
 	
-	public void play(char choice){
+	public String obtainStatus(){
+		return this.j1.obtainStatus();
+	}
+	public void play(Direction choice){
+		
+		
 		switch(choice){
-		case 'W': this.matJuego.Shift(direction.UP);break;
-		case 'w': this.matJuego.Shift(direction.UP);break;
-		case 'S': this.matJuego.Shift(direction.DOWN);break;
-		case 's': this.matJuego.Shift(direction.DOWN);break;
-		case 'A': this.matJuego.Shift(direction.LEFT);break;
-		case 'a': this.matJuego.Shift(direction.LEFT);break;
-		case 'D': this.matJuego.Shift(direction.RIGHT);break;
-		case 'd': this.matJuego.Shift(direction.RIGHT);break;
-		default: return;
+		
+		case UP: this.matJuego.Shift(Direction.UP);break;
+		case DOWN: this.matJuego.Shift(Direction.DOWN);break;
+		case LEFT: this.matJuego.Shift(Direction.LEFT);break;
+		case RIGHT: this.matJuego.Shift(Direction.RIGHT);break;
+
+		default: throw new IllegalArgumentException("Direction not allowed");
 		}
 	}
 	

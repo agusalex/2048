@@ -1,5 +1,5 @@
 package paquete;
-
+import paquete.Direction;
 public class Mat2 {
 	
 	public Integer[][] mat;
@@ -19,22 +19,8 @@ public class Mat2 {
 		return mat;
 	}
 	
-	
-	/**
-	 * Mueve la matriz
-	 * @param LEFT
-	 * @param RIGHT
-	 * @param DOWN
-	 * @param UP
 
-	 */
-	
-	public enum direction{
-		LEFT,RIGHT,DOWN,UP
-	}
-	
 
-	
 	public Mat2(int n){
 	
 		if(n>10||n<3){
@@ -78,7 +64,7 @@ public class Mat2 {
 	 * @param dir la direccion en la que se mueve la funcion
 	 * @param filaoCol es la fila o columna en la que se opera
 	 */
-	public void Move(direction dir, int filaoCol){
+	public void Move(Direction dir, int filaoCol){
 		int from,to,indexDir,x,y,indexAux;
 		
 		boolean xaxis,yaxis;
@@ -133,7 +119,7 @@ public class Mat2 {
 	 * @param filaoCol es la fila o columna en la que se opera
 
 	 */
-	public void Shift(direction Direction){
+	public void Shift(Direction Direction){
 		Integer [] [] copy = copiarMatriz();
 		for(int x = 0; x < mat.length; x++){
 				combineCells(Direction,x);
@@ -153,12 +139,12 @@ public class Mat2 {
 	 * @param filaoCol la fila o columna sobre la que se opera
 	 * @return Retorna un arreglo de objetos con los parametros, tanto int como boolean 
 	 */
-	private Object[] getDirectionParameters(direction dir,int filaoCol){
+	private Object[] getDirectionParameters(Direction dir,int filaoCol){
 		int y,x,from,to,indexDir;
 		boolean xaxis = false;
 		boolean yaxis = false;
 		
-		if (dir.equals(direction.LEFT)){
+		if (dir.equals(Direction.LEFT)){
 			from = 0;
 			to = mat.length;
 			indexDir = 1;
@@ -166,7 +152,7 @@ public class Mat2 {
 			x = from;
 			xaxis = true;
 		}
-		else if (dir.equals(direction.RIGHT)){
+		else if (dir.equals(Direction.RIGHT)){
 			from = mat.length-1;
 			to =- 1;
 			indexDir =- 1;
@@ -174,7 +160,7 @@ public class Mat2 {
 			x = from;
 			xaxis = true;
 		}
-		else if (dir.equals(direction.UP)){
+		else if (dir.equals(Direction.UP)){
 			from = 0;
 			to = mat.length;
 			indexDir = 1;
@@ -202,7 +188,7 @@ public class Mat2 {
 	 * @param filaoCol la fila o columna sobre la que se opera
 	 * @return true si se realizo por lo menos una combinacion en alguna fila, o columna
 	 */
-	public void combineCells(direction dir,int filaoCol ){
+	public void combineCells(Direction dir,int filaoCol ){
 		int from,to,indexDir,x,y;
 		boolean xaxis,yaxis;
 		
@@ -463,7 +449,7 @@ public class Mat2 {
 	public boolean isCombinable(){
 		boolean ret = false;
 		for(int row = 0; row < mat.length; row++){
-			ret = ret || isCombinable(direction.RIGHT,row) || isCombinable(direction.DOWN,row);
+			ret = ret || isCombinable(Direction.RIGHT,row) || isCombinable(Direction.DOWN,row);
 		}
 		return ret;
 	}
@@ -472,15 +458,15 @@ public class Mat2 {
 	 * revisa si hay filas o columnas por combinar en la direccion especificada
 	 * @return  true si existe al menos una fila o columna para combinar 
 	 */	
-	public boolean isCombinable(direction dir, int row_Column){
+	public boolean isCombinable(Direction dir, int row_Column){
 		int from,to,indexDir,x,y;
 		boolean xaxis,yaxis;
 		Object [] parameters = null; 
 		
-		if(dir.equals(direction.LEFT) || dir.equals(direction.RIGHT))
-			parameters = getDirectionParameters(direction.RIGHT,row_Column);
+		if(dir.equals(Direction.LEFT) || dir.equals(Direction.RIGHT))
+			parameters = getDirectionParameters(Direction.RIGHT,row_Column);
 		else
-			parameters = getDirectionParameters(direction.DOWN,row_Column);
+			parameters = getDirectionParameters(Direction.DOWN,row_Column);
 
 		from = (int) parameters[0];
 		to = (int) parameters[1];

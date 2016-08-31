@@ -1,6 +1,6 @@
 package paquete;
 
-import java.io.*;
+
 
 
 public class Jugador implements Exportable, Comparable{
