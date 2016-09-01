@@ -1,22 +1,21 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-
-
 import org.junit.Test;
 
+import gui.Game;
 import paquete.Direction;
-import paquete.Juego;
 import paquete.Jugador;
 
 public class JuegoTest {
 
 	@Test
 	public void gameTest() {
-		Juego game = new Juego();
+		Game game = new Game();
 		assertTrue(game.getJugador().equals(new Jugador("Default")));
 		assertEquals(0,game.getJugador().getMovements());
 		assertEquals(0,game.getJugador().getRecord());
@@ -31,7 +30,7 @@ public class JuegoTest {
 	
 	@Test
 	public void gameFullTest(){
-		Juego game = new Juego();
+		Game game = new Game();
 		System.out.println(game.getMatJuego());
 	
 		boolean over = false;
