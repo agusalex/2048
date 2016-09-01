@@ -25,8 +25,9 @@ public class Game extends Canvas implements Runnable{
 
 
 	private static int WIDTH = 800, HEIGHT = WIDTH /12*9;
-	private int cellSize=HEIGHT/15;
-	private int cellDistance=cellSize;
+	
+	private int cellSize=WIDTH/10;
+	private int cellDistance=cellSize+WIDTH/50;
 
 	private Thread thread;
 	private boolean running = false;
@@ -45,7 +46,7 @@ public class Game extends Canvas implements Runnable{
 		
 		
 		
-		matrixHandler = new MatrixHandler(WIDTH/2,HEIGHT/2,this);
+		matrixHandler = new MatrixHandler(WIDTH/4,HEIGHT/4,this);
 		
 		
 		
@@ -155,6 +156,10 @@ public class Game extends Canvas implements Runnable{
 		g.dispose();
 		bs.show();
 	}
+	
+	
+	
+	
 	
 	
 	public synchronized void start(){

@@ -16,10 +16,11 @@ public class MatrixHandler extends GraphicObject{
 		Integer[][] mat=game.getMatJuego().mat;
 		
 		int Distance=game.getCellDistance();
-		int xaux=x=x;
+
+		int xaux=x;
 		int yaux=y;		
 		
-		 gameObjects.add(this);
+	
 		
 		for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
@@ -41,14 +42,10 @@ public class MatrixHandler extends GraphicObject{
 		for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				
+				if(mat[i][j]!=null){
 				Number auxNum=new Number(xaux,yaux,mat[i][j],game);
-				
-			
-				
-			
-				
 				 gameObjects.add(auxNum);
-				
+				 }
 				xaux+=Distance;
 				
 				
@@ -66,7 +63,12 @@ public class MatrixHandler extends GraphicObject{
 
 	
 	
-	
+	public void render(Graphics g){
+		for(int x = 0; x < gameObjects.size(); x++){
+			GraphicObject objeto = gameObjects.get(x);
+			objeto.render(g);
+		}
+	}
 	
 	
 	
@@ -77,10 +79,5 @@ public class MatrixHandler extends GraphicObject{
 		}
 	}
 	
-	public void render(Graphics g){
-		for(int x = 0; x < gameObjects.size(); x++){
-			GraphicObject objeto = gameObjects.get(x);
-			objeto.render(g);
-		}
-	}
+
 }
