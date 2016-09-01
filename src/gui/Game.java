@@ -4,8 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.LinkedList;
-
 import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
@@ -24,25 +22,17 @@ public class Game extends Canvas implements Runnable{
 	private Jugador j1;
 	private Mat2 matJuego;
 	private int score = 0;
-	
-	public static int getWITDH() {
-		return WITDH;
-	}
-
-	public static int getHEIGHT() {
-		return HEIGHT;
-	}
-
-	public static void setHEIGHT(int hEIGHT) {
-		HEIGHT = hEIGHT;
-	}
 
 
-	private static int WITDH = 800, HEIGHT = WITDH /12*9;
+	private static int WIDTH = 800, HEIGHT = WIDTH /12*9;
+	private int cellSize=HEIGHT/15;
+	private int cellDistance=cellSize;
+
 	private Thread thread;
 	private boolean running = false;
 	
-	private Handler handler;
+	private MatrixHandler matrixHandler;
+	
 	
 	
 	public Game(){      //TODO la idea es que se cree en la clase de la interfaz ? 
@@ -51,8 +41,16 @@ public class Game extends Canvas implements Runnable{
 		
 		this.matJuego = new Mat2();
 		
-		new Window(WITDH,HEIGHT, "Jueguito!", this);
-		handler = new Handler();
+		new Window(WIDTH,HEIGHT, "Jueguito!", this);
+		
+		
+		
+		matrixHandler = new MatrixHandler(WIDTH/2,HEIGHT/2,this);
+		
+		
+		
+		
+		
 	}
 	
 	public Game(int size){      
@@ -138,7 +136,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick(){
 	
-		handler.tick();
+		matrixHandler.tick();
 	}
 	
 	private void render(){
@@ -151,9 +149,9 @@ public class Game extends Canvas implements Runnable{
 		Graphics g = bs.getDrawGraphics();
 		
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WITDH, HEIGHT);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-     	handler.render(g);
+     	matrixHandler.render(g);
 		g.dispose();
 		bs.show();
 	}
@@ -173,6 +171,34 @@ public class Game extends Canvas implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	public static int getWIDTH() {
+		return WIDTH;
+	}
+
+	public static int getHEIGHT() {
+		return HEIGHT;
+	}
+
+	public static void setHEIGHT(int hEIGHT) {
+		HEIGHT = hEIGHT;
+	}
+	
+	
+	public int getCellDistance() {
+		return cellDistance;
+	}
+
+	public void setCellDistance(int cellDistance) {
+		this.cellDistance = cellDistance;
+	}
+
+	
+	public int getCellSize() {
+		return cellSize;
+	}
+
+
 	
 	
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo

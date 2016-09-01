@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public abstract class GraphicObject {
 
-	protected int x, y, speedX, speedY, WITDH, HEIGHT;
+	protected int x, y, speedX, speedY, width, height;
 	protected ID id;
 	
 	

@@ -1,26 +1,32 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Cell extends GraphicObject{
 
-	public Cell(int x, int y,Game game) {
+	public Cell(int x, int y, Game game) {
 		super(x, y,game);
 		
 		this.id = ID.CELL;
-		this.HEIGHT = game.getHeight() / 24;
-		this.WITDH = game.getWidth() / 24;
+		this.height =game.getCellSize();
+		this.width = height;
+		
+	
+		
+		
 	}
 
-	@Override
+
 	public void tick() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
+		g.setColor(Color.white);
+		g.fillRect(x, y,height, width);	
 		
 	}
 
