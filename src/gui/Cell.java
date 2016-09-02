@@ -26,7 +26,7 @@ public class Cell extends GraphicObject{
 	
 	public void render(Graphics g) {
 
-		g.setColor(Color.white);
+		g.setColor(Color.yellow);
 		g.fillRect(x, y,height, width);
 		
 		

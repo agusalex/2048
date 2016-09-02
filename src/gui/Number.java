@@ -26,10 +26,16 @@ public class Number extends GraphicObject {
 
 	
 	public void render(Graphics g) {
-		g.setColor(Color.RED);
+
+
+
+		
+		
 		
 		if(value!=null){
-
+			g.setColor(Color.white);
+			g.fillRect(x, y,height, width);
+			g.setColor(Color.RED);
 			Font font=new Font(Font.SANS_SERIF,1,height);
 			
 			g.setFont(font);
