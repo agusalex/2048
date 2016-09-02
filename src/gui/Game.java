@@ -21,14 +21,19 @@ public class Game extends Canvas implements Runnable{
 	
 	private Jugador j1;
 	private Mat2 matJuego;
-	private int score = 0;
 
-
-	private static int WIDTH = 800, HEIGHT = WIDTH /12*9;
 	
+///////parametros///////////
+
+	
+	private static int WIDTH = 1024, HEIGHT = WIDTH /12*9;
 	private int cellSize=WIDTH/10;
 	private int cellDistance=cellSize+WIDTH/50;
+	private int matrixSize=4;
+	private int score = 0;
 
+	
+////////////////////////////
 	private Thread thread;
 	private boolean running = false;
 	
@@ -39,75 +44,27 @@ public class Game extends Canvas implements Runnable{
 	public Game(){      //TODO la idea es que se cree en la clase de la interfaz ? 
 		
 		this.j1=new Jugador("Default"); //nuevo jugador
-		
-		this.matJuego = new Mat2();
-		
-		new Window(WIDTH,HEIGHT, "Jueguito!", this);
-		
-		
-		
-		matrixHandler = new MatrixHandler(WIDTH/4,HEIGHT/4,this);
-		
-		
-		
-		
-		
-	}
-	
-	public Game(int size){      
-          
-	
-			this.j1=new Jugador("Default"); //nuevo jugador
-	
-		
-		this.matJuego = new Mat2(size); //TODO manejar exception
-	}
-
-	public boolean gameOver(){
-		return this.matJuego.gameOver();
-	}
-	
-	public void increaseScore(int value){
-		if(value<0){
-			throw new IllegalArgumentException("Cannot increase negative value");
+		if(matrixSize<2){
+			throw new IllegalArgumentException("invalid size:"+matrixSize);
 		}
-		this.score += value;
-	}
-	
-	public int getRecord(){
-		//TODO BUSCAR EN LA BASE DE DATOS
-		return this.score;
-	}
-	
-	public String obtainStatus(){
-		return this.j1.obtainStatus();
-	}
-	public void play(Direction choice){
-		
-		
-		switch(choice){
-		
-		case UP: this.matJuego.Shift(Direction.UP);break;
-		case DOWN: this.matJuego.Shift(Direction.DOWN);break;
-		case LEFT: this.matJuego.Shift(Direction.LEFT);break;
-		case RIGHT: this.matJuego.Shift(Direction.RIGHT);break;
-
-		default: throw new IllegalArgumentException("Direction not allowed");
+		if(matrixSize>10){
+			throw new IllegalArgumentException("invalid size:"+matrixSize);
 		}
+		
+		this.matJuego = new Mat2(matrixSize);
+		
+		new Window(WIDTH,HEIGHT, "2048!", this);
+		matrixHandler = new MatrixHandler(WIDTH/4+WIDTH/60,HEIGHT/4,this);
+		
+		
+			
 	}
 	
-	public Jugador getJugador(){
-		return this.j1;
-	}
+
 	
-	public Mat2 getMatJuego(){
-		return this.matJuego;
-	}
-	
-	
-	
-	
-	public void run() {
+	public void run() {		//CICLO DEL JUEGO
+		
+		
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
@@ -158,10 +115,6 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	
-	
-	
-	
-	
 	public synchronized void start(){
 		thread = new Thread (this);
 		thread.start();
@@ -177,6 +130,51 @@ public class Game extends Canvas implements Runnable{
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	public boolean gameOver(){
+		return this.matJuego.gameOver();
+	}
+	
+	public void increaseScore(int value){
+		if(value<0){
+			throw new IllegalArgumentException("Cannot increase negative value");
+		}
+		this.score += value;
+	}
+	
+	public int getRecord(){
+		//TODO BUSCAR EN LA BASE DE DATOS
+		return this.score;
+	}
+	
+	public String obtainStatus(){
+		return this.j1.obtainStatus();
+	}
+	public void play(Direction choice){
+		
+		
+		switch(choice){
+		
+		case UP: this.matJuego.Shift(Direction.UP);break;
+		case DOWN: this.matJuego.Shift(Direction.DOWN);break;
+		case LEFT: this.matJuego.Shift(Direction.LEFT);break;
+		case RIGHT: this.matJuego.Shift(Direction.RIGHT);break;
+
+		default: throw new IllegalArgumentException("Direction not allowed");
+		}
+	}
+	
+
+	
+	
+
 	public static int getWIDTH() {
 		return WIDTH;
 	}
@@ -203,7 +201,14 @@ public class Game extends Canvas implements Runnable{
 		return cellSize;
 	}
 
-
+	public Jugador getJugador(){
+		return this.j1;
+	}
+	
+	public Mat2 getMatJuego(){
+		return this.matJuego;
+	}
+	
 	
 	
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo

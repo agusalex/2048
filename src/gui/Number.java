@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Number extends GraphicObject {
@@ -10,7 +11,8 @@ public class Number extends GraphicObject {
 	public Number(int x, int y, Integer value, Game game) {
 		super(x, y, game);
 		this.value=value;
-
+		this.height =game.getCellSize();
+		this.width = height;
 		id=ID.NUMBER;
 				
 	}
@@ -23,8 +25,11 @@ public class Number extends GraphicObject {
 
 	
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		g.setColor(Color.RED);
+		if(value!=null){
+			g.drawString(value.toString(), x, y);
+		}
+	
 	}
 
 	

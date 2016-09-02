@@ -22,7 +22,7 @@ public class MatrixHandler extends GraphicObject{
 		
 	
 		
-		for(int i = 0; i < mat.length; i++){
+	for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				
 				Cell auxCell=new Cell(xaux,yaux,game);
@@ -42,10 +42,10 @@ public class MatrixHandler extends GraphicObject{
 		for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				
-				if(mat[i][j]!=null){
+				
 				Number auxNum=new Number(xaux,yaux,mat[i][j],game);
 				 gameObjects.add(auxNum);
-				 }
+				
 				xaux+=Distance;
 				
 				
