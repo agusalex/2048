@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
+
 import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
@@ -52,6 +54,7 @@ public class Game extends Canvas implements Runnable{
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
+		System.out.println(this.matJuego);
 		
 		new Window(WIDTH,HEIGHT, "2048!", this);
 		matrixHandler = new MatrixHandler(WIDTH/4+WIDTH/60,HEIGHT/4,this);
@@ -63,7 +66,12 @@ public class Game extends Canvas implements Runnable{
 
 	
 	public void run() {		//CICLO DEL JUEGO
-		
+/*
+		boolean over = false;
+		Direction opcion ;
+		Direction[] opciones={Direction.UP,Direction.DOWN,Direction.LEFT,Direction.RIGHT};
+		Random r=new Random();
+		int indice;*/
 		
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
@@ -82,6 +90,20 @@ public class Game extends Canvas implements Runnable{
 			if(running)
 				render();
 			frames++;
+			
+			
+			/*
+			indice=r.nextInt(opciones.length);
+			opcion =opciones[indice];
+			
+			System.out.println(opcion);
+			System.out.println(getMatJuego());
+			play(opcion);
+			
+			if(gameOver()){
+				over = true;
+			}*/
+			
 			
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
@@ -134,7 +156,19 @@ public class Game extends Canvas implements Runnable{
 	
 	
 	
-	
+public void play(Direction choice){
+		
+		
+		switch(choice){
+		
+		case UP: this.matJuego.Shift(Direction.UP);break;
+		case DOWN: this.matJuego.Shift(Direction.DOWN);break;
+		case LEFT: this.matJuego.Shift(Direction.LEFT);break;
+		case RIGHT: this.matJuego.Shift(Direction.RIGHT);break;
+
+		default: throw new IllegalArgumentException("Direction not allowed");
+		}
+	}
 	
 	
 	
@@ -157,19 +191,7 @@ public class Game extends Canvas implements Runnable{
 	public String obtainStatus(){
 		return this.j1.obtainStatus();
 	}
-	public void play(Direction choice){
-		
-		
-		switch(choice){
-		
-		case UP: this.matJuego.Shift(Direction.UP);break;
-		case DOWN: this.matJuego.Shift(Direction.DOWN);break;
-		case LEFT: this.matJuego.Shift(Direction.LEFT);break;
-		case RIGHT: this.matJuego.Shift(Direction.RIGHT);break;
-
-		default: throw new IllegalArgumentException("Direction not allowed");
-		}
-	}
+	
 	
 
 	

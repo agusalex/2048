@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class Number extends GraphicObject {
@@ -26,8 +27,13 @@ public class Number extends GraphicObject {
 	
 	public void render(Graphics g) {
 		g.setColor(Color.RED);
+		
 		if(value!=null){
-			g.drawString(value.toString(), x, y);
+
+			Font font=new Font(Font.SANS_SERIF,1,height);
+			
+			g.setFont(font);
+			g.drawString(value.toString(), x+height/5, y+height-height/7);
 		}
 	
 	}

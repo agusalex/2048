@@ -20,7 +20,6 @@ public class Window extends Canvas{
 		frame.setPreferredSize(new Dimension (witdh,height));
 		frame.setMaximumSize(new Dimension (witdh,height));
 		frame.setMinimumSize(new Dimension (witdh,height));
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);  //empieza en el medio

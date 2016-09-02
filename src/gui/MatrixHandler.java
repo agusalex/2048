@@ -30,21 +30,21 @@ public class MatrixHandler extends GraphicObject{
 				
 				 gameObjects.add(auxCell);
 				
-				
+					Number auxNum=new Number(xaux,yaux,mat[i][j],game);
+					 gameObjects.add(auxNum);
 				xaux+=Distance;
 				
 			}
 			yaux+=Distance;
 			xaux=x;
 		}
-		
-		
+	}
+	/*	
 		for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				
 				
-				Number auxNum=new Number(xaux,yaux,mat[i][j],game);
-				 gameObjects.add(auxNum);
+
 				
 				xaux+=Distance;
 				
@@ -59,7 +59,7 @@ public class MatrixHandler extends GraphicObject{
 		
 		
 	}
-
+*/
 
 	
 	
