@@ -83,8 +83,8 @@ public class Mat2Test {
 		return MET;
 	}
 	
-	
-	@Test
+	// VA A DAR FALSO A MENOS QUE SE QUITE INITIALIZE() DEL CONSTRUCTOR 
+ 	@Test
 	public void equalsTest(){
 		Mat2 a = matTest();
 		Mat2 b = matTest();
@@ -99,7 +99,7 @@ public class Mat2Test {
 	
 	@Test
 	public void agregarTest(){
-		Mat2 a = new Mat2("Test",4);
+		Mat2 a = new Mat2(4);
 		assertEquals(2,a.getElements());
 		a.addNewRandomCell();
 		assertEquals(3,a.getElements());	

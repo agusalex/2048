@@ -5,8 +5,6 @@ import java.awt.Graphics;
 public abstract class GraphicObject {
 
 	protected int x, y, speedX, speedY, width, height;
-	protected ID id;
-	
 	
 	
 	public GraphicObject(int x, int y,Game game){

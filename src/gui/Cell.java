@@ -7,14 +7,8 @@ public class Cell extends GraphicObject{
 
 	public Cell(int x, int y, Game game) {
 		super(x, y,game);
-		
-		this.id = ID.CELL;
-		this.height =game.getCellSize();
-		this.width = height;
-		
-	
-		
-		
+		this.height = game.getCellSize();
+		this.width = this.height;
 	}
 
 

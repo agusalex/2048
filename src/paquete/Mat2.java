@@ -41,11 +41,6 @@ public class Mat2 {
 		initialize();
 	}
 	
-	public Mat2(String TEST,int n){
-		
-		this(n);
-		initialize();
-	}
 	
 	/**
 	 * asigna dos numeros 2 en la matriz en una posicion aleatoria
