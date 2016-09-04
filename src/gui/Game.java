@@ -3,6 +3,7 @@ package gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 
 import paquete.Direction;
@@ -28,10 +29,22 @@ public class Game extends Canvas implements Runnable{
 
 	//final para que no sean modificables desde ningun lado
 	static final int WIDTH = 1024, HEIGHT = WIDTH /12*9;
+	static final boolean debug=true;
+	//Ubicacion de la matriz en la ventana
+	static final int MatrixX=WIDTH/4+WIDTH/60;
+	static final int MatrixY=HEIGHT/6;
 	
-	private int cellSize = WIDTH/10;
-	private int cellDistance = cellSize+WIDTH/50;
-	private int matrixSize = 4;
+	//////////////////////////////
+	static int matrixSize = 4;
+	static  int cellSize = WIDTH/10;
+	static int cellDistance = cellSize+WIDTH/50;
+	static int MatrixWIDTH=cellDistance*matrixSize-(Game.cellDistance-Game.cellSize);
+	static int MatrixHEIGHT=MatrixWIDTH;
+	//////////////////////////////
+	
+	
+
+
 	private int score = 0;
 
 	
@@ -82,14 +95,17 @@ public class Game extends Canvas implements Runnable{
 		int Distance = getCellDistance();
 
 		//lo que habias hecho antes, solo que tiene otro nombre
-		int x = WIDTH/4+WIDTH/60;
-		int y = HEIGHT/6;
+
 		
-		int xaux = x;
-		int yaux = y;		
+		int xaux = MatrixX;
+		int yaux = MatrixY;		
 		
 		Integer matrixPositionNumber = null;
 		Number auxNum;
+		
+		
+		
+		
 		
 	    for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
@@ -108,7 +124,7 @@ public class Game extends Canvas implements Runnable{
 			}
 			
 			yaux+=Distance;
-			xaux=x;
+			xaux=MatrixX;
 		}
 	}
 	
@@ -119,6 +135,8 @@ public class Game extends Canvas implements Runnable{
 	 */
 	public void updateMatrix(){
 		for(int x = 0; x < handler.gameObjects.size(); x++){
+			 GraphicObject objeto=handler.gameObjects.get(x);
+			
 			handler.gameObjects.remove(x);
 		}
 		this.drawMatrix();
@@ -131,12 +149,7 @@ public class Game extends Canvas implements Runnable{
 	
 	
 	public void run() {		//CICLO DEL JUEGO
-/*
-		boolean over = false;
-		Direction opcion ;
-		Direction[] opciones={Direction.UP,Direction.DOWN,Direction.LEFT,Direction.RIGHT};
-		Random r=new Random();
-		int indice;*/
+
 	
 		//dDIBUJA A LA MATRIZ
 		this.drawMatrix();
@@ -158,18 +171,8 @@ public class Game extends Canvas implements Runnable{
 				render();
 			frames++;
 			
-			
-			/*
-			indice=r.nextInt(opciones.length);
-			opcion =opciones[indice];
-			
-			System.out.println(opcion);
-			System.out.println(getMatJuego());
-			play(opcion);
-			
-			if(gameOver()){
-				over = true;
-			}*/
+	
+		
 			
 			
 			if(System.currentTimeMillis() - timer > 1000){
@@ -191,8 +194,14 @@ public class Game extends Canvas implements Runnable{
 			return;
 		}
 		
+		
 		Graphics g = bs.getDrawGraphics();    //crea un link para los graficos y el buffer
 		
+		if(debug){
+			
+			drawMatrixBounds(g); 
+			
+		}//
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		handler.render(g);
@@ -287,6 +296,43 @@ public class Game extends Canvas implements Runnable{
 		return this.matJuego;
 	}
 	
+	public int getMatrixHEIGHT() {
+		return MatrixHEIGHT;
+	}
+
+
+
+
+	public int getMatrixWIDTH() {
+		return MatrixWIDTH;
+	}
+
+
+
+
+	public void setMatrixWIDTH(int matrixWIDTH) {
+		MatrixWIDTH = matrixWIDTH;
+	}
+
+
+
+
+	public void setMatrixHEIGHT(int matrixHEIGHT) {
+		MatrixHEIGHT = matrixHEIGHT;
+	}
+
+	
+	public static void drawMatrixBounds(Graphics g){
+		g.setColor(Color.GREEN);
+		g.drawRect(Game.MatrixX, Game.MatrixY, Game.getMatrixBounds().height,Game.getMatrixBounds().height);
+	}
+	public static Rectangle getMatrixBounds(){
+		int size=Game.MatrixWIDTH;
+		Rectangle rect=new Rectangle(MatrixX,MatrixY,size,size);
+		
+		return rect;
+	}
+
 	
 	
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo

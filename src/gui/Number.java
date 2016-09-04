@@ -26,10 +26,12 @@ public class Number extends GraphicObject {
 		
 		
 		//en base a la tecla de la clase KeyInput , se va a mover el numero a done deba
-		//clamp, garantiza que no se pase del limite TODO (igual falta mejorar a la derecha)
+		//clamp, garantiza que no se pase del limite
 		
-		x = clamp(x, Game.WIDTH/4+Game.WIDTH/60,(Game.WIDTH/4+Game.WIDTH/60)*4);
-		y = clamp(y,Game.HEIGHT/6,(Game.HEIGHT/6)*4);
+		//x = clamp(x, Game.WIDTH/4+Game.WIDTH/60,(Game.WIDTH/4+Game.WIDTH/60)*4);
+		//y = clamp(y,Game.HEIGHT/6,(Game.HEIGHT/6)*4);
+	x = clamp(x,Game.MatrixX,Game.MatrixX+Game.MatrixWIDTH-width);  //ARREGLADO
+	y = clamp(y,Game.MatrixY,Game.MatrixY+Game.MatrixWIDTH-height);
 		
 	}
 
@@ -44,7 +46,8 @@ public class Number extends GraphicObject {
 			
 			g.setFont(font);
 			g.drawString(value.toString(), x+height/5, y+height-height/7);
-		
+			
+			
 		}
 	
 	}
