@@ -43,8 +43,8 @@ public class Game extends Canvas implements Runnable{
 	//////////////////////////////
 	
 	
-
-
+	private static boolean countTicks=false;
+	private static long Tick=0; //Cuando se activa ResetTickTimer empieza a contar ticks
 	private int score = 0;
 
 	
@@ -89,7 +89,7 @@ public class Game extends Canvas implements Runnable{
 	 * dibuja las celdas y numeros en pantalla esto se llama en run() ya que es el primer metodo en eejecutarse
 	 * la idea es que se refresque siempre
 	 */
-	public void drawMatrix(){
+	public void createMatrix(){
 		Integer[][] mat = this.matJuego.getMat();
 		
 		int Distance = getCellDistance();
@@ -127,19 +127,58 @@ public class Game extends Canvas implements Runnable{
 			xaux=MatrixX;
 		}
 	}
-	
+
 	/*
 	 * esta funcion elimina los objetos actuales asi no se dibujan de nuevo y llama a dibujar matriz que dibuja a la matriz
 	 * de nuevo para que tenga los valores de la matriz actualizada 
 	 * TODO dejame que se me ocurre algo para hacer con esto 
 	 */
+	
+	
+	
 	public void updateMatrix(){
+		
 		for(int x = 0; x < handler.gameObjects.size(); x++){
-			 GraphicObject objeto=handler.gameObjects.get(x);
 			
+			GraphicObject objeto=handler.gameObjects.get(x);
+			if(objeto instanceof Number)
 			handler.gameObjects.remove(x);
 		}
-		this.drawMatrix();
+        
+		
+		Integer[][] mat = this.matJuego.getMat();
+		
+		int Distance = getCellDistance();
+
+		//lo que habias hecho antes, solo que tiene otro nombre
+
+		
+		int xaux = MatrixX;
+		int yaux = MatrixY;		
+		
+		Integer matrixPositionNumber = null;
+		Number auxNum;
+		
+		
+		
+		
+		
+	    for(int i = 0; i < mat.length; i++){
+			for( int j = 0; j < mat.length; j++){
+				matrixPositionNumber = mat[i][j];
+				
+				if(matrixPositionNumber!=null){
+				auxNum = new Number(xaux,yaux,matrixPositionNumber,this);
+			    
+		        handler.gameObjects.add(auxNum);
+				}
+			    xaux += Distance;
+				
+			}
+			
+			yaux+=Distance;
+			xaux=MatrixX;
+		}
 		
 	}
 	
@@ -152,7 +191,7 @@ public class Game extends Canvas implements Runnable{
 
 	
 		//dDIBUJA A LA MATRIZ
-		this.drawMatrix();
+		this.createMatrix();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
 		double ns = 1000000000 / amountOfTicks;
@@ -184,7 +223,16 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick(){
-		handler.tick();
+		if(countTicks&&debug){
+			System.out.println(Tick);
+		}
+			if (Tick>=Long.MAX_VALUE-1)
+				Tick=0;
+				
+			Tick++;
+			
+			handler.tick();
+		
 	}
 	
 	private void render(){
@@ -197,15 +245,15 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();    //crea un link para los graficos y el buffer
 		
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		handler.render(g);
 		if(debug){
 			
 			drawMatrixBounds(g); 
 			
 		}//
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-		handler.render(g);
-		
 		g.dispose();    
 		bs.show(); 					//para que muestre el buffer renderizado
 	}
@@ -242,10 +290,23 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	
+   
+   
 	
 	public boolean gameOver(){
 		return this.matJuego.gameOver();
 	}
+	
+	public static void setTickTimer(){
+		Tick=0;
+		countTicks=true;
+	}
+
+	
+	public static long getTickTimer(){
+		return Tick;
+	}
+	
 	
 	public void increaseScore(int value){
 		if(value < 0){
@@ -279,10 +340,6 @@ public class Game extends Canvas implements Runnable{
 		return cellDistance;
 	}
 
-	public void setCellDistance(int cellDistance) {
-		this.cellDistance = cellDistance;
-	}
-
 	
 	public int getCellSize() {
 		return cellSize;
@@ -310,16 +367,10 @@ public class Game extends Canvas implements Runnable{
 
 
 
-	public void setMatrixWIDTH(int matrixWIDTH) {
-		MatrixWIDTH = matrixWIDTH;
-	}
 
 
 
 
-	public void setMatrixHEIGHT(int matrixHEIGHT) {
-		MatrixHEIGHT = matrixHEIGHT;
-	}
 
 	
 	public static void drawMatrixBounds(Graphics g){
