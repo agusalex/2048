@@ -20,7 +20,7 @@ public class Cell extends GraphicObject{
 	
 	public void render(Graphics g) {
 
-		g.setColor(Color.yellow);
+		g.setColor(Game.CELDA);
 		g.fillRect(x, y,height, width);
 		
 		

@@ -24,11 +24,14 @@ public class Game extends Canvas implements Runnable{
 	private Jugador j1;
 	private Mat2 matJuego;
 
-	
+/////////COLORES//////
+static final Color FONDO=new Color(0xFBF8F1);
+static final Color MARCO=new Color(0xBFAFA0);
+static final Color CELDA=new Color(0xCDC1B5);
 ///////parametros///////////
 
 	//final para que no sean modificables desde ningun lado
-	static final int WIDTH = 1024, HEIGHT = WIDTH /12*9;
+	static final int WIDTH = 1280, HEIGHT = WIDTH /12*9;
 	static final boolean debug = true;
 	//Ubicacion de la matriz en la ventana
 	static final int MatrixX = WIDTH/4+WIDTH/60;
@@ -54,7 +57,7 @@ public class Game extends Canvas implements Runnable{
 	
 	//tiene un handler
 	private Handler handler; 
-	
+	private static KeyInput keylistener;
 	
 	
 	public Game(){      //TODO la idea es que se cree en la clase de la interfaz ? 
@@ -79,7 +82,8 @@ public class Game extends Canvas implements Runnable{
 		//agrega a esta clase la posibilidad de escuchar teclas
 		//keyInput toma al handler para acceder a los numeros y a game para acceder a shift y poder 
 		//mover los numeros en respuesta a las teclas presionadas
-		this.addKeyListener(new KeyInput(handler,this));
+		keylistener= new KeyInput(handler,this);
+		this.addKeyListener(keylistener);
 	}
 	
 	
@@ -112,7 +116,7 @@ public class Game extends Canvas implements Runnable{
 		
 			    handler.gameObjects.addLast(auxCell);
 				
-				auxNum = new Number(xaux,yaux,matrixPositionNumber,this);
+				auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
 			    
 		        handler.gameObjects.addLast(auxNum);
 				
@@ -162,7 +166,7 @@ public class Game extends Canvas implements Runnable{
 				matrixPositionNumber = mat[i][j];
 				
 				if(matrixPositionNumber!=null){
-				auxNum = new Number(xaux,yaux,matrixPositionNumber,this);
+				auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
 			    
 		        handler.gameObjects.addLast(auxNum);
 				}
@@ -220,6 +224,24 @@ public class Game extends Canvas implements Runnable{
 				
 			Tick++;
 			
+			keylistener.tick();
+			long threshold=10;
+			if(keylistener.isAnimate()){
+				if(this.getTickTimer()>threshold){
+				//mueve y combina llamando a play de juego que llama a SHIFT
+				keylistener.setAnimate(false);
+				
+				play(keylistener.getDir());
+				
+				keylistener.setDir(null);
+				//para verificar igualdad
+				if(debug)
+					System.out.println(getMatJuego());
+				//actualizo a las celdas con numeros arriba de ellas
+				updateMatrix();
+				StopTickTimer();
+			}
+			}
 			handler.tick();
 		
 	}
@@ -234,15 +256,16 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();    //crea un link para los graficos y el buffer
 		
-
-		g.setColor(Color.BLACK);
+		
+		g.setColor(FONDO);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+			
+		drawMatrixBounds(g); 
+			
+	
 		handler.render(g);
-		if(debug){
-			
-			drawMatrixBounds(g); 
-			
-		}//
+
 		g.dispose();    
 		bs.show(); 					//para que muestre el buffer renderizado
 	}
@@ -290,7 +313,10 @@ public class Game extends Canvas implements Runnable{
 		Tick=0;
 		countTicks=true;
 	}
-
+	public static void StopTickTimer(){
+		Tick=0;
+		countTicks=false;
+	}
 	
 	public static long getTickTimer(){
 		return Tick;
@@ -363,8 +389,10 @@ public class Game extends Canvas implements Runnable{
 
 	
 	public static void drawMatrixBounds(Graphics g){
-		g.setColor(Color.GREEN);
-		g.drawRect(Game.MatrixX, Game.MatrixY, Game.getMatrixBounds().height,Game.getMatrixBounds().height);
+		g.setColor(MARCO);
+		int POLO=(cellDistance-cellSize);
+		g.fillRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2);
+
 	}
 	public static Rectangle getMatrixBounds(){
 		int size=Game.MatrixWIDTH;

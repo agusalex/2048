@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import paquete.Direction;
+import paquete.Mat2;
 
 
 
@@ -13,104 +14,108 @@ import paquete.Direction;
  */
 
 public class KeyInput extends KeyAdapter{
-
+	private Direction dir;
 	private Handler handler;
 	private Game game;
-	
-	
+	private boolean Animate=false;
 	
 	/*
 	 * el constructor llama a un handler y a un jjuego, esto es para acceder a los numeros que quiero mover y
 	 * al metodo de SHIFT que esta en la clase juego asi regula los movimientos al soltar las teclas
 	 */
 	
+	public boolean isAnimate() {
+		return Animate;
+	}
+
+	public void setAnimate(boolean animate) {
+		Animate = animate;
+	}
+
 	public KeyInput(Handler handler,Game game){
 		this.handler = handler;
 		this.game = game;
 	}
-	
-	public void keyPressed(KeyEvent e){
-		int key = e.getKeyCode();
+
+	public void tick(){
 		
-	//	CODIGO DE PRUEBA ESTO MUEVE LAS CASILLAS CON 2
-		for(int x = 0; x < handler.gameObjects.size(); x++){
-			GraphicObject element = handler.gameObjects.get(x);
-			if(element instanceof Number){
-				//if(key == KeyEvent.VK_UP) element.setSpeedY(-5);
-				//if(key == KeyEvent.VK_DOWN) element.setSpeedY(5);
-				//if(key == KeyEvent.VK_LEFT) element.setSpeedX(-5);
-				//if(key == KeyEvent.VK_RIGHT) element.setSpeedX(5);	
+		if(dir!=null&&(!Animate)){
+			for(int x = 0; x < handler.gameObjects.size(); x++){
+				GraphicObject objeto = handler.gameObjects.get(x);
+					//si encuentra numeros
+				if(objeto instanceof Number){
+				Number objeti = (Number) objeto;
+				//de acuerda a su direccion , mueve al numero tantas unidades como se pasa 
+				Mat2 mat2=game.getMatJuego();
 				
+				switch (dir){
+				case UP:
+					if(mat2.isRowOrColumnChanged(dir,objeti.getiY()))
+						objeto.setSpeedY(-30);Animate=true;break;
+				
+				case DOWN:
+					if(mat2.isRowOrColumnChanged(dir,objeti.getiY()))
+					objeto.setSpeedY(30);Animate=true;break;
+				
+				case LEFT:
+					if(mat2.isRowOrColumnChanged(dir,objeti.getiX()))
+					objeto.setSpeedX(-30);Animate=true;break;
+					
+				case RIGHT:if(mat2.isRowOrColumnChanged(dir,objeti.getiX()))
+					objeto.setSpeedX(30);Animate=true;break;
+				}
+				
+				}
+			}
+			
+			if(Animate)
+				Game.setTickTimer();
+		
 			}
 		}
-    
-	}
+		
 	
-	//TODO intentar refractorear para no hacer un ciclo para cada una 
+	
+	
+	public Direction getDir() {
+		return dir;
+	}
+
+	public void setDir(Direction dir) {
+		this.dir = dir;
+	}
+
 	public void keyReleased(KeyEvent e){
-	  if(!game.gameOver()){	
+		
 		int key = e.getKeyCode();
-		//si soltas la flecha de arriba
-			if(key == KeyEvent.VK_UP) {
-				//busca en todos los objetos graficos
-				for(int x = 0; x < handler.gameObjects.size(); x++){
-					GraphicObject objeto = handler.gameObjects.get(x);
-					//si encuentra numeros
-					if(objeto instanceof Number){
-						objeto = (Number) objeto;
-						//de acuerda a su direccion , mueve al numero tantas unidades como se pasa 
-						objeto.setSpeedY(-30);	
-						
-					}
-				}
-				//mueve y combina llamando a play de juego que llama a SHIFT
-				game.play(Direction.UP);
-				//para verificar igualdad
-				System.out.println(game.getMatJuego());
-				//actualizo a las celdas con numeros arriba de ellas
-				game.updateMatrix();
+		
+			if(key == KeyEvent.VK_UP){
+				dir=Direction.UP;
+				
 			}
-			if(key == KeyEvent.VK_DOWN){ 
-				for(int x = 0; x < handler.gameObjects.size(); x++){
-					GraphicObject objeto = handler.gameObjects.get(x);
-					if(objeto instanceof Number){
-						objeto = (Number) objeto;
-						objeto.setSpeedY(30);
-						
-					}
-				}
-				game.play(Direction.DOWN);
-				System.out.println(game.getMatJuego());
-				game.updateMatrix();
+			else if(key == KeyEvent.VK_DOWN){
+				dir=Direction.DOWN;
+				
 			}
-			if(key == KeyEvent.VK_LEFT){
-				for(int x = 0; x < handler.gameObjects.size(); x++){
-					GraphicObject objeto = handler.gameObjects.get(x);
-					if(objeto instanceof Number){
-						objeto = (Number) objeto;
-						objeto.setSpeedX(-30);						
-					}
-				}
-				game.play(Direction.LEFT);
-				System.out.println(game.getMatJuego());
-				game.updateMatrix();
+			else if(key == KeyEvent.VK_LEFT){
+				dir=Direction.LEFT;
+				
 			}
-			if(key == KeyEvent.VK_RIGHT){
-				for(int x = 0; x < handler.gameObjects.size(); x++){
-					GraphicObject objeto = handler.gameObjects.get(x);
-					if(objeto instanceof Number){
-						objeto = (Number) objeto;
-						objeto.setSpeedX(30);
-						
-					}
-				}
-				game.play(Direction.RIGHT);
-				System.out.println(game.getMatJuego());
-				game.updateMatrix();
+			else if(key == KeyEvent.VK_RIGHT){
+				dir=Direction.RIGHT;
+				
 			}
-	  }
+			else if(key == KeyEvent.VK_ESCAPE){
+				System.exit(0); ///TODO ABRIR MENU
+				
+			}
 			
 	}
+	
+	
+	
+	
+	
 	
 	
 	

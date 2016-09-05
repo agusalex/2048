@@ -7,10 +7,32 @@ import java.awt.Graphics;
 public class Number extends GraphicObject {
 
 	private Integer value;
+	private int iX,iY;
+
+	public int getiX() {
+		return iX;
+	}
 
 
-	public Number(int x, int y, Integer value, Game game) {
+	public void setiX(int iX) {
+		this.iX = iX;
+	}
+
+
+	public int getiY() {
+		return iY;
+	}
+
+
+	public void setiY(int iY) {
+		this.iY = iY;
+	}
+
+
+	public Number(int x, int y, int iX, int iY,Integer value, Game game) {
 		super(x, y, game);
+		this.iX=iX;
+		this.iY=iY;
 		this.value = value;
 		this.height = game.getCellSize();
 		this.width = this.height;

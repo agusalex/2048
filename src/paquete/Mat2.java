@@ -529,7 +529,23 @@ public class Mat2 {
 
 	return false;
 	}	
-
+	
+	public boolean isRowOrColumnChanged(Direction dir, int row_Column){
+		Integer [] [] copy = copiarMatriz();
+		Mat2 m=new Mat2(copy.length);
+		m.mat=copy;
+		m.combineCells(dir,row_Column);
+		m.Move(dir,row_Column);
+		
+		if (!this.esIgual(copy)){    // con solo combinar ya se agrega una nueva celda dado que se mueve
+			return true;
+		}
+		return false;
+		
+	}
+	
+	
+	
 	
 	public static int aleatorio(){
 		int num = (int) (Math.random()*4-2) +2;
