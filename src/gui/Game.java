@@ -192,7 +192,7 @@ public class Game extends Canvas implements Runnable{
 		double delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
-		while (running){
+		while (running && !gameOver()){
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -203,11 +203,6 @@ public class Game extends Canvas implements Runnable{
 			if(running)
 				render();
 			frames++;
-			
-	
-		
-			
-			
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
 				frames = 0;	

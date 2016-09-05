@@ -48,6 +48,7 @@ public class KeyInput extends KeyAdapter{
 	
 	//TODO intentar refractorear para no hacer un ciclo para cada una 
 	public void keyReleased(KeyEvent e){
+	  if(!game.gameOver()){	
 		int key = e.getKeyCode();
 		//si soltas la flecha de arriba
 			if(key == KeyEvent.VK_UP) {
@@ -107,7 +108,7 @@ public class KeyInput extends KeyAdapter{
 				System.out.println(game.getMatJuego());
 				game.updateMatrix();
 			}
-		
+	  }
 			
 	}
 	

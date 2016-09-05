@@ -39,7 +39,14 @@ public class Number extends GraphicObject {
 	public void render(Graphics g) {
 
 		if(value!=null){
-			g.setColor(Color.white);
+			switch(value){
+				case 2 : g.setColor(Color.white);break;
+				case 4 : g.setColor(Color.green);break;
+				case 8 : g.setColor(Color.blue);break;
+				case 16 : g.setColor(Color.orange);break;
+				case 32 : g.setColor(Color.magenta);break;
+				default : g.setColor(Color.black);break;
+			}
 			g.fillRect(x, y,height, width);
 			g.setColor(Color.RED);
 			Font font = new Font(Font.SANS_SERIF,1,height/2);
