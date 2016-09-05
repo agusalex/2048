@@ -8,7 +8,24 @@ public class Number extends GraphicObject {
 
 	private Integer value;
 	private int iX,iY;
-
+	private static final Color fontC1=new Color(0x766B60);
+	private static final Color fontC2=new Color(0xFDFEFA);
+	private static final Color N_2 = new Color(0xEEE4DA);
+	private static final Color N_4 = new Color(0xECE0C8);
+	private static final Color N_8 = new Color(0xF2B179);
+	private static final Color N_16 = new Color(0xF6955F);
+	private static final Color N_32= new Color(0xFB7864);
+	private static final Color N_64 = new Color(0xF25F3D);
+	private static final Color N_128 = new Color(0xEDCE71);
+	private static final Color N_256 = new Color(0xEDCC63);
+	private static final Color N_512 = new Color(0xECC850);
+	private static final Color N_1024 = new Color(0xEDC53F);
+	private static final Color N_2048 = new Color(0xFF5B3D);
+	
+	
+	
+	
+	
 	public int getiX() {
 		return iX;
 	}
@@ -59,18 +76,28 @@ public class Number extends GraphicObject {
 
 	
 	public void render(Graphics g) {
-
+		Color fontColor=fontC1;
+		
 		if(value!=null){
 			switch(value){
-				case 2 : g.setColor(Color.white);break;
-				case 4 : g.setColor(Color.green);break;
-				case 8 : g.setColor(Color.blue);break;
-				case 16 : g.setColor(Color.orange);break;
-				case 32 : g.setColor(Color.magenta);break;
-				default : g.setColor(Color.black);break;
+				case 2 : g.setColor(N_2);break;
+				case 4 : g.setColor(N_4);break;
+				case 8 : g.setColor(N_8);break;
+				case 16 : g.setColor(N_16);break;
+				case 32 : g.setColor(N_32);break;
+				case 64 : g.setColor(N_64);break;
+				case 128 : g.setColor(N_128);break;
+				case 256 : g.setColor(N_256);break;
+				case 512 : g.setColor(N_512);break;
+				case 1024 : g.setColor(N_1024);break;
+				case 2048 : g.setColor(N_2048);break;
 			}
+			
 			g.fillRect(x, y,height, width);
-			g.setColor(Color.RED);
+			if(value >= 8){
+				fontColor = fontC2;
+			}
+				g.setColor(fontColor);
 			Font font = new Font(Font.SANS_SERIF,1,height/2);
 			
 			g.setFont(font);
