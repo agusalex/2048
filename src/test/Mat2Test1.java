@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import paquete.Direction;
@@ -91,11 +92,18 @@ public class Mat2Test1 {
 	
 	
 	
-	
-	
-	
-	
-	
+	@Test
+	public void copy(){
+		System.out.println("asdf");
+		Mat2 a = matTest();
+		Mat2 c = new Mat2();
+		Integer [][] b = a.copiarMatriz();
+		c.mat = b;
+		System.out.println(a);
+		System.out.println(c);
+		assertTrue(a.esIgual(b));
+		
+	}
 	
 	
 	
@@ -118,7 +126,7 @@ public class Mat2Test1 {
 		System.out.println("fin agregar");
 	}
 	
-	@Test
+	@Ignore
 	public void equalsTest(){
 		System.out.println("equals " + "ok");	
 		Mat2 a = new Mat2();
@@ -155,7 +163,7 @@ public class Mat2Test1 {
 		a.Move(Direction.DOWN, 3);
 	}
 	//fin metodos para mover
-	@Test
+	@Ignore
 	public void moveTest(){
 		System.out.println("move " + "ok");
 		Mat2 a = new Mat2();
@@ -215,7 +223,7 @@ public class Mat2Test1 {
 			a.combineCells(Direction.DOWN, 3);	
 		}
 		//fin metodos para combinar
-	@Test
+	@Ignore
 	public void combineCellsTest(){
 		System.out.println("COMBINAR CELDAS OK");
 		Mat2 a = new Mat2();
@@ -262,7 +270,7 @@ public class Mat2Test1 {
 		System.out.println(a.getElements());
 	}
 	
-	@Test
+	@Ignore
 	public void gameOverTest(){
 		System.out.println("prueba gameover");
 		Mat2 a = matrizGameOver();

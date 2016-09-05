@@ -29,7 +29,7 @@ public class Mat2 {
 		
 		Win=false;
 		this.mat = new Integer [n][n];	
-		initialize();
+		
 	}
 	
 	/**
@@ -116,13 +116,15 @@ public class Mat2 {
 	 */
 	public void Shift(Direction Direction){
 		Integer [] [] copy = copiarMatriz();
+		hasCombined = false;
 		for(int x = 0; x < mat.length; x++){
 				combineCells(Direction,x);
 				Move(Direction,x);
 		}
-		if(!this.mat.equals(copy) && !hasCombined )   //si se movio y si no se combino nada, de ser igual la mtriz actual que la copia quiere decir que no se hicieron cambios
+		
+		if (!this.esIgual(copy) && !hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
 			addNewRandomCell();
-		else if (hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
+		else if (hasCombined)
 			addNewRandomCell();
 		gameOver();
 		
@@ -201,7 +203,7 @@ public class Mat2 {
 		boolean checkIfEquals = true;         
 		int bkp = -1;					
 		Integer Current = null;   
-		hasCombined = false;              //supongoi que no se combinan
+		
 		
 		while(from!=to){
 				
@@ -220,23 +222,23 @@ public class Mat2 {
 				if(xaxis){  //Si se mueve en el eje x
 						
 					if(!Current.equals(mat[y][bkp])){      //SI no es igual setea nuevo Bkp
-		
-						bkp =x ;
+						
+						bkp = x ;
 						checkIfEquals = false;   
 					}
 						
 					else if(checkIfEquals){   //Si es igual
-						Current = null;
+						
 						mat[y][x] = null;
 						mat[y][bkp] = mat[y][bkp]*2;
 						
 						if(mat[y][bkp]==2048){   //SI GANO
 							Win=true;
 						}
-						
+						bkp = from;   // por si le sigue uno igual al resultado
 						
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
-						hasCombined = true;
+						hasCombined = hasCombined || true;
 					} 
 				}
 						
@@ -249,15 +251,17 @@ public class Mat2 {
 							
 					else if(checkIfEquals){   //Si es igual
 						
-						Current = null;
+					
 						mat[y][x] = null;
 						mat[bkp][x] = mat[bkp][x]*2;
-						
+					
 						if(mat[bkp][x]==2048){//SI GANO
 							Win=true;
 						}
+						
+						bkp = from;   //por si le sigue uno igual al resultado
 						this.elements--;       //disminuye en uno ya que al combinarse dos numeros se tiene un elemento menos
-						hasCombined = true;
+						hasCombined = hasCombined || true;
 					}
 				}
 					
@@ -286,7 +290,7 @@ public class Mat2 {
 			return ;
 		
 		if(elem == null && cont == 0){  //CASO BASE1
-			this.mat[x][y] = 2;
+			this.mat[x][y] = aleatorio();
 			this.elements++;
 			return;
 			
@@ -338,7 +342,8 @@ public class Mat2 {
 		Integer [][] copy = new Integer [mat.length][mat.length];
 		for(int x = 0; x < mat.length; x++){
 			for( int y = 0; y < mat.length; y++){
-				copy [x][y] = mat[x][y];
+				if(mat[x][y] != null)
+					copy [x][y] = new Integer(mat[x][y].intValue());
 			}
 		}
 		return copy;
@@ -526,4 +531,30 @@ public class Mat2 {
 	}	
 
 	
+	public static int aleatorio(){
+		int num = (int) (Math.random()*4-2) +2;
+		return  num % 2 == 0 ? num : num+1;
+	}
+	
+	public boolean esIgual(Integer [][] copy){
+		for(int x = 0; x< mat.length;x++){
+			for(int y =0 ; y < mat.length; y++ ){
+				
+				Integer actualMat = mat[x][y];
+				Integer actualOther = copy[x][y];
+				
+				if(actualMat != null && actualOther != null){
+					
+					if(!actualMat.equals(actualOther))
+						return false;
+				}
+				else if(actualMat == null && actualOther != null)	
+					return false;
+
+				else if(actualMat != null && actualOther == null)	
+					return false;
+			}
+		}
+		return true;
+	}
 }

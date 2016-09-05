@@ -29,22 +29,22 @@ public class Game extends Canvas implements Runnable{
 
 	//final para que no sean modificables desde ningun lado
 	static final int WIDTH = 1024, HEIGHT = WIDTH /12*9;
-	static final boolean debug=true;
+	static final boolean debug = true;
 	//Ubicacion de la matriz en la ventana
-	static final int MatrixX=WIDTH/4+WIDTH/60;
-	static final int MatrixY=HEIGHT/6;
+	static final int MatrixX = WIDTH/4+WIDTH/60;
+	static final int MatrixY = HEIGHT/6;
 	
 	//////////////////////////////
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
-	static int cellDistance = cellSize+WIDTH/50;
-	static int MatrixWIDTH=cellDistance*matrixSize-(Game.cellDistance-Game.cellSize);
-	static int MatrixHEIGHT=MatrixWIDTH;
+	static int cellDistance = cellSize + WIDTH/50;
+	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
+	static int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
 	
 	
-	private static boolean countTicks=false;
-	private static long Tick=0; //Cuando se activa ResetTickTimer empieza a contar ticks
+	private static boolean countTicks = false;
+	private static long Tick = 0; //Cuando se activa ResetTickTimer empieza a contar ticks
 	private int score = 0;
 
 	
@@ -67,7 +67,7 @@ public class Game extends Canvas implements Runnable{
 			throw new IllegalArgumentException("invalid size:"+matrixSize);
 		}
 		
-		this.matJuego = new Mat2(matrixSize);
+		this.matJuego = new Mat2();
 		System.out.println(this.matJuego);
 		
 
@@ -104,20 +104,17 @@ public class Game extends Canvas implements Runnable{
 		Number auxNum;
 		
 		
-		
-		
-		
 	    for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				matrixPositionNumber = mat[i][j];
 				
 				Cell auxCell = new Cell(xaux,yaux,this);
 		
-			    handler.gameObjects.add(auxCell);
+			    handler.gameObjects.addLast(auxCell);
 				
 				auxNum = new Number(xaux,yaux,matrixPositionNumber,this);
 			    
-		        handler.gameObjects.add(auxNum);
+		        handler.gameObjects.addLast(auxNum);
 				
 			    xaux += Distance;
 				
@@ -140,9 +137,9 @@ public class Game extends Canvas implements Runnable{
 		
 		for(int x = 0; x < handler.gameObjects.size(); x++){
 			
-			GraphicObject objeto=handler.gameObjects.get(x);
+			GraphicObject objeto = handler.gameObjects.get(x);
 			if(objeto instanceof Number)
-			handler.gameObjects.remove(x);
+				handler.gameObjects.remove(x);
 		}
         
 		
@@ -160,9 +157,6 @@ public class Game extends Canvas implements Runnable{
 		Number auxNum;
 		
 		
-		
-		
-		
 	    for(int i = 0; i < mat.length; i++){
 			for( int j = 0; j < mat.length; j++){
 				matrixPositionNumber = mat[i][j];
@@ -170,7 +164,7 @@ public class Game extends Canvas implements Runnable{
 				if(matrixPositionNumber!=null){
 				auxNum = new Number(xaux,yaux,matrixPositionNumber,this);
 			    
-		        handler.gameObjects.add(auxNum);
+		        handler.gameObjects.addLast(auxNum);
 				}
 			    xaux += Distance;
 				
