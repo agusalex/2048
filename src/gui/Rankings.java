@@ -1,5 +1,5 @@
 package gui;
-import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,33 +19,37 @@ public abstract class Rankings {
 	}
 	
 	private static void createXML(){
-		try{
+		
 			Document document = new Document();
 			
 			Element root = new Element ("Players");
 			document.setRootElement(root);
 			
-			Element Best3 = 
+		
 			
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	}
 	
 	private void readXML(){
 		
 		SAXBuilder builder = new SAXBuilder ();
-		try{
-			Document readDoc =builder.build(new File("C:/Users/Max/Desktop/prueba.txt"));
-			System.out.println("Root : "+ readDoc.getRootElement());
+		
+			Document readDoc;
+			try {
+				readDoc = builder.build(new File("C:/Users/Max/Desktop/prueba.txt"));
+				System.out.println("Root : "+ readDoc.getRootElement());
+				
+				System.out.println("Player: "+readDoc.getRootElement().getChild("Nombre").getChildText(""));
+			} catch (JDOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			System.out.println("Player: "+readDoc.getRootElement().getChild("Nombre").getChildText("))
-		}
+		
 		
 	}
 	

@@ -73,12 +73,9 @@ static final Color CELDA=new Color(0xCDC1B5);
 		this.matJuego = new Mat2();
 		System.out.println(this.matJuego);
 		
-
-		new Window(WIDTH,HEIGHT, "2048!", this);
-		
-		//llama a handler
 		handler = new Handler();
-		
+		new Window(WIDTH,HEIGHT, "2048!", this);
+		//llama a handler
 		//agrega a esta clase la posibilidad de escuchar teclas
 		//keyInput toma al handler para acceder a los numeros y a game para acceder a shift y poder 
 		//mover los numeros en respuesta a las teclas presionadas

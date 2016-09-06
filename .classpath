@@ -8,5 +8,7 @@
 			<attribute name="source_encoding" value="UTF-8"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="jdom-2.0.6-sources.jar"/>
+	<classpathentry kind="lib" path="jdom-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
