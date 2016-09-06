@@ -15,29 +15,19 @@ import org.jdom2.output.XMLOutputter;
 public abstract class Rankings {
 	
 	public static void main(String[] args){
-		writeXML();
+		createXML();
 	}
 	
-	private static void  writeXML(){
+	private static void createXML(){
 		try{
-		Document document = new Document();
-		Element root = new Element ("Jugadores");
-		document.setRootElement(root);
-		
-		Element nombre = new Element("Nombre");
-		nombre.setAttribute("Nombre", "Player 1");
-		nombre.addContent(new Text("Esteban Quito"));
-	
-		Element score = new Element ("Score");
-		score.setAttribute("Score", "Player Score");
-		score.addContent("2048");
-		
-		root.addContent(nombre);
-		root.addContent(score);
-		
-		XMLOutputter out = new XMLOutputter (Format.getPrettyFormat());
-		out.output(document, new FileOutputStream(new File("C:/Users/Max/Desktop/prueba.txt")));
-		System.out.println("escribido");
+			Document document = new Document();
+			
+			Element root = new Element ("Players");
+			document.setRootElement(root);
+			
+			Element Best3 = 
+			
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,6 +35,18 @@ public abstract class Rankings {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void readXML(){
+		
+		SAXBuilder builder = new SAXBuilder ();
+		try{
+			Document readDoc =builder.build(new File("C:/Users/Max/Desktop/prueba.txt"));
+			System.out.println("Root : "+ readDoc.getRootElement());
+			
+			System.out.println("Player: "+readDoc.getRootElement().getChild("Nombre").getChildText("))
+		}
+		
 	}
 	
 }
