@@ -19,9 +19,9 @@ public class Cell extends GraphicObject{
 
 	
 	public void render(Graphics g) {
-
+	int curve=Game.cellAndNumberCurve;
 		g.setColor(Game.CELDA);
-		g.fillRect(x, y,height, width);
+		g.fillRoundRect(x, y,height, width,curve,curve);
 		
 		
 	}

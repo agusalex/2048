@@ -77,7 +77,7 @@ public class Number extends GraphicObject {
 	
 	public void render(Graphics g) {
 		Color fontColor=fontC1;
-		
+		int curve=Game.cellAndNumberCurve;
 		if(value!=null){
 			switch(value){
 				case 2 : g.setColor(N_2);break;
@@ -93,7 +93,7 @@ public class Number extends GraphicObject {
 				case 2048 : g.setColor(N_2048);break;
 			}
 			
-			g.fillRect(x, y,height, width);
+			g.fillRoundRect(x, y,height, width,curve,curve);
 			if(value >= 8){
 				fontColor = fontC2;
 			}

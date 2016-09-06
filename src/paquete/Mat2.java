@@ -29,7 +29,7 @@ public class Mat2 {
 		
 		Win=false;
 		this.mat = new Integer [n][n];	
-		
+		initialize();
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class Mat2 {
 	public Mat2(){
 		
 		this(4);
-		initialize();
+		
 	}
 	
 	

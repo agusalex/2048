@@ -36,11 +36,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 	//Ubicacion de la matriz en la ventana
 	static final int MatrixX = WIDTH/4+WIDTH/60;
 	static final int MatrixY = HEIGHT/6;
+	static final long threshold=5;
 	
 	//////////////////////////////
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
-	static int cellDistance = cellSize + WIDTH/50;
+	static int cellDistance = cellSize + WIDTH/75;
+	static int cellAndNumberCurve=15;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
@@ -70,7 +72,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 			throw new IllegalArgumentException("invalid size:"+matrixSize);
 		}
 		
-		this.matJuego = new Mat2();
+		this.matJuego = new Mat2(matrixSize);
 		System.out.println(this.matJuego);
 		
 		handler = new Handler();
@@ -222,7 +224,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 			Tick++;
 			
 			keylistener.tick();
-			long threshold=10;
+			
 			if(keylistener.isAnimate()){
 				if(this.getTickTimer()>threshold){
 				//mueve y combina llamando a play de juego que llama a SHIFT
@@ -258,11 +260,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 			
-		drawMatrixBounds(g); 
-			
-	
+		drawMatrixBorders(g); 
+		
+		
 		handler.render(g);
-
+		drawMatrixLines(g);
+		
+		
 		g.dispose();    
 		bs.show(); 					//para que muestre el buffer renderizado
 	}
@@ -299,6 +303,47 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	
+	public static void drawMatrixBorders(Graphics g){
+		g.setColor(MARCO);
+		int POLO=(cellDistance-cellSize);
+		g.fillRoundRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2,cellAndNumberCurve,cellAndNumberCurve);
+
+	}
+	
+		
+	
+	public void drawMatrixLines(Graphics g){
+		int lineWidth=(cellDistance-cellSize);
+		Integer [][] mat=matJuego.getMat();
+		g.setColor(MARCO);	
+		
+		for( int j = 0; j <= mat.length; j++){
+					
+			g.fillRect(MatrixX+(cellDistance*j)-lineWidth,MatrixY,cellDistance-cellSize,Game.MatrixWIDTH);
+
+			}
+		for( int j = 0; j <= mat.length; j++){
+					
+		   g.fillRect(MatrixX,MatrixY+(cellDistance*j)-lineWidth,Game.MatrixWIDTH,cellDistance-cellSize);
+				    
+			}
+
+		
+		}
+		
+		
+
+		
+	
+	
+	
+
+	public static Rectangle getMatrixBounds(){
+		int size=Game.MatrixWIDTH;
+		Rectangle rect=new Rectangle(MatrixX,MatrixY,size,size);
+		
+		return rect;
+	}
    
    
 	
@@ -384,19 +429,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 
 
 
-	
-	public static void drawMatrixBounds(Graphics g){
-		g.setColor(MARCO);
-		int POLO=(cellDistance-cellSize);
-		g.fillRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2);
 
-	}
-	public static Rectangle getMatrixBounds(){
-		int size=Game.MatrixWIDTH;
-		Rectangle rect=new Rectangle(MatrixX,MatrixY,size,size);
-		
-		return rect;
-	}
 
 	
 	

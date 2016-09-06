@@ -88,6 +88,7 @@ public class KeyInput extends KeyAdapter{
 	public void keyReleased(KeyEvent e){
 		
 		int key = e.getKeyCode();
+		if(!Animate){
 		
 			if(key == KeyEvent.VK_UP){
 				dir=Direction.UP;
@@ -110,7 +111,7 @@ public class KeyInput extends KeyAdapter{
 				
 			}
 			
-	}
+	}}
 	
 	
 	
