@@ -11,6 +11,7 @@ public class Window extends Canvas{
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = -4166964448327045634L;
 
 	

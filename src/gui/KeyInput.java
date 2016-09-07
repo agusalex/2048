@@ -38,8 +38,11 @@ public class KeyInput extends KeyAdapter{
 	}
 
 	public void tick(){
-		
-		if(dir!=null&&(!Animate)){
+		if(game.isMenu()){
+			
+		}
+		else{
+		  if(dir!=null&&(!Animate)){
 			for(int x = 0; x < handler.gameObjects.size(); x++){
 				GraphicObject objeto = handler.gameObjects.get(x);
 					//si encuentra numeros
@@ -72,7 +75,8 @@ public class KeyInput extends KeyAdapter{
 				Game.setTickTimer();
 		
 			}
-		}
+	     }
+	}
 		
 	
 	

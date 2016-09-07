@@ -23,7 +23,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private Jugador j1;
 	private Mat2 matJuego;
-
+	private Menu mainMenu;
 /////////COLORES//////
 static final Color FONDO=new Color(0xFBF8F1);
 static final Color MARCO=new Color(0xBFAFA0);
@@ -42,7 +42,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
 	static int cellDistance = cellSize + WIDTH/80;
-	static int cellAndNumberCurve=15;
+	static int cellAndNumberCurve = 15;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
@@ -56,6 +56,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 ////////////////////////////
 	private Thread thread;
 	private boolean running = false;
+	private boolean menu = true;
 	
 	//tiene un handler
 	private Handler handler; 
@@ -74,6 +75,9 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 		this.matJuego = new Mat2(matrixSize);
 		System.out.println(this.matJuego);
+		
+		
+		mainMenu = new Menu();
 		
 		handler = new Handler();
 		new Window(WIDTH,HEIGHT, "2048!", this);
@@ -105,36 +109,46 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 		Integer matrixPositionNumber = null;
 		Number auxNum;
+
+
+			for(int i = 0; i < mat.length; i++){
+				for( int j = 0; j < mat.length; j++){
+				  if(!menu){	
+					matrixPositionNumber = mat[i][j];
+					
+					Cell auxCell = new Cell(xaux,yaux,this);
 		
-		
-	    for(int i = 0; i < mat.length; i++){
-			for( int j = 0; j < mat.length; j++){
-				matrixPositionNumber = mat[i][j];
-				
-				Cell auxCell = new Cell(xaux,yaux,this);
-		
-			    handler.gameObjects.addLast(auxCell);
-				
-				auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
+			    	handler.gameObjects.addLast(auxCell);
+			    	
+					auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
 			    
-		        handler.gameObjects.addLast(auxNum);
+		        	handler.gameObjects.addLast(auxNum);
 				
-			    xaux += Distance;
-				
-			}
+			    	xaux += Distance;
+				  }
+				  
+				  //esto lo hace de estar en el menu
+				  else{
+					  Cell auxcell = new Cell(xaux,yaux,this);
+					  handler.gameObjects.addLast(auxcell);
+					  if(j == 0 || j == mat.length-1){
+						 auxNum = new Number(xaux,yaux,i,j,i+2,this); 
+						 handler.gameObjects.addLast(auxNum);
+						 xaux += Distance*3;
+					  }
+				  }
+				}
 			
-			yaux+=Distance;
-			xaux=MatrixX;
-		}
+				yaux+=Distance;
+				xaux=MatrixX;
+			}
+	    
 	}
 
 	/*
 	 * esta funcion elimina los objetos actuales asi no se dibujan de nuevo y llama a dibujar matriz que dibuja a la matriz
 	 * de nuevo para que tenga los valores de la matriz actualizada 
-	 * TODO dejame que se me ocurre algo para hacer con esto 
 	 */
-	
-	
 	
 	public void updateMatrix(){
 		
@@ -179,14 +193,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 	}
 	
-	
-
-	
-	
-	
 	public void run() {		//CICLO DEL JUEGO
-
-	
 		//dDIBUJA A LA MATRIZ
 		this.createMatrix();
 		long lastTime = System.nanoTime();
@@ -194,7 +201,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		int frames = 0;
 		while (running && !gameOver()){
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -205,23 +211,18 @@ static final Color CELDA=new Color(0xCDC1B5);
 			}
 			if(running)
 				render();
-			frames++;
 			if(System.currentTimeMillis() - timer > 1000){
-				timer += 1000;
-				frames = 0;	
+				timer += 1000;	
 			}
 		}
-		
-		  
-		 
 		stop();
 	}
 	
 	private void tick(){
-		if(countTicks&&debug){
+		if(countTicks && debug){
 			System.out.println(Tick);
 		}
-			if (Tick>=Long.MAX_VALUE-1)
+			if (Tick >= Long.MAX_VALUE-1)
 				Tick=0;
 				
 			Tick++;
@@ -229,7 +230,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 			keylistener.tick();
 			
 			if(keylistener.isAnimate()){
-				if(this.getTickTimer()>threshold){
+				if(Game.getTickTimer()>threshold){
 				//mueve y combina llamando a play de juego que llama a SHIFT
 				keylistener.setAnimate(false);
 				
@@ -243,8 +244,8 @@ static final Color CELDA=new Color(0xCDC1B5);
 				updateMatrix();
 				StopTickTimer();
 			}
-			}
-			handler.tick();
+		   }
+		   handler.tick();
 		
 	}
 	
@@ -262,19 +263,39 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.setColor(FONDO);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-			
-		drawMatrixBorders(g); 
 		
-		
-		handler.render(g);
-		drawMatrixLines(g);
-		
+		if(menu){
+			this.createMatrix();
+			drawMatrixBorders(g);
+			handler.render(g);
+			drawMatrixLines(g);
+			mainMenu.render(g);
+		}
+		else{
+			drawMatrixBorders(g); 
+			handler.render(g);
+			drawMatrixLines(g);
+		}
 		
 		g.dispose();    
 		bs.show(); 					//para que muestre el buffer renderizado
 	}
 	
 	
+	public boolean isMenu() {
+		return menu;
+	}
+
+
+
+
+	public void setMenu(boolean menu) {
+		this.menu = menu;
+	}
+
+
+
+
 	public synchronized void start(){
 		thread = new Thread (this);
 		thread.start();
@@ -312,8 +333,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.fillRoundRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2,cellAndNumberCurve,cellAndNumberCurve);
 
 	}
-	
-		
 	
 	public void drawMatrixLines(Graphics g){
 		int lineWidth=(cellDistance-cellSize);
