@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 
 public class Cell extends GraphicObject{
@@ -13,7 +13,7 @@ public class Cell extends GraphicObject{
 
 
 	public void tick() {
-		// TODO Auto-generated method stub
+		// tick tock
 		
 	}
 

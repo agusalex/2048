@@ -56,7 +56,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 ////////////////////////////
 	private Thread thread;
 	private boolean running = false;
-	private boolean menu = true;
+	private boolean menu = false;
 	
 	//tiene un handler
 	private Handler handler; 
@@ -458,6 +458,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo
 //  public void exportarJugador(BufferedWriter fil)    esto es para guardar los datos del jugador , usa el escritor de Archivo
 	
+	@SuppressWarnings("unused")
 	public static void main(String main []){
 		Game game = new Game();
 	}

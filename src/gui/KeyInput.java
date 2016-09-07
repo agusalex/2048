@@ -52,7 +52,7 @@ public class KeyInput extends KeyAdapter{
 				Mat2 mat2=game.getMatJuego();
 				
 				switch (dir){
-				case UP:
+				case UP:							//TODO ajustar threshold segunt cant de elementos asi evitar superosicion
 					if(mat2.isRowOrColumnChanged(dir,objeti.getiY()))
 						objeto.setSpeedY(-30);Animate=true;break;
 				

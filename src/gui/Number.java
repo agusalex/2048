@@ -75,7 +75,11 @@ public class Number extends GraphicObject {
 		Color fontColor = fontC1;
 		int fontSize = height/2-getCifras()*2;
 		int curve = Game.cellAndNumberCurve;
+		//TODO HACER UN SWITCH CON TODOS LOS CASOS DE CIFRAS DISTINTOS Y AJUSTAR TEXTO
+		
 		if(value!=null){
+			g.setColor(Game.MARCO);
+			g.fillRect(x, y,height, width);
 			switch(value){
 				case 2 : g.setColor(N_2);break;
 				case 4 : g.setColor(N_4);break;
