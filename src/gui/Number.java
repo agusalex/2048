@@ -77,7 +77,7 @@ public class Number extends GraphicObject {
 	
 	public void render(Graphics g) {
 		Color fontColor=fontC1;
-		int fontSize=height/2;
+		int fontSize=height/2-getCifras()*2;
 		int curve=Game.cellAndNumberCurve;
 		if(value!=null){
 			switch(value){
@@ -104,7 +104,7 @@ public class Number extends GraphicObject {
 			
 			g.setFont(font);
 			//g.drawString(value.toString(), x+height/2, y+height/2);
-			g.drawString(value.toString(), x+height/5, y+height-height/7);
+			g.drawString(value.toString(), x+height/5-(fontSize/height), y+height-height/7);
 			
 			
 		}
