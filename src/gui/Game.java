@@ -41,7 +41,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	//////////////////////////////
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
-	static int cellDistance = cellSize + WIDTH/75;
+	static int cellDistance = cellSize + WIDTH/80;
 	static int cellAndNumberCurve=15;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
@@ -211,6 +211,9 @@ static final Color CELDA=new Color(0xCDC1B5);
 				frames = 0;	
 			}
 		}
+		
+		  
+		 
 		stop();
 	}
 	
