@@ -2,7 +2,12 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
+
+import org.omg.CORBA.portable.InputStream;
 
 public class Number extends GraphicObject {
 
@@ -73,8 +78,11 @@ public class Number extends GraphicObject {
 	
 	public void render(Graphics g) {
 		Color fontColor = fontC1;
-		int fontSize = height/2-getCifras()*2;
+		int fontSize = getCifras()*7;
 		int curve = Game.cellAndNumberCurve;
+		
+		
+		
 		//TODO HACER UN SWITCH CON TODOS LOS CASOS DE CIFRAS DISTINTOS Y AJUSTAR TEXTO
 		
 		if(value!=null){
@@ -100,17 +108,24 @@ public class Number extends GraphicObject {
 				fontColor = fontC2;
 			}
 				g.setColor(fontColor);
-			Font font = new Font(Font.SANS_SERIF,1,fontSize);
+				
+
+			float size=70F-(int)(fontSize);
+			Font newFont = Game.Fuente.deriveFont(size);
+			g.setFont(newFont);
 			
-			g.setFont(font);
-			//g.drawString(value.toString(), x+height/2, y+height/2);
-			g.drawString(value.toString(), x+height/5-(fontSize/height), y+height-height/7);
+			
+		
+			
+			g.drawString(value.toString(), (x+height/4)-((int)(fontSize*15)/(height/4)),y+height/2+((int)(size/2)));
 			
 			
 		}
 	
 	}
 
+	
+	
 	
 	
 	

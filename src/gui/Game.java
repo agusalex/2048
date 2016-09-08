@@ -2,9 +2,12 @@ package gui;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 import paquete.Direction;
 import paquete.Jugador;
@@ -25,8 +28,10 @@ public class Game extends Canvas implements Runnable{
 	private Mat2 matJuego;
 	private Menu mainMenu;
 /////////COLORES//////
-static final Color FONDO=new Color(0xFBF8F1);
-static final Color MARCO=new Color(0xBFAFA0);
+static Font Fuente;
+static final Color FONDO=new Color(0xE9E9E0);
+//static final Color FONDO=new Color(0xFBF8F1);
+static final Color MARCO=new Color(0xB8AC9F);
 static final Color CELDA=new Color(0xCDC1B5);
 ///////parametros///////////
 
@@ -41,8 +46,8 @@ static final Color CELDA=new Color(0xCDC1B5);
 	//////////////////////////////
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
-	static int cellDistance = cellSize + WIDTH/80;
-	static int cellAndNumberCurve = 15;
+	static int cellDistance = cellSize + WIDTH/70;
+	static int cellAndNumberCurve = 10;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
@@ -74,8 +79,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
+		this.matJuego.mat[2][3]=1024;
+		this.matJuego.mat[1][3]=256;
+		this.matJuego.mat[2][1]=64;
 		System.out.println(this.matJuego);
 		
+		
+		Fuente=getCustomFont();
 		
 		mainMenu = new Menu();
 		
@@ -329,8 +339,8 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	public static void drawMatrixBorders(Graphics g){
 		g.setColor(MARCO);
-		int POLO=(cellDistance-cellSize);
-		g.fillRoundRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2,cellAndNumberCurve,cellAndNumberCurve);
+		int POLO=(int) (cellDistance-(cellSize));
+		g.fillRoundRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2,cellAndNumberCurve+5,cellAndNumberCurve+5);
 
 	}
 	
@@ -385,6 +395,27 @@ static final Color CELDA=new Color(0xCDC1B5);
 	public static long getTickTimer(){
 		return Tick;
 	}
+	
+	public static Font getCustomFont(){
+		Font customFont=null;
+		try {
+		    //create the font to use. Specify the size!
+			java.io.InputStream is = Game.class.getResourceAsStream("ClearSans-Bold.ttf");
+			customFont = Font.createFont(Font.TRUETYPE_FONT,is);
+		    
+		  
+		    
+		   
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} catch(FontFormatException e) {
+		    e.printStackTrace();
+		}
+
+		//use the font
+		return customFont;
+	}
+	
 	
 	
 	public void increaseScore(int value){
