@@ -38,10 +38,8 @@ public class KeyInput extends KeyAdapter{
 	}
 
 	public void tick(){
-		if(game.isMenu()){
-			
-		}
-		else{
+	
+	
 		  if(dir!=null&&(!Animate)){
 			for(int x = 0; x < handler.gameNumbers.size(); x++){
 				Number number = handler.gameNumbers.get(x);
@@ -73,7 +71,7 @@ public class KeyInput extends KeyAdapter{
 		
 			}
 	     }
-	}
+	
 		
 	
 	
@@ -92,17 +90,12 @@ public class KeyInput extends KeyAdapter{
 		if(!Animate){
 		
 			if(key == KeyEvent.VK_UP){
-				if(Game.menu){
-					Game.menuOption--;
-					}
+
 				dir=Direction.UP;
 				
 			}
 			else if(key == KeyEvent.VK_DOWN){
-				if(Game.menu){
-					Game.menuOption++;
-					
-				}
+
 				dir=Direction.DOWN;
 				
 			}
@@ -113,6 +106,9 @@ public class KeyInput extends KeyAdapter{
 			else if(key == KeyEvent.VK_RIGHT){
 				dir=Direction.RIGHT;
 				
+			}
+			else if(key==KeyEvent.VK_ENTER){
+				Game.optionSelect=true;
 			}
 			else if(key == KeyEvent.VK_ESCAPE){
 				if(!Game.menu)
@@ -125,15 +121,67 @@ public class KeyInput extends KeyAdapter{
 			else if(key==KeyEvent.VK_ENTER){
 				Game.optionSelect=true;
 			}
+			else if(key==KeyEvent.VK_DELETE){
+				System.exit(0);
+			}
+			
+		
+		if(Game.menu)
+			dir=null;
+		
+		if(Game.debug)
+			System.out.print(Game.menuOption);
+		}
+		
+	
+	
+	
+	}
+	
+	public void keyPressed(KeyEvent e){
+		
+		int key = e.getKeyCode();
+		
+		
+			if(key == KeyEvent.VK_UP){
+				if(Game.menu){
+					Game.menuOption--;
+					}
+				
+				
+			}
+			else if(key == KeyEvent.VK_DOWN){
+				if(Game.menu){
+					Game.menuOption++;
+					
+				}
+			
+				
+			}
+
+
+			else if(key==KeyEvent.VK_DELETE){
+				System.exit(0);
+			}
 			
 			if(Game.menuOption > 3)
 				Game.menuOption=0;
 			
 			else if(Game.menuOption < 0)
 				Game.menuOption=3;
-	}
+	
+
+		if(Game.menu)
+			dir=null;
+		
 		if(Game.debug)
-			System.out.print(Game.menuOption);}
+			System.out.print(Game.menuOption);
+		
+	
+	
+	
+	}
+	
 	
 	
 	

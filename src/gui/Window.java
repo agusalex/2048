@@ -7,7 +7,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Window extends Canvas{
-
+	public static boolean restart=true;
+	
 	/**
 	 * 
 	 */
@@ -16,6 +17,7 @@ public class Window extends Canvas{
 
 	
 	public  Window(int witdh, int height, String title,Game game){
+		
 		JFrame frame = new JFrame(title);
 		
 		frame.setPreferredSize(new Dimension (witdh,height));
@@ -27,5 +29,7 @@ public class Window extends Canvas{
 		frame.add(game);
 		frame.setVisible(true);
 		game.start();
+		
+
 	}
 }

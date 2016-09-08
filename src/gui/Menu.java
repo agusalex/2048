@@ -10,11 +10,12 @@ public class Menu {
 	private int opcion;
 	
 	public void tick(){
-		if(Game.optionSelect){
+		if(Game.optionSelect){ //Nuevo juegfo
 			if(Game.menuOption==0){
 				Game.rebootGame=true;
+
 			}
-			else if(Game.menuOption==1){
+			else if(Game.menuOption==1){ //Opciones
 				
 			}
 			
@@ -24,6 +25,7 @@ public class Menu {
 			else if(Game.menuOption==3){
 				System.exit(0);
 			}
+			Game.optionSelect=false;
 		}
 		
 		
@@ -39,13 +41,21 @@ public class Menu {
 		Font font = Game.getCustomFont();
 		float size=30F;
 		font = Game.Fuente.deriveFont(size);
+		int botonx=(int)(Game.MatrixX+Game.cellDistance-Game.lineWidth/2.3);
+		int ancho=(int)((Game.cellSize*2)+2*Game.lineWidth);
+		int alto=(int)(Game.cellSize+Game.lineWidth/1.15);
+		int curva=Game.cellAndNumberCurve;
+		
+		
 		
 		g.setFont(font);
 		g.drawString("2048",(int)(Game.WIDTH/2.3),Game.HEIGHT/9);
 		g.drawString("THE GAME!",(int)(Game.WIDTH/2.5),Game.HEIGHT/7);
 		
+		//recuadro de seleccion
 		g.setColor(new Color(0x92360e));
-		g.fillRoundRect((int)(Game.MatrixX+Game.cellDistance-Game.lineWidth/2.3),(int)(opcion-Game.lineWidth/2.3),(int)((Game.cellSize*2)+2*Game.lineWidth),(int)(Game.cellSize+Game.lineWidth/1.15),Game.cellAndNumberCurve,Game.cellAndNumberCurve);
+		
+		g.fillRoundRect(botonx,(int)(opcion-Game.lineWidth/2.3),ancho,alto,curva,curva);
 		
 		g.setColor(new Color(0xFF5B3D));
 		g.fillRoundRect((int)(Game.MatrixX+(Game.cellDistance)+Game.lineWidth/10),Game.MatrixY, (int)(Game.cellSize*2)+Game.lineWidth,(int)(Game.cellSize),Game.cellAndNumberCurve,Game.cellAndNumberCurve);

@@ -548,8 +548,17 @@ public class Mat2 {
 	
 	
 	public static int aleatorio(){
-		int num = (int) (Math.random()*4-2) +2;
-		return  num % 2 == 0 ? num : num+1;
+		//int option=(int)(Math.random()*10);
+	
+		
+		
+		
+		
+		return Math.random() < 0.9 ? 2 : 4;
+		//return  num % 2 == 0 ? num : num+1;
+		
+		
+		
 	}
 	
 	public boolean esIgual(Integer [][] copy){
