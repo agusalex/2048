@@ -100,6 +100,7 @@ public class Number extends GraphicObject {
 				case 512 : g.setColor(N_512);break;
 				case 1024 : g.setColor(N_1024);break;
 				case 2048 : g.setColor(N_2048);break;
+				default: g.setColor(N_256);break;
 			}
 			
 			g.fillRoundRect(x, y,height, width,curve,curve);

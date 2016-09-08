@@ -25,8 +25,9 @@ public class Game extends Canvas implements Runnable{
 	private static final long serialVersionUID = 2381537138204047441L;
 	
 	private Jugador j1;
-	private Mat2 matJuego;
+	public static Mat2 matJuego;
 	private Menu mainMenu;
+	
 /////////COLORES//////
 static Font Fuente;
 static final Color FONDO=new Color(0xE9E9E0);
@@ -47,6 +48,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
 	static int cellDistance = cellSize + WIDTH/70;
+	 static int lineWidth=cellDistance-cellSize;
 	static int cellAndNumberCurve = 10;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
@@ -61,8 +63,11 @@ static final Color CELDA=new Color(0xCDC1B5);
 ////////////////////////////
 	private Thread thread;
 	private boolean running = false;
-	private boolean menu = false;
-	
+	public static boolean menu = false;
+	public static int menuOption = 0;
+	public static boolean optionSelect=false;
+	public static boolean rebootGame=false;
+
 	//tiene un handler
 	private Handler handler; 
 	private static KeyInput keylistener;
@@ -79,10 +84,10 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
-		this.matJuego.mat[2][3]=1024;
-		this.matJuego.mat[1][3]=256;
-		this.matJuego.mat[2][1]=64;
-		System.out.println(this.matJuego);
+//		this.matJuego.mat[2][3]=1024;
+//		this.matJuego.mat[1][3]=256;
+//		this.matJuego.mat[2][1]=64;
+//		System.out.println(this.matJuego);
 		
 		
 		Fuente=getCustomFont();
@@ -107,6 +112,21 @@ static final Color CELDA=new Color(0xCDC1B5);
 	 * la idea es que se refresque siempre
 	 */
 	public void createMatrix(){
+		
+		if (menu){
+			this.getMatJuego().mat[0][0]=2;
+			this.getMatJuego().mat[1][0]=0;
+			this.getMatJuego().mat[2][0]=4;
+			this.getMatJuego().mat[3][0]=8;
+			this.getMatJuego().mat[0][3]=2;
+			this.getMatJuego().mat[1][3]=0;
+			this.getMatJuego().mat[2][3]=4;
+			this.getMatJuego().mat[3][3]=8;
+			
+		}
+		
+		
+			
 		Integer[][] mat = this.matJuego.getMat();
 		
 		int Distance = getCellDistance();
@@ -120,38 +140,36 @@ static final Color CELDA=new Color(0xCDC1B5);
 		Integer matrixPositionNumber = null;
 		Number auxNum;
 
-
+	
 			for(int i = 0; i < mat.length; i++){
+				
 				for( int j = 0; j < mat.length; j++){
-				  if(!menu){	
+				  
+					
 					matrixPositionNumber = mat[i][j];
 					
 					Cell auxCell = new Cell(xaux,yaux,this);
 		
-			    	handler.gameObjects.addLast(auxCell);
+			    	handler.addCell(auxCell);
 			    	
 					auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
 			    
-		        	handler.gameObjects.addLast(auxNum);
+		        	handler.addNumber(auxNum);
 				
 			    	xaux += Distance;
-				  }
 				  
-				  //esto lo hace de estar en el menu
-				  else{
-					  Cell auxcell = new Cell(xaux,yaux,this);
-					  handler.gameObjects.addLast(auxcell);
-					  if(j == 0 || j == mat.length-1){
-						 auxNum = new Number(xaux,yaux,i,j,i+2,this); 
-						 handler.gameObjects.addLast(auxNum);
-						 xaux += Distance*3;
-					  }
-				  }
+				  
+
 				}
 			
 				yaux+=Distance;
 				xaux=MatrixX;
-			}
+				
+			
+			
+		}	
+			
+			
 	    
 	}
 
@@ -162,11 +180,8 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	public void updateMatrix(){
 		
-		for(int x = 0; x < handler.gameObjects.size(); x++){
-			
-			GraphicObject objeto = handler.gameObjects.get(x);
-			if(objeto instanceof Number)
-				handler.gameObjects.remove(x);
+		for(int x = 0; x < handler.gameNumbers.size(); x++){
+				handler.removeNumber(x);
 		}
         
 		
@@ -191,7 +206,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 				if(matrixPositionNumber!=null){
 				auxNum = new Number(xaux,yaux,i,j,matrixPositionNumber,this);
 			    
-		        handler.gameObjects.addLast(auxNum);
+		        handler.addNumber(auxNum);
 				}
 			    xaux += Distance;
 				
@@ -256,6 +271,9 @@ static final Color CELDA=new Color(0xCDC1B5);
 			}
 		   }
 		   handler.tick();
+		   if(menu){
+			   mainMenu.tick();
+		   }
 		
 	}
 	
@@ -275,11 +293,15 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 		
 		if(menu){
-			this.createMatrix();
 			drawMatrixBorders(g);
 			handler.render(g);
 			drawMatrixLines(g);
 			mainMenu.render(g);
+			
+			g.setColor(Color.BLACK);
+			
+			
+			
 		}
 		else{
 			drawMatrixBorders(g); 

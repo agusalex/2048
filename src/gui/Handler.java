@@ -11,24 +11,41 @@ import java.util.LinkedList;
 
 public class Handler {
 
-	LinkedList <GraphicObject> gameObjects = new LinkedList<GraphicObject>(); 
+	LinkedList <Cell> gameCells = new LinkedList<Cell>(); 
+	LinkedList <Number> gameNumbers = new LinkedList<Number>(); 
 	
 	public void render(Graphics g){
-		for(int x = 0; x < gameObjects.size(); x++){
-			GraphicObject objeto = gameObjects.get(x);
-			objeto.render(g);
+		for(int x = 0; x < gameCells.size(); x++){
+			Cell cell = gameCells.get(x);
+			cell.render(g);
 		}
+		
+		for(int x = 0; x < gameNumbers.size(); x++){
+			Number number = gameNumbers.get(x);
+			number.render(g);
+		}
+		
+		
 	}
 	
 	
 	public void tick(){
-		for(int x = 0; x < gameObjects.size(); x++){
-			GraphicObject objeto = gameObjects.get(x);
-			objeto.tick();
+		for(int x = 0; x < gameNumbers.size(); x++){
+			Number number = gameNumbers.get(x);
+			number.tick();
 		}
 	}
 	
-	public void addObject(GraphicObject obj){
-		this.gameObjects.add(obj);
+	public void addCell(Cell obj){
+		this.gameCells.addLast(obj);
+	}
+	
+	
+	public void addNumber(Number obj){
+		this.gameNumbers.addLast(obj);
+	}
+	
+	public Number removeNumber(int index){
+		return this.gameNumbers.remove(index);
 	}
 }

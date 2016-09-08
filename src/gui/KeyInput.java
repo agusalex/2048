@@ -43,32 +43,29 @@ public class KeyInput extends KeyAdapter{
 		}
 		else{
 		  if(dir!=null&&(!Animate)){
-			for(int x = 0; x < handler.gameObjects.size(); x++){
-				GraphicObject objeto = handler.gameObjects.get(x);
-					//si encuentra numeros
-				if(objeto instanceof Number){
-				Number objeti = (Number) objeto;
+			for(int x = 0; x < handler.gameNumbers.size(); x++){
+				Number number = handler.gameNumbers.get(x);
 				//de acuerda a su direccion , mueve al numero tantas unidades como se pasa 
 				Mat2 mat2=game.getMatJuego();
 				
 				switch (dir){
 				case UP:							//TODO ajustar threshold segunt cant de elementos asi evitar superosicion
-					if(mat2.isRowOrColumnChanged(dir,objeti.getiY()))
-						objeto.setSpeedY(-30);Animate=true;break;
+					if(mat2.isRowOrColumnChanged(dir,number.getiY()))
+						number.setSpeedY(-30);Animate=true;break;
 				
 				case DOWN:
-					if(mat2.isRowOrColumnChanged(dir,objeti.getiY()))
-					objeto.setSpeedY(30);Animate=true;break;
+					if(mat2.isRowOrColumnChanged(dir,number.getiY()))
+					number.setSpeedY(30);Animate=true;break;
 				
 				case LEFT:
-					if(mat2.isRowOrColumnChanged(dir,objeti.getiX()))
-					objeto.setSpeedX(-30);Animate=true;break;
+					if(mat2.isRowOrColumnChanged(dir,number.getiX()))
+					number.setSpeedX(-30);Animate=true;break;
 					
-				case RIGHT:if(mat2.isRowOrColumnChanged(dir,objeti.getiX()))
-					objeto.setSpeedX(30);Animate=true;break;
+				case RIGHT:if(mat2.isRowOrColumnChanged(dir,number.getiX()))
+					number.setSpeedX(30);Animate=true;break;
 				}
 				
-				}
+			     
 			}
 			
 			if(Animate)
@@ -95,10 +92,17 @@ public class KeyInput extends KeyAdapter{
 		if(!Animate){
 		
 			if(key == KeyEvent.VK_UP){
+				if(Game.menu){
+					Game.menuOption--;
+					}
 				dir=Direction.UP;
 				
 			}
 			else if(key == KeyEvent.VK_DOWN){
+				if(Game.menu){
+					Game.menuOption++;
+					
+				}
 				dir=Direction.DOWN;
 				
 			}
@@ -111,11 +115,25 @@ public class KeyInput extends KeyAdapter{
 				
 			}
 			else if(key == KeyEvent.VK_ESCAPE){
-				System.exit(0); ///TODO ABRIR MENU
+				if(!Game.menu)
+				Game.menu=true;
+				else{
+					Game.menu=false;
+				}
 				
 			}
+			else if(key==KeyEvent.VK_ENTER){
+				Game.optionSelect=true;
+			}
 			
-	}}
+			if(Game.menuOption > 3)
+				Game.menuOption=0;
+			
+			else if(Game.menuOption < 0)
+				Game.menuOption=3;
+	}
+		if(Game.debug)
+			System.out.print(Game.menuOption);}
 	
 	
 	
