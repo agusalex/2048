@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable{
 	private static final long serialVersionUID = 2381537138204047441L;
 	
 	private Jugador j1;
-	public static Mat2 matJuego;
+	public  Mat2 matJuego;
 	private Menu mainMenu;
 	
 /////////COLORES//////
@@ -37,19 +37,19 @@ static final Color CELDA=new Color(0xCDC1B5);
 ///////parametros///////////
 
 	//final para que no sean modificables desde ningun lado
-	static final int WIDTH = 1280, HEIGHT = WIDTH /12*9;
+	static final int WIDTH = 1024, HEIGHT = WIDTH /12*9;
 	static final boolean debug = true;
 	//Ubicacion de la matriz en la ventana
 	static final int MatrixX = WIDTH/4+WIDTH/60;
 	static final int MatrixY = HEIGHT/6;
-	static final long threshold=5;
+	static final long threshold=3;
 	
 	//////////////////////////////
 	static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
 	static int cellDistance = cellSize + WIDTH/70;
 	 static int lineWidth=cellDistance-cellSize;
-	static int cellAndNumberCurve = 10;
+	static int cellAndNumberCurve =3;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
@@ -69,7 +69,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	public static boolean rebootGame=false;
 
 	//tiene un handler
-	private Handler handler; 
+   public  Handler handler; 
 	private static KeyInput keylistener;
 	
 	
@@ -84,10 +84,10 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
-//		this.matJuego.mat[2][3]=1024;
-//		this.matJuego.mat[1][3]=256;
-//		this.matJuego.mat[2][1]=64;
-//		System.out.println(this.matJuego);
+	//	this.matJuego.mat[2][3]=1024;
+	//	this.matJuego.mat[1][3]=256;
+	//	this.matJuego.mat[2][1]=64;
+	System.out.println(this.matJuego);
 		
 		
 		Fuente=getCustomFont();
@@ -322,7 +322,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 
 
 	public void setMenu(boolean menu) {
-		this.menu = menu;
+		Game.menu = menu;
 	}
 
 

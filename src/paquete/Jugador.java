@@ -3,7 +3,7 @@ package paquete;
 
 
 
-public class Jugador implements Exportable, Comparable{
+public class Jugador implements Exportable{
 	private String name;
 	private int record, movements;
 	
@@ -56,7 +56,7 @@ public class Jugador implements Exportable, Comparable{
 		return this.movements;
 	}
 
-	@Override
+
 	public int compareTo(Object jugador) {
 		Jugador j2 = null;
 		if(jugador == null)

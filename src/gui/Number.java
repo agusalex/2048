@@ -2,17 +2,15 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.io.File;
-import java.io.IOException;
 
-import org.omg.CORBA.portable.InputStream;
+import java.awt.Graphics;
+
 
 public class Number extends GraphicObject {
 
 	private Integer value;
 	private int iX,iY;
+
 	private static final Color fontC1=new Color(0x766B60);
 	private static final Color fontC2=new Color(0xFDFEFA);
 	private static final Color N_2 = new Color(0xEEE4DA);
@@ -58,17 +56,19 @@ public class Number extends GraphicObject {
 		this.value = value;
 		this.height = game.getCellSize();
 		this.width = this.height;
-		
+
 				
 	}
 
 
 	public void tick() {
+		
 		this.x += this.speedX;
 		this.y += this.speedY;
 		
 		//en base a la tecla de la clase KeyInput , se va a mover el numero a done deba
 		//clamp, garantiza que no se pase del limite
+		
 		
 	    x = clamp(x,Game.MatrixX,Game.MatrixX+Game.MatrixWIDTH-width);  //ARREGLADO
 	    y = clamp(y,Game.MatrixY,Game.MatrixY+Game.MatrixWIDTH-height);
@@ -78,7 +78,7 @@ public class Number extends GraphicObject {
 	
 	public void render(Graphics g) {
 		Color fontColor = fontC1;
-		int fontSize = getCifras()*7;
+		int fontSize = getCifras()*9;
 		int curve = Game.cellAndNumberCurve;
 		
 		
@@ -110,8 +110,13 @@ public class Number extends GraphicObject {
 			}
 				g.setColor(fontColor);
 				
-
+				
 			float size=70F-(int)(fontSize);
+			if(this.getCifras()==1){
+				size=50F;
+				
+			}
+			
 			Font newFont = Game.Fuente.deriveFont(size);
 			g.setFont(newFont);
 			
@@ -157,6 +162,7 @@ public class Number extends GraphicObject {
 
 	}
 	
+
 	
 	
 	
