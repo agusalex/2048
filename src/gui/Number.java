@@ -83,7 +83,7 @@ public class Number extends GraphicObject {
 		
 		
 		
-		//TODO HACER UN SWITCH CON TODOS LOS CASOS DE CIFRAS DISTINTOS Y AJUSTAR TEXTO
+
 		
 		if(value!=null){
 			g.setColor(Game.MARCO);
@@ -105,6 +105,8 @@ public class Number extends GraphicObject {
 			
 			g.fillRoundRect(x, y,height, width,curve,curve);
 			
+			
+			
 			if(value >= 8){
 				fontColor = fontC2;
 			}
@@ -112,6 +114,8 @@ public class Number extends GraphicObject {
 				
 				
 			float size=70F-(int)(fontSize);
+			//TODO HACER UN SWITCH CON TODOS LOS CASOS DE CIFRAS DISTINTOS Y AJUSTAR TEXTO
+			
 			if(this.getCifras()==1){
 				size=50F;
 				
