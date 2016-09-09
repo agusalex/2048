@@ -84,9 +84,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
-	/*this.matJuego.mat[2][3]=1024;
-		this.matJuego.mat[1][3]=256;
-		this.matJuego.mat[2][1]=64;*/
+
 	System.out.println(this.matJuego);
 		
 		

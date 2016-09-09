@@ -29,7 +29,7 @@ public class Window extends Canvas{
 		frame.setMaximumSize(new Dimension (witdh,height));
 		frame.setMinimumSize(new Dimension (witdh,height));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);  //empieza en el medio
 
 		frame.add(game);

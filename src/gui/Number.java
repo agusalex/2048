@@ -115,19 +115,22 @@ public class Number extends GraphicObject {
 				
 			float size=70F-(int)(fontSize);
 			//TODO HACER UN SWITCH CON TODOS LOS CASOS DE CIFRAS DISTINTOS Y AJUSTAR TEXTO
-			
-			if(this.getCifras()==1){
-				size=50F;
-				
+			int offset=0;
+		
+			switch(this.getCifras()){
+				case 1 : size=50;offset=10;break;
+				case 2 : size=45F;offset=10;break;
+				case 3 : size=40F;break;
+				case 4 : size=35F;break;
 			}
-			
+
 			Font newFont = Game.Fuente.deriveFont(size);
 			g.setFont(newFont);
 			
-			
+				
 		
 			
-			g.drawString(value.toString(), (x+height/4)-((int)(fontSize*15)/(height/4)),y+height/2+((int)(size/2)));
+			g.drawString(value.toString(),(int)((x+height/4)-((fontSize)/2)+offset),y+height/2+((int)(size/2)));
 			
 			
 		}

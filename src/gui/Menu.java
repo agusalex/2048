@@ -17,6 +17,7 @@ public class Menu {
 			}
 			else if(Game.menuOption==1){ //Opciones
 				
+				
 			}
 			
 			else if(Game.menuOption==2){
@@ -41,11 +42,17 @@ public class Menu {
 		Font font = Game.getCustomFont();
 		float size=30F;
 		font = Game.Fuente.deriveFont(size);
-		int botonx=(int)(Game.MatrixX+Game.cellDistance-Game.lineWidth/2.3);
-		int ancho=(int)((Game.cellSize*2)+2*Game.lineWidth);
-		int alto=(int)(Game.cellSize+Game.lineWidth/1.15);
+		int botonXS=(int)(Game.MatrixX+Game.cellDistance-Game.lineWidth/2.3);
+		int botonYS=(int)(opcion-Game.lineWidth/2.3);
+		int anchoS=(int)((Game.cellSize*2)+2*Game.lineWidth);
+		int altoS=(int)(Game.cellSize+Game.lineWidth/1.15);
 		int curva=Game.cellAndNumberCurve;
 		
+		int botonX=(int)(Game.MatrixX+(Game.cellDistance)+Game.lineWidth/15);
+	
+		int ancho= (int)((Game.cellSize*2)+Game.lineWidth*1.1);
+		int alto=(int)(Game.cellSize);
+
 		
 		
 		g.setFont(font);
@@ -55,10 +62,10 @@ public class Menu {
 		//recuadro de seleccion
 		g.setColor(new Color(0x92360e));
 		
-		g.fillRoundRect(botonx,(int)(opcion-Game.lineWidth/2.3),ancho,alto,curva,curva);
+		g.fillRoundRect(botonXS,botonYS,anchoS,altoS,curva,curva);
 		
 		g.setColor(new Color(0xFF5B3D));
-		g.fillRoundRect((int)(Game.MatrixX+(Game.cellDistance)+Game.lineWidth/10),Game.MatrixY, (int)(Game.cellSize*2)+Game.lineWidth,(int)(Game.cellSize),Game.cellAndNumberCurve,Game.cellAndNumberCurve);
+		g.fillRoundRect(botonX,Game.MatrixY,ancho,alto,curva,curva);
 		g.setColor(new Color(0xEEE4DA));
 
 
@@ -70,21 +77,21 @@ public class Menu {
 		
 		
 		g.setColor(new Color(0xEDC53F));
-		g.fillRoundRect((int)(Game.MatrixX+(Game.cellDistance)+Game.lineWidth/10),Game.MatrixY+Game.cellDistance,  (int)(Game.cellSize*2)+Game.lineWidth,(int)(Game.cellSize),Game.cellAndNumberCurve,Game.cellAndNumberCurve);
+		g.fillRoundRect(botonX,Game.MatrixY+Game.cellDistance,ancho,alto,curva,curva);
 		g.setColor(new Color(0x766B60));
 
 
 		g.drawString("Options",(int)(Game.WIDTH/2.3),(int)(Game.HEIGHT/2.5));
 		
 		g.setColor(new Color(0xECE0C8));
-		g.fillRoundRect((int)(Game.MatrixX+(Game.cellDistance)+Game.lineWidth/10),Game.MatrixY+Game.cellDistance*2, (int)(Game.cellSize*2)+Game.lineWidth,(int)(Game.cellSize),Game.cellAndNumberCurve,Game.cellAndNumberCurve);
+		g.fillRoundRect(botonX,Game.MatrixY+Game.cellDistance*2,ancho,alto,curva,curva);
 		g.setColor(new Color(0x766B60));
 
 
 		g.drawString("Rankings",(int)(Game.WIDTH/2.3),(int)(Game.HEIGHT/1.8));
 
 		g.setColor(new Color(0xF2B179));
-		g.fillRoundRect((Game.MatrixX+(Game.cellDistance)+Game.lineWidth/10),Game.MatrixY+Game.cellDistance*3, (int)(Game.cellSize*2)+Game.lineWidth,(int)(Game.cellSize),Game.cellAndNumberCurve,Game.cellAndNumberCurve);
+		g.fillRoundRect(botonX,Game.MatrixY+Game.cellDistance*3,ancho,alto,curva,curva);
 		g.setColor(new Color(0x766B60));
 
 
