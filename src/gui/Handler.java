@@ -13,18 +13,28 @@ public class Handler {
 
 	LinkedList <Cell> gameCells = new LinkedList<Cell>(); 
 	LinkedList <Number> gameNumbers = new LinkedList<Number>(); 
+	LinkedList <Number> gameMenuNumbers = new LinkedList <Number>();
+	
+	
 	
 	public void render(Graphics g){
-		for(int x = 0; x < gameCells.size(); x++){
-			Cell cell = gameCells.get(x);
-			cell.render(g);
+		if(Game.menu){
+			for(int x = 0; x< gameMenuNumbers.size();x++){
+				gameMenuNumbers.get(x).render(g);
+			}
 		}
 		
-		for(int x = 0; x < gameNumbers.size(); x++){
-			Number number = gameNumbers.get(x);
-			number.render(g);
-		}
+		else{
+			for(int x = 0; x < gameCells.size(); x++){
+				Cell cell = gameCells.get(x);
+				cell.render(g);
+			}
 		
+			for(int x = 0; x < gameNumbers.size(); x++){
+				Number number = gameNumbers.get(x);
+				number.render(g);
+			}
+		}
 		
 	}
 	
@@ -47,5 +57,9 @@ public class Handler {
 	
 	public Number removeNumber(int index){
 		return this.gameNumbers.remove(index);
+	}
+	
+	public void addMenuNumber(Number obj){
+		this.gameMenuNumbers.add(obj);
 	}
 }

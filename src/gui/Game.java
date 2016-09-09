@@ -25,8 +25,10 @@ public class Game extends Canvas implements Runnable{
 	private static final long serialVersionUID = 2381537138204047441L;
 	
 	private Jugador j1;
-	public  Mat2 matJuego;
+	private  Mat2 matJuego;
 	private Menu mainMenu;
+	
+	
 	
 /////////COLORES//////
 static Font Fuente;
@@ -48,7 +50,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	public static int matrixSize = 4;
 	static  int cellSize = WIDTH/10;
 	static int cellDistance = cellSize + WIDTH/70;
-	 static int lineWidth=cellDistance-cellSize;
+	static int lineWidth=cellDistance-cellSize;
 	static int cellAndNumberCurve =3;
 	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
 	static int MatrixHEIGHT = MatrixWIDTH;
@@ -63,7 +65,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 ////////////////////////////
 	private Thread thread;
 	private boolean running = false;
-	public static boolean menu = false;
+	public static boolean menu = true;
 	public static int menuOption = 0;
 	public static boolean optionSelect=false;
 	public static boolean rebootGame=false;
@@ -84,8 +86,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 		this.matJuego = new Mat2(matrixSize);
-
-	System.out.println(this.matJuego);
+	    System.out.println(this.matJuego);
 		
 		
 		Fuente=getCustomFont();
@@ -104,26 +105,23 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	
 	
+	public void matrixMenu(){
+		handler.addMenuNumber(new Number(MatrixX,MatrixY, 0, 0, 2,this));
+		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance, 0, 0, 0,this));
+		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance*2 , 0 , 0 , 4,this));
+		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance*3 , 0, 0, 8,this));
+		handler.addMenuNumber(new Number(MatrixX + cellDistance*3,MatrixY, 0, 0, 2,this));
+		handler.addMenuNumber(new Number(MatrixX + cellDistance*3,MatrixY + cellDistance, 0, 0, 0,this));
+		handler.addMenuNumber(new Number(MatrixX + cellDistance*3,MatrixY + cellDistance*2, 0, 0, 4,this));
+		handler.addMenuNumber(new Number(MatrixX + cellDistance*3,MatrixY + cellDistance*3, 0, 0, 8,this));
+	}
+	
 	
 	/*
 	 * dibuja las celdas y numeros en pantalla esto se llama en run() ya que es el primer metodo en eejecutarse
 	 * la idea es que se refresque siempre
 	 */
 	public void createMatrix(){
-		
-		if (menu){
-			this.getMatJuego().mat[0][0]=2;
-			this.getMatJuego().mat[1][0]=0;
-			this.getMatJuego().mat[2][0]=4;
-			this.getMatJuego().mat[3][0]=8;
-			this.getMatJuego().mat[0][3]=2;
-			this.getMatJuego().mat[1][3]=0;
-			this.getMatJuego().mat[2][3]=4;
-			this.getMatJuego().mat[3][3]=8;
-			
-		}
-		
-		
 			
 		Integer[][] mat = this.matJuego.getMat();
 		
@@ -155,20 +153,14 @@ static final Color CELDA=new Color(0xCDC1B5);
 		        	handler.addNumber(auxNum);
 				
 			    	xaux += Distance;
-				  
-				  
-
+				
 				}
 			
 				yaux+=Distance;
 				xaux=MatrixX;
-				
-			
 			
 		}	
-			
-			
-	    
+		
 	}
 
 	/*
@@ -233,8 +225,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 				delta--;
 			}
 			
-			
-			
 			if(running)
 				render();
 			if(System.currentTimeMillis() - timer > 1000){
@@ -245,6 +235,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	private void tick(){
+		
 		if(countTicks && debug){
 			System.out.println(Tick);
 		}
@@ -293,15 +284,12 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		
-		if(menu){
+		if(menu || gameOver()){
+			matrixMenu();  
 			drawMatrixBorders(g);
 			handler.render(g);
 			drawMatrixLines(g);
 			mainMenu.render(g);
-			
-			g.setColor(Color.BLACK);
-			
-			
 			
 		}
 		else{
@@ -386,10 +374,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 		}
 		
-		
-
-		
-	
 	
 	
 
@@ -498,16 +482,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 
 
-
-
-
-
-
-
-
-
-
-	
 	
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo
 //  public void exportarJugador(BufferedWriter fil)    esto es para guardar los datos del jugador , usa el escritor de Archivo
