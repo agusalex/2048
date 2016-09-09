@@ -31,8 +31,8 @@ public class JugadorTest {
 	public void setScoreTest(){
 		j1.increaseScore(500);
 		j1.increaseScore(100);
-		System.out.print(j1.obtainStatus());
-		assertEquals("Nombre: Esteban Quito Puntuacion: 600 Cant. movimientos: 0",j1.obtainStatus());
+		System.out.print(j1.toString());
+		assertEquals("Nombre: Esteban Quito Puntuacion: 600 Cant. movimientos: 0",j1.toString());
 	}
 	
 	

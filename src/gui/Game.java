@@ -438,7 +438,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	public String obtainStatus(){
-		return this.j1.obtainStatus();
+		return this.j1.toString();
 	}
 	
 
