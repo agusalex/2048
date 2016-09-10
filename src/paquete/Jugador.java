@@ -17,7 +17,7 @@ public class Jugador implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private int record, movements;
+	private int record = 0, movements;
 	
 	
 	public Jugador(String name){

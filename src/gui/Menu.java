@@ -12,8 +12,9 @@ public class Menu {
 	public void tick(){
 		if(Game.optionSelect){ //Nuevo juegfo
 			if(Game.menuOption==0){
-				if(Game.menu)
+				if(Game.menu){
 					Game.menu = false;
+				}
 				else
 					Game.menu = true;
 			}

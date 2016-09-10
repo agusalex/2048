@@ -62,8 +62,7 @@ public class KeyInput extends KeyAdapter{
 				case RIGHT:if(mat2.isRowOrColumnChanged(dir,number.getiX()))
 					number.setSpeedX(30);Animate=true;break;
 				}
-				
-			     
+				  
 			}
 			
 			if(Animate)

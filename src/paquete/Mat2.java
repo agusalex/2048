@@ -6,18 +6,9 @@ public class Mat2 {
 	private int elements = 0;           //para decir si esta llena o no
 	private boolean hasCombined;        //para decir si se combinaron o no
 	private boolean Win;
+	private int score = 0;
 	
-	public int getElements() {
-		return elements;
-	}
 
-	public void setElements(int elements) {
-		this.elements = elements;
-	}
-
-	public Integer [][] getMat(){
-		return mat;
-	}
 	
 
 
@@ -231,6 +222,7 @@ public class Mat2 {
 						
 						mat[y][x] = null;
 						mat[y][bkp] = mat[y][bkp]*2;
+						this.score +=  mat[y][bkp];
 						
 						if(mat[y][bkp]==2048){   //SI GANO
 							Win=true;
@@ -251,10 +243,11 @@ public class Mat2 {
 							
 					else if(checkIfEquals){   //Si es igual
 						
-					
+						
 						mat[y][x] = null;
 						mat[bkp][x] = mat[bkp][x]*2;
-					
+						this.score +=  mat[bkp][x];
+						
 						if(mat[bkp][x]==2048){//SI GANO
 							Win=true;
 						}
@@ -550,10 +543,6 @@ public class Mat2 {
 	public static int aleatorio(){
 		//int option=(int)(Math.random()*10);
 	
-		
-		
-		
-		
 		return Math.random() < 0.9 ? 2 : 4;
 		//return  num % 2 == 0 ? num : num+1;
 		
@@ -581,5 +570,37 @@ public class Mat2 {
 			}
 		}
 		return true;
+	}
+	
+	public boolean isHasCombined() {
+		return hasCombined;
+	}
+
+	public void setHasCombined(boolean hasCombined) {
+		this.hasCombined = hasCombined;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public void setMat(Integer[][] mat) {
+		this.mat = mat;
+	}
+
+	public int getElements() {
+		return elements;
+	}
+
+	public void setElements(int elements) {
+		this.elements = elements;
+	}
+
+	public Integer [][] getMat(){
+		return mat;
 	}
 }

@@ -9,6 +9,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
@@ -30,8 +33,11 @@ public class Game extends Canvas implements Runnable{
 	
 	
 	
+	
+	
 /////////COLORES//////
 static Font Fuente;
+static Font FuenteScore;
 static final Color FONDO=new Color(0xE9E9E0);
 //static final Color FONDO=new Color(0xFBF8F1);
 static final Color MARCO=new Color(0xB8AC9F);
@@ -44,7 +50,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	//Ubicacion de la matriz en la ventana
 	static final int MatrixX = WIDTH/4+WIDTH/60;
 	static final int MatrixY = HEIGHT/6;
-	static final long threshold=3;
+	static final long threshold = 3;
 	
 	//////////////////////////////
 	public static int matrixSize = 4;
@@ -67,11 +73,11 @@ static final Color CELDA=new Color(0xCDC1B5);
 	private boolean running = false;
 	public static boolean menu = true;
 	public static int menuOption = 0;
-	public static boolean optionSelect=false;
-	public static boolean rebootGame=false;
+	public static boolean optionSelect = false;
+	public static boolean rebootGame = false;
 
 	//tiene un handler
-   public  Handler handler; 
+    public  Handler handler; 
 	private static KeyInput keylistener;
 	
 	
@@ -89,7 +95,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	    System.out.println(this.matJuego);
 		
 		
-		Fuente=getCustomFont();
+		Fuente = getCustomFont();
 		
 		mainMenu = new Menu();
 		
@@ -170,9 +176,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	public void updateMatrix(){
 		
-		for(int x = 0; x < handler.gameNumbers.size(); x++){
-				handler.removeNumber(x);
-		}
+		handler.updateNumbers();
         
 		
 		Integer[][] mat = this.matJuego.getMat();
@@ -216,7 +220,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		while (running ){
+		while (running){
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -235,37 +239,51 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	private void tick(){
-		
-		if(countTicks && debug){
-			System.out.println(Tick);
-		}
-			if (Tick >= Long.MAX_VALUE-1)
-				Tick=0;
-				
-			Tick++;
-			
-			keylistener.tick();
-			
-			if(keylistener.isAnimate()){
-				if(Game.getTickTimer()>threshold){
-				//mueve y combina llamando a play de juego que llama a SHIFT
-				keylistener.setAnimate(false);
-				
-				play(keylistener.getDir());
-				
-				keylistener.setDir(null);
-				//para verificar igualdad
-				if(debug)
-					System.out.println(getMatJuego());
-				//actualizo a las celdas con numeros arriba de ellas
-				updateMatrix();
-				StopTickTimer();
-			}
-		   }
-		   handler.tick();
-		   if(menu){
+		if(menu){
 			   mainMenu.tick();
+		 }
+		
+		else{
+			
+			if(countTicks && debug){
+				System.out.println(Tick);
+			}
+				if (Tick >= Long.MAX_VALUE-1)
+					Tick=0;
+				
+				Tick++;
+			
+				keylistener.tick();
+			
+				if(keylistener.isAnimate()){
+					if(Game.getTickTimer()>threshold){
+						//mueve y combina llamando a play de juego que llama a SHIFT
+						keylistener.setAnimate(false);
+				
+						play(keylistener.getDir());
+				
+						keylistener.setDir(null);
+						//para verificar igualdad
+						if(debug)
+							System.out.println(getMatJuego());
+						//actualizo a las celdas con numeros arriba de ellas
+						updateMatrix();
+						StopTickTimer();
+				
+						//aca se actualiza la puntuacion al combinar
+						this.increaseScore(this.matJuego.getScore());
+					}
+				}
+		   handler.tick();
+		  
+		   //si se termina el juego se vuelve al menu principal
+		   if(gameOver()){
+			   menu = true;
+			   this.matJuego = new Mat2();
+			   updateMatrix();
 		   }
+		   
+		}
 		
 	}
 	
@@ -284,7 +302,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		
-		if(menu || gameOver()){
+		if(menu ){
 			matrixMenu();  
 			drawMatrixBorders(g);
 			handler.render(g);
@@ -292,10 +310,11 @@ static final Color CELDA=new Color(0xCDC1B5);
 			mainMenu.render(g);
 			
 		}
-		else{
+		else if (!menu){
 			drawMatrixBorders(g); 
 			handler.render(g);
 			drawMatrixLines(g);
+			drawScores(g);
 		}
 		
 		g.dispose();    
@@ -374,8 +393,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		
 		}
 		
-	
-	
+
 
 	public static Rectangle getMatrixBounds(){
 		int size=Game.MatrixWIDTH;
@@ -385,6 +403,28 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
    
    
+	public void drawScores(Graphics g){
+		FuenteScore = new Font(Font.SANS_SERIF,1,30);
+		g.setFont(FuenteScore);
+		
+		g.setColor(MARCO);
+		g.fillRoundRect(WIDTH/2, HEIGHT/20, (int)(cellSize*1.1), (int)(cellSize/1.5), cellAndNumberCurve, cellAndNumberCurve);
+		g.setColor(FONDO);
+		g.drawString("Score", WIDTH/2, HEIGHT/12);
+		g.drawString(Integer.toString(getRecord()),(int) (WIDTH/1.9), HEIGHT/8);
+		
+		g.setColor(MARCO);
+		g.fillRoundRect((int)(WIDTH/1.5), HEIGHT/20, (int)(cellSize*1.1), (int)(cellSize/1.5), cellAndNumberCurve, cellAndNumberCurve);
+		g.setColor(FONDO);
+		g.drawString("Best", (int) (WIDTH/1.5), HEIGHT/12);
+		g.drawString(Integer.toString(this.j1.getRecord()),(int) (WIDTH/1.5), HEIGHT/8);
+		
+	}
+	
+	
+	
+	
+	
 	
 	public boolean gameOver(){
 		return this.matJuego.gameOver();
@@ -429,7 +469,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		if(value < 0){
 			throw new IllegalArgumentException("Cannot increase negative value");
 		}
-		this.score += value;
+		this.score = value;
 	}
 	
 	public int getRecord(){

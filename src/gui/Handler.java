@@ -62,4 +62,8 @@ public class Handler {
 	public void addMenuNumber(Number obj){
 		this.gameMenuNumbers.add(obj);
 	}
+	
+	public void updateNumbers(){
+		this.gameNumbers = new LinkedList <Number>();
+	}
 }
