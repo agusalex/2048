@@ -1,20 +1,12 @@
 package gui;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.BufferStrategy;
-import java.io.IOException;
-
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
 import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
+
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.io.*;
 
 
 public class Game extends Canvas implements Runnable{
@@ -27,7 +19,7 @@ public class Game extends Canvas implements Runnable{
 	 */
 	private static final long serialVersionUID = 2381537138204047441L;
 	
-	private Jugador j1;
+	private final Jugador j1;
 	private  Mat2 matJuego;
 	private Menu mainMenu;
 	
@@ -37,8 +29,8 @@ public class Game extends Canvas implements Runnable{
 	
 /////////COLORES//////
 static Font Fuente;
-static Font FuenteScore;
-static final Color FONDO=new Color(0xE9E9E0);
+private static Font FuenteScore;
+private static final Color FONDO=new Color(0xE9E9E0);
 //static final Color FONDO=new Color(0xFBF8F1);
 static final Color MARCO=new Color(0xB8AC9F);
 static final Color CELDA=new Color(0xCDC1B5);
@@ -50,16 +42,16 @@ static final Color CELDA=new Color(0xCDC1B5);
 	//Ubicacion de la matriz en la ventana
 	static final int MatrixX = WIDTH/4+WIDTH/60;
 	static final int MatrixY = HEIGHT/6;
-	static final long threshold = 3;
+	private static final long threshold = 3;
 	
 	//////////////////////////////
-	public static int matrixSize = 4;
-	static  int cellSize = WIDTH/10;
-	static int cellDistance = cellSize + WIDTH/70;
+	private static final int matrixSize = 4;
+	static final int cellSize = WIDTH/10;
+	static final int cellDistance = cellSize + WIDTH/70;
 	static int lineWidth=cellDistance-cellSize;
-	static int cellAndNumberCurve =3;
-	static int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
-	static int MatrixHEIGHT = MatrixWIDTH;
+	static final int cellAndNumberCurve =3;
+	static final int MatrixWIDTH = cellDistance*matrixSize -(Game.cellDistance - Game.cellSize);
+	private static final int MatrixHEIGHT = MatrixWIDTH;
 	//////////////////////////////
 	
 	
@@ -77,7 +69,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	public static boolean rebootGame = false;
 
 	//tiene un handler
-    public  Handler handler; 
+    private Handler handler;
 	private static KeyInput keylistener;
 	
 	
@@ -111,7 +103,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	
 	
-	public void matrixMenu(){
+	private void matrixMenu(){
 		handler.addMenuNumber(new Number(MatrixX,MatrixY, 0, 0, 2,this));
 		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance, 0, 0, 0,this));
 		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance*2 , 0 , 0 , 4,this));
@@ -127,7 +119,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	 * dibuja las celdas y numeros en pantalla esto se llama en run() ya que es el primer metodo en eejecutarse
 	 * la idea es que se refresque siempre
 	 */
-	public void createMatrix(){
+    private void createMatrix(){
 			
 		Integer[][] mat = this.matJuego.getMat();
 		
@@ -174,7 +166,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	 * de nuevo para que tenga los valores de la matriz actualizada 
 	 */
 	
-	public void updateMatrix(){
+	private void updateMatrix(){
 		
 		handler.updateNumbers();
         
@@ -343,7 +335,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	
-	public synchronized void stop(){
+	private synchronized void stop(){
 		try{
 			thread.join();
 			running = false;
@@ -367,14 +359,14 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	
-	public static void drawMatrixBorders(Graphics g){
+	private static void drawMatrixBorders(Graphics g){
 		g.setColor(MARCO);
 		int POLO=(int) (cellDistance-(cellSize));
 		g.fillRoundRect(Game.MatrixX-POLO, Game.MatrixY-POLO, Game.getMatrixBounds().height+POLO*2,Game.getMatrixBounds().height+POLO*2,cellAndNumberCurve+5,cellAndNumberCurve+5);
 
 	}
 	
-	public void drawMatrixLines(Graphics g){
+	private void drawMatrixLines(Graphics g){
 		int lineWidth=(cellDistance-cellSize);
 		Integer [][] mat=matJuego.getMat();
 		g.setColor(MARCO);	
@@ -392,10 +384,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 
 		
 		}
-		
 
 
-	public static Rectangle getMatrixBounds(){
+
+
+
+
+	private static Rectangle getMatrixBounds(){
 		int size=Game.MatrixWIDTH;
 		Rectangle rect=new Rectangle(MatrixX,MatrixY,size,size);
 		
@@ -403,21 +398,21 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
    
    
-	public void drawScores(Graphics g){
-		FuenteScore = new Font(Font.SANS_SERIF,1,30);
-		g.setFont(FuenteScore);
+	private void drawScores(Graphics g){
+
+        Font newFont = Game.Fuente.deriveFont(28F);
+		g.setFont(newFont);
 		
 		g.setColor(MARCO);
-		g.fillRoundRect(WIDTH/2, HEIGHT/20, (int)(cellSize*1.1), (int)(cellSize/1.5), cellAndNumberCurve, cellAndNumberCurve);
+		g.fillRoundRect(WIDTH/3, HEIGHT/20, cellSize, (int)(cellSize/1.5), cellAndNumberCurve*2, cellAndNumberCurve*2);
 		g.setColor(FONDO);
-		g.drawString("Score", WIDTH/2, HEIGHT/12);
-		g.drawString(Integer.toString(getRecord()),(int) (WIDTH/1.9), HEIGHT/8);
+		g.drawString("Score", (int)(WIDTH/2.9),HEIGHT/12);
+		g.drawString(Integer.toString(getRecord()),(int) (WIDTH/2.75), HEIGHT/8);
 		
 		g.setColor(MARCO);
-		g.fillRoundRect((int)(WIDTH/1.5), HEIGHT/20, (int)(cellSize*1.1), (int)(cellSize/1.5), cellAndNumberCurve, cellAndNumberCurve);
-		g.setColor(FONDO);
-		g.drawString("Best", (int) (WIDTH/1.5), HEIGHT/12);
-		g.drawString(Integer.toString(this.j1.getRecord()),(int) (WIDTH/1.5), HEIGHT/8);
+		g.fillRoundRect((int) (WIDTH/1.8), HEIGHT/20, (cellSize), (int)(cellSize/1.5), cellAndNumberCurve*2, cellAndNumberCurve*2);		g.setColor(FONDO);
+		g.drawString("Best", (int) (WIDTH/1.73), HEIGHT/12);
+		g.drawString(Integer.toString(this.j1.getRecord()),(int) (WIDTH/1.69), HEIGHT/8);
 		
 	}
 	
@@ -434,12 +429,12 @@ static final Color CELDA=new Color(0xCDC1B5);
 		Tick=0;
 		countTicks=true;
 	}
-	public static void StopTickTimer(){
+	private static void StopTickTimer(){
 		Tick=0;
 		countTicks=false;
 	}
 	
-	public static long getTickTimer(){
+	private static long getTickTimer(){
 		return Tick;
 	}
 	
@@ -462,9 +457,40 @@ static final Color CELDA=new Color(0xCDC1B5);
 		//use the font
 		return customFont;
 	}
-	
-	
-	
+
+	public static void printLog(String Log){
+		try{
+			File fout = new File("out.txt");
+			FileOutputStream fos = new FileOutputStream(fout);
+
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+
+			for (int j = 0; j < Log.length(); j++) {
+				if(Log.charAt(j)=='\n'){
+					bw.write(Log.substring(0,j));
+					bw.newLine();
+					bw.newLine();
+					bw.newLine();
+					bw.newLine();
+					Log=Log.substring(j);
+				}
+
+			}
+
+
+			bw.close();
+		}
+
+		catch(IOException e){
+
+		}
+
+
+	}
+
+
+
 	public void increaseScore(int value){
 		if(value < 0){
 			throw new IllegalArgumentException("Cannot increase negative value");
@@ -493,7 +519,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	
 	
 	
-	public int getCellDistance() {
+	private int getCellDistance() {
 		return cellDistance;
 	}
 
