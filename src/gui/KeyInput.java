@@ -109,9 +109,13 @@ class KeyInput extends KeyAdapter {
                 dir = Direction.RIGHT;
 
             } else if (key == KeyEvent.VK_ESCAPE) {
-                Game.menu = !Game.menu;
-
+                if (!Menu.isShowRankings()&&Game.isGameInitialized()) {
+                    Game.menu = !Game.menu;
+                } else {
+                    Menu.SetShowRankings(false);
+                }
             } else if (key == KeyEvent.VK_ENTER && Game.isMenu()) {
+
                 Game.optionSelect = true;
             } else if (key == KeyEvent.VK_DELETE) {
                 System.exit(0);
@@ -124,6 +128,7 @@ class KeyInput extends KeyAdapter {
 
         }
     }
+
     public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();

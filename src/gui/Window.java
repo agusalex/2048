@@ -36,8 +36,9 @@ class Window extends Canvas {
             exc.printStackTrace();
         }
 
+        Frame f=new Frame("Record");
 
-        frame.setVisible(true);
+
 
 
         game.start();

@@ -4,11 +4,16 @@ import paquete.Mat2;
 
 import java.awt.*;
 
-import static gui.Game.setGameInitialized;
-import static gui.Game.setInitGame;
+import static gui.Game.*;
 
 
 class Menu {
+
+    private static boolean showRankings=false;
+
+    public static boolean isShowRankings() {
+        return showRankings;
+    }
 
     private int opcion;
 
@@ -31,16 +36,18 @@ class Menu {
                 Game.printLog(Game.Log);
 
             } else if (Game.menuOption == 2) {
+
+                showRankings = !showRankings;
                 //TODO RECORDS
             } else if (Game.menuOption == 3) {
+
                 System.exit(0);
             }
             Game.optionSelect = false;
-        }
-
-        if (Game.optionSelect) {
             opcion = 0;
         }
+
+
 
         opcion = Game.MatrixY + Game.cellDistance * Game.menuOption;
     }
@@ -72,14 +79,15 @@ class Menu {
             g.drawString("THE GAME!", (int) (Game.WIDTH / 2.5), Game.HEIGHT / 7);
         }
         //recuadro de seleccion
-        g.setColor(new Color(0x92360e));
+        if(!showRankings) {
+            g.setColor(new Color(0x92360e));
 
-        g.fillRoundRect(botonXS, botonYS, anchoS, altoS, curva, curva);
+            g.fillRoundRect(botonXS, botonYS, anchoS, altoS, curva, curva);
 
-        g.setColor(new Color(0xFF5B3D));
-        g.fillRoundRect(botonX, Game.MatrixY, ancho, alto, curva, curva);
-        g.setColor(new Color(0xEEE4DA));
-
+            g.setColor(new Color(0xFF5B3D));
+            g.fillRoundRect(botonX, Game.MatrixY, ancho, alto, curva, curva);
+            g.setColor(new Color(0xEEE4DA));
+        }
 
         g.drawString("New Game", (int) (Game.WIDTH / 2.4), Game.HEIGHT / 4);
         //////
@@ -110,4 +118,7 @@ class Menu {
     }
 
 
+    public static void SetShowRankings(boolean b) {
+        showRankings=b;
+    }
 }

@@ -4,12 +4,14 @@ import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 
-@SuppressWarnings("ALL")
 public class Game extends Canvas implements Runnable {
 
 
@@ -20,7 +22,7 @@ public class Game extends Canvas implements Runnable {
      */
     private static final long serialVersionUID = 2381537138204047441L;
 
-    private final Jugador j1;
+    private final Jugador Player;
     public static Mat2 matJuego;
     private Menu mainMenu;
 
@@ -47,7 +49,7 @@ public class Game extends Canvas implements Runnable {
     private static final long threshold = 3;
     static String Log ="";
     //////////////////////////////
-    public static final int matrixSize = 4;
+    public static int matrixSize = 4;
     static final int cellSize = WIDTH / 10;
     static final int cellDistance = cellSize + WIDTH / 70;
     static final int lineWidth = cellDistance - cellSize;
@@ -73,11 +75,18 @@ public class Game extends Canvas implements Runnable {
     //tiene un handler
     private Handler handler;
     private static KeyInput keylistener;
+    public static JButton inputButton = new JButton("Send");
+    public static JTextArea editTextArea = new JTextArea("Type Here!");
+    public static JTextArea uneditTextArea = new JTextArea();
+
+
+        //SET LAYOUT MANAGER (How it arranges components)
+
 
 
     public Game() {      //TODO la idea es que se cree en la clase de la interfaz ?
 
-        this.j1 = new Jugador("Default"); //nuevo jugador
+        this.Player = new Jugador("Default"); //nuevo jugador
         if (matrixSize < 2) {
             throw new IllegalArgumentException("invalid size:" + matrixSize);
         }
@@ -94,13 +103,18 @@ public class Game extends Canvas implements Runnable {
         mainMenu = new Menu();
 
         handler = new Handler();
-        new Window(this);
+        Window win=new Window(this);
+
+
         //llama a handler
         //agrega a esta clase la posibilidad de escuchar teclas
         //keyInput toma al handler para acceder a los numeros y a game para acceder a shift y poder
         //mover los numeros en respuesta a las teclas presionadas
         keylistener = new KeyInput(handler, this);
         this.addKeyListener(keylistener);
+
+
+
     }
 
 
@@ -135,13 +149,31 @@ public class Game extends Canvas implements Runnable {
      * la idea es que se refresque siempre
      */
 
+    private static Font getCustomFont() {
+        Font customFont = null;
+        try {
+            //create the font to use. Specify the size!
+            java.io.InputStream is = Game.class.getResourceAsStream("ClearSans-Bold.ttf");
+            customFont = Font.createFont(Font.TRUETYPE_FONT, is);
 
+
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+
+        //use the font
+        return customFont;
+    }
+
+	/*
+     * esta funcion elimina los objetos actuales asi no se dibujan de nuevo y llama a dibujar matriz que dibuja a la matriz
+	 * de nuevo para que tenga los valores de la matriz actualizada 
+	 */
 
     private void createMatrix() {
 
         Integer[][] mat = matJuego.getMat();
 
-        int Distance = getCellDistance();
 
         //lo que habias hecho antes, solo que tiene otro nombre
 
@@ -168,56 +200,13 @@ public class Game extends Canvas implements Runnable {
 
                 handler.addNumber(auxNum);
 
-                xaux += Distance;
+                xaux += cellDistance;
 
             }
 
-            yaux += Distance;
+            yaux += cellDistance;
             xaux = MatrixX;
 
-        }
-
-    }
-
-	/*
-     * esta funcion elimina los objetos actuales asi no se dibujan de nuevo y llama a dibujar matriz que dibuja a la matriz
-	 * de nuevo para que tenga los valores de la matriz actualizada 
-	 */
-
-    private void updateMatrix() {
-
-        handler.updateNumbers();
-
-
-        Integer[][] mat = matJuego.getMat();
-
-        int Distance = getCellDistance();
-
-        //lo que habias hecho antes, solo que tiene otro nombre
-
-
-        int xaux = MatrixX;
-        int yaux = MatrixY;
-
-        Integer matrixPositionNumber;
-        Number auxNum;
-
-
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat.length; j++) {
-                matrixPositionNumber = mat[i][j];
-
-                if (matrixPositionNumber != null) {
-                    auxNum = new Number(xaux, yaux, i, j, matrixPositionNumber, this);
-
-                    handler.addNumber(auxNum);
-                }
-                xaux += Distance;
-
-            }
-
-            yaux += Distance;
-            xaux = MatrixX;
         }
 
     }
@@ -249,7 +238,41 @@ public class Game extends Canvas implements Runnable {
         }
         stop();
     }
+    private void render() {
+        BufferStrategy bs = this.getBufferStrategy();
+        if (bs == null) {                    //inicializa en null
+            this.createBufferStrategy(3);
+            return;
+        }
 
+
+        Graphics g = bs.getDrawGraphics();    //crea un link para los graficos y el buffer
+
+
+        g.setColor(FONDO);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+
+
+        if (menu) {
+            matrixMenu();
+            drawMatrixBorders(g);
+            handler.render(g);
+            drawMatrixLines(g);
+            mainMenu.render(g);
+            if(mainMenu.isShowRankings()) {
+                drawRanking(g);
+            }
+            if (isGameInitialized()) drawScores(g);
+        } else {
+            drawMatrixBorders(g);
+            handler.render(g);
+            drawMatrixLines(g);
+            drawScores(g);
+        }
+
+        g.dispose();
+        bs.show();                    //para que muestre el buffer renderizado
+    }
 
     private void tick() {
         if (menu) {
@@ -304,37 +327,41 @@ public class Game extends Canvas implements Runnable {
 
     }
 
-    private void render() {
-        BufferStrategy bs = this.getBufferStrategy();
-        if (bs == null) {                    //inicializa en null
-            this.createBufferStrategy(3);
-            return;
+    private void updateMatrix() {
+
+        handler.updateNumbers();
+
+
+        Integer[][] mat = matJuego.getMat();
+
+
+        //lo que habias hecho antes, solo que tiene otro nombre
+
+
+        int xaux = MatrixX;
+        int yaux = MatrixY;
+
+        Integer matrixPositionNumber;
+        Number auxNum;
+
+
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat.length; j++) {
+                matrixPositionNumber = mat[i][j];
+
+                if (matrixPositionNumber != null) {
+                    auxNum = new Number(xaux, yaux, i, j, matrixPositionNumber, this);
+
+                    handler.addNumber(auxNum);
+                }
+                xaux += cellDistance;
+
+            }
+
+            yaux += cellDistance;
+            xaux = MatrixX;
         }
 
-
-        Graphics g = bs.getDrawGraphics();    //crea un link para los graficos y el buffer
-
-
-        g.setColor(FONDO);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
-
-
-        if (menu) {
-            matrixMenu();
-            drawMatrixBorders(g);
-            handler.render(g);
-            drawMatrixLines(g);
-            mainMenu.render(g);
-            if (isGameInitialized()) drawScores(g);
-        } else if (!menu) {
-            drawMatrixBorders(g);
-            handler.render(g);
-            drawMatrixLines(g);
-            drawScores(g);
-        }
-
-        g.dispose();
-        bs.show();                    //para que muestre el buffer renderizado
     }
 
 
@@ -389,6 +416,27 @@ public class Game extends Canvas implements Runnable {
         return new Rectangle(MatrixX, MatrixY, size, size);
     }
 
+    public  void drawRanking(Graphics g) {
+        g.setColor(MARCO);
+        g.fillRect(MatrixX + (cellDistance *2) - lineWidth, MatrixY, cellDistance - cellSize, Game.MatrixWIDTH);
+        int botonX = MatrixX;
+        int ancho = cellDistance *2- lineWidth;
+        int alto = Game.cellSize;
+        int cont=1;
+        for(int i=0;i<matrixSize/2;i++)
+            for (int j = 0; j < matrixSize; j++) {
+                g.setColor(CELDA);
+                g.fillRoundRect(botonX+Game.cellDistance *i*2, Game.MatrixY + Game.cellDistance * j, ancho, alto, Game.cellAndNumberCurve, Game.cellAndNumberCurve);
+                g.setColor(FONDO);
+                g.drawString(Player+": "+Integer.toString(getScore()), botonX+lineWidth+Game.cellDistance *i*2, Game.MatrixY + cellSize/2+(Game.cellDistance )* j);
+                cont++;
+            }
+
+
+
+    }
+
+
 
     private void drawScores(Graphics g) {
 
@@ -400,14 +448,14 @@ public class Game extends Canvas implements Runnable {
         g.setColor(new Color(0xE8DACD));
         g.drawString("Score", (int) (WIDTH / 2.9), HEIGHT / 12);
         g.setColor(Game.FONDO);
-        g.drawString(Integer.toString(getRecord()), (int) (WIDTH / 2.75), HEIGHT / 8);
+        g.drawString(Integer.toString(getScore()), (int) (WIDTH / 2.75), HEIGHT / 8);
 
         g.setColor(new Color(0xBEAC9E));
         g.fillRoundRect((int) (WIDTH / 1.8), HEIGHT / 20, (cellSize), (int) (cellSize / 1.5), cellAndNumberCurve * 2, cellAndNumberCurve * 2);
         g.setColor(new Color(0xE8DACD));
         g.drawString("Best", (int) (WIDTH / 1.73), HEIGHT / 12);
         g.setColor(Game.FONDO);
-        g.drawString(Integer.toString(this.j1.getRecord()), (int) (WIDTH / 1.69), HEIGHT / 8);
+        g.drawString(Integer.toString(Player.getRecord()), (int) (WIDTH / 1.69), HEIGHT / 8);
 
     }
 
@@ -429,7 +477,11 @@ public class Game extends Canvas implements Runnable {
     }
 
 
+    private void drawGameover(Graphics g){
+      //TODO CARTEL Y INPUT POR SI EL USER ROMPIO RECORDS
 
+
+    }
     public boolean gameOver() {
         return matJuego.gameOver();
     }
@@ -448,21 +500,7 @@ public class Game extends Canvas implements Runnable {
         return Tick;
     }
 
-    public static Font getCustomFont() {
-        Font customFont = null;
-        try {
-            //create the font to use. Specify the size!
-            java.io.InputStream is = Game.class.getResourceAsStream("ClearSans-Bold.ttf");
-            customFont = Font.createFont(Font.TRUETYPE_FONT, is);
 
-
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-
-        //use the font
-        return customFont;
-    }
 
     public static void printLog(String Log) {
         try {
@@ -520,15 +558,11 @@ public class Game extends Canvas implements Runnable {
         this.score = value;
     }
 
-    public int getRecord() {
-        //TODO BUSCAR EN LA BASE DE DATOS
+    public int getScore() {
         return score;
     }
 
 
-    private int getCellDistance() {
-        return cellDistance;
-    }
 
 
     public int getCellSize() {
@@ -536,7 +570,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public Jugador getJugador() {
-        return j1;
+        return Player;
     }
 
     public Mat2 getMatJuego() {
@@ -565,6 +599,7 @@ public class Game extends Canvas implements Runnable {
     public static void main(String main[]) {
         Game game = new Game();
     }
+
 
 
 }
