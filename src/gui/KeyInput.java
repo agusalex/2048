@@ -121,13 +121,9 @@ class KeyInput extends KeyAdapter {
             if (Game.menu)
                 dir = null;
 
-            if (Game.debug)
-                System.out.print(Game.menuOption);
+
         }
-
-
     }
-
     public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
@@ -160,8 +156,7 @@ class KeyInput extends KeyAdapter {
         if (Game.menu)
             dir = null;
 
-        if (Game.debug)
-            System.out.print(Game.menuOption);
+
 
 
     }

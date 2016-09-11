@@ -39,8 +39,13 @@ public class Game extends Canvas implements Runnable {
     //Ubicacion de la matriz en la ventana
     static final int MatrixX = WIDTH / 4 + WIDTH / 60;
     static final int MatrixY = HEIGHT / 6;
-    private static final long threshold = 3;
 
+
+
+
+
+    private static final long threshold = 3;
+    static String Log ="";
     //////////////////////////////
     public static final int matrixSize = 4;
     static final int cellSize = WIDTH / 10;
@@ -119,6 +124,7 @@ public class Game extends Canvas implements Runnable {
             default:
                 throw new IllegalArgumentException("Direction not allowed");
         }
+        Log=Log+choice.toString()+"h";
     }
 
 
@@ -245,18 +251,12 @@ public class Game extends Canvas implements Runnable {
     }
 
 
-    public static void setInitGame() {
-        Game.initGame = true;
-    }
-
     private void tick() {
         if (menu) {
             mainMenu.tick();
         } else {
 
-            if (countTicks && debug) {
-                System.out.println(Tick);
-            }
+
             if (Tick >= Long.MAX_VALUE - 1)
                 Tick = 0;
 
@@ -279,6 +279,10 @@ public class Game extends Canvas implements Runnable {
                     //para verificar igualdad
                     if (debug)
                         System.out.println(getMatJuego());
+                        Log = Log +getMatJuego();
+                        if (Log.length()>3000){
+                            Log=Log.substring(Log.length()-3000,Log.length());
+                        }
                     //actualizo a las celdas con numeros arriba de ellas
                     updateMatrix();
                     StopTickTimer();
@@ -467,16 +471,37 @@ public class Game extends Canvas implements Runnable {
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
-
+            int cont=0;
+            int cont2=0;
             for (int j = 0; j < Log.length(); j++) {
-                if (Log.charAt(j) == '\n') {
-                    bw.write(Log.substring(0, j));
-                    bw.newLine();
-                    bw.newLine();
-                    bw.newLine();
-                    bw.newLine();
-                    Log = Log.substring(j);
+                if(Log.charAt(j) != '\n'&&Log.charAt(j) != 'h') {
+                    bw.write(Log.charAt(j));
+
+                if(Log.charAt(j) == '|'){
+                    cont++;
                 }
+                if (cont==4) {
+                    cont2++;
+                    cont=0;
+                    bw.newLine();
+
+                    if (cont2 == 4) {
+                        cont = 0;
+                        cont2=0;
+                        bw.newLine();
+
+
+
+                    }
+
+                }
+                }
+
+                if(Log.charAt(j) == 'h'){
+                    bw.newLine();
+                    bw.newLine();
+                }
+
 
             }
 
@@ -529,6 +554,10 @@ public class Game extends Canvas implements Runnable {
     }
 
     private static boolean GameInitialized = false;
+
+    public static void setInitGame() {
+        Game.initGame = true;
+    }
 
 
 //	public void importarJugador(BufferedReader file)   esto se realiza si existe el jugador creado, usa el lector de Archivo

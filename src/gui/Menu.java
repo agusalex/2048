@@ -20,13 +20,16 @@ class Menu {
                     Game.menu = false;
 
                     Game.matJuego.initialize();
+                    if(Game.debug)
+                        Game.Log=Game.matJuego.toString();
                     setInitGame();
                     setGameInitialized();
                 }
 
             } else if (Game.menuOption == 1) { //Opciones
 
-                //TODO opciones
+                Game.printLog(Game.Log);
+
             } else if (Game.menuOption == 2) {
                 //TODO RECORDS
             } else if (Game.menuOption == 3) {
