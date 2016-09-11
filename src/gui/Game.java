@@ -566,11 +566,41 @@ public class Game extends Canvas implements Runnable {
         }
         return false;
     }
+
+
+
+
+    public static Jugador bestScore(){
+        Jugador best = new Jugador("best");
+        Jugador current = null;
+        for(int index = 0; index < Jugadores.size (); index++){
+            current = Jugadores.get(index);
+            if(best.compareTo (current) == -1)
+                best.copy (current);
+        }
+        return best;
+    }
+
+
+    public static void sortList(LinkedList<Jugador> lista, int size){
+        if(lista.size() == size)
+            return;
+
+        Jugador minimo = bestScore();
+        Jugadores.remove (minimo);
+        lista.add (minimo);
+        sortList(lista,size);
+    }
+
+
     public static void setRecord(){
         Player.setScore (getScore());
         Jugadores.add (Player);
 
-      //  sortList();
+        LinkedList<Jugador> scores = new LinkedList<Jugador> ();
+        sortList(scores,Jugadores.size());
+        Jugadores = scores;
+
 
         while(Jugadores.size ()>8){
             Jugadores.removeLast ();
@@ -662,27 +692,6 @@ public class Game extends Canvas implements Runnable {
 
 
 
-    public Jugador bestScore(){
-        Jugador best = new Jugador("best");
-        Jugador current = null;
-        for(int index = 0; index < Jugadores.size (); index++){
-            current = Jugadores.get(index);
-            if(best.compareTo (current) == -1)
-                best.copy (current);
-        }
-        return best;
-    }
-
-
-    public void sortList(LinkedList<Jugador> lista, int size){
-        if(lista.size() == size)
-            return;
-
-        Jugador minimo = bestScore();
-        Jugadores.remove (minimo);
-        lista.add (minimo);
-        sortList(lista,size);
-    }
 
 
     public int getCellSize() {
