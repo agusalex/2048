@@ -45,7 +45,7 @@ class Menu {
 
     public void render(Graphics g) {
 
-        g.setColor(Color.RED);
+
         Font font;
         float size = 30F;
         font = Game.Fuente.deriveFont(size);
@@ -59,6 +59,8 @@ class Menu {
 
         int ancho = (int) ((Game.cellSize * 2) + Game.lineWidth * 1.1);
         int alto = Game.cellSize;
+
+        g.setColor(new Color(0x917A64));
         g.setFont(font);
 
         if (!Game.isGameInitialized()) {

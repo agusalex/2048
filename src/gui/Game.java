@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable {
 
     /////////COLORES//////
     static Font Fuente;
-    private static final Color FONDO = new Color(0xE9E9E0);
+    private static final Color FONDO = new Color(0xFFFCED);
     //static final Color FONDO=new Color(0xFBF8F1);
     static final Color MARCO = new Color(0xB8AC9F);
     static final Color CELDA = new Color(0xCDC1B5);
@@ -98,27 +98,39 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(keylistener);
     }
 
-    public static boolean isMenu() {
-        return menu;
+
+    public void play(Direction choice) {
+
+        switch (choice) {
+
+            case UP:
+                matJuego.Shift(Direction.UP);
+                break;
+            case DOWN:
+                matJuego.Shift(Direction.DOWN);
+                break;
+            case LEFT:
+                matJuego.Shift(Direction.LEFT);
+                break;
+            case RIGHT:
+                matJuego.Shift(Direction.RIGHT);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Direction not allowed");
+        }
     }
 
 
-    private void matrixMenu() {
-        handler.addMenuNumber(new Number(MatrixX, MatrixY, 0, 0, 2, this));
-        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance, 0, 0, 0, this));
-        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance * 2, 0, 0, 4, this));
-        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance * 3, 0, 0, 8, this));
-        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY, 0, 0, 2, this));
-        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance, 0, 0, 0, this));
-        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance * 2, 0, 0, 4, this));
-        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance * 3, 0, 0, 8, this));
-    }
 
 
     /*
      * dibuja las celdas y numeros en pantalla esto se llama en run() ya que es el primer metodo en eejecutarse
      * la idea es que se refresque siempre
      */
+
+
+
     private void createMatrix() {
 
         Integer[][] mat = matJuego.getMat();
@@ -340,29 +352,6 @@ public class Game extends Canvas implements Runnable {
     }
 
 
-    public void play(Direction choice) {
-
-        switch (choice) {
-
-            case UP:
-                matJuego.Shift(Direction.UP);
-                break;
-            case DOWN:
-                matJuego.Shift(Direction.DOWN);
-                break;
-            case LEFT:
-                matJuego.Shift(Direction.LEFT);
-                break;
-            case RIGHT:
-                matJuego.Shift(Direction.RIGHT);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Direction not allowed");
-        }
-    }
-
-
     private static void drawMatrixBorders(Graphics g) {
         g.setColor(MARCO);
         int POLO = cellDistance - (cellSize);
@@ -402,19 +391,39 @@ public class Game extends Canvas implements Runnable {
         Font newFont = Game.Fuente.deriveFont(28F);
         g.setFont(newFont);
 
-        g.setColor(MARCO);
+        g.setColor(new Color(0xBEAC9E));
         g.fillRoundRect(WIDTH / 3, HEIGHT / 20, cellSize, (int) (cellSize / 1.5), cellAndNumberCurve * 2, cellAndNumberCurve * 2);
-        g.setColor(FONDO);
+        g.setColor(new Color(0xE8DACD));
         g.drawString("Score", (int) (WIDTH / 2.9), HEIGHT / 12);
+        g.setColor(Game.FONDO);
         g.drawString(Integer.toString(getRecord()), (int) (WIDTH / 2.75), HEIGHT / 8);
 
-        g.setColor(MARCO);
+        g.setColor(new Color(0xBEAC9E));
         g.fillRoundRect((int) (WIDTH / 1.8), HEIGHT / 20, (cellSize), (int) (cellSize / 1.5), cellAndNumberCurve * 2, cellAndNumberCurve * 2);
-        g.setColor(FONDO);
+        g.setColor(new Color(0xE8DACD));
         g.drawString("Best", (int) (WIDTH / 1.73), HEIGHT / 12);
+        g.setColor(Game.FONDO);
         g.drawString(Integer.toString(this.j1.getRecord()), (int) (WIDTH / 1.69), HEIGHT / 8);
 
     }
+
+
+    public static boolean isMenu() {
+        return menu;
+    }
+
+
+    private void matrixMenu() {
+        handler.addMenuNumber(new Number(MatrixX, MatrixY, 0, 0, 2, this));
+        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance, 0, 0, 0, this));
+        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance * 2, 0, 0, 4, this));
+        handler.addMenuNumber(new Number(MatrixX, MatrixY + cellDistance * 3, 0, 0, 8, this));
+        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY, 0, 0, 2, this));
+        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance, 0, 0, 0, this));
+        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance * 2, 0, 0, 4, this));
+        handler.addMenuNumber(new Number(MatrixX + cellDistance * 3, MatrixY + cellDistance * 3, 0, 0, 8, this));
+    }
+
 
 
     public boolean gameOver() {
