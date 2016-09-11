@@ -1,10 +1,9 @@
 package paquete;
 
-import java.awt.EventQueue;
+import javax.swing.*;
+import java.awt.*;
 
-import javax.swing.JFrame;
-
-public class Main {
+class Main {
 
 	private JFrame frame;
 
@@ -12,22 +11,20 @@ public class Main {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Main window = new Main();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                Main window = new Main();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public Main() {
+    private Main() {
 		initialize();
 	}
 
@@ -37,7 +34,7 @@ public class Main {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 }
