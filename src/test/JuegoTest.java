@@ -20,7 +20,7 @@ public class JuegoTest {
 		assertEquals(0,game.getJugador().getMovements());
 		assertEquals(0,game.getJugador().getRecord());
 		game.getJugador().madeMovement();
-		game.getJugador().increaseScore(2000);
+		game.getJugador().setScore (2000);
 		assertEquals(1,game.getJugador().getMovements());
 		assertEquals(2000,game.getJugador().getRecord());
 		game.increaseScore(34);

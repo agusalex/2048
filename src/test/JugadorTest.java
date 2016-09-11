@@ -22,15 +22,15 @@ public class JugadorTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void setScoreExceptiontest() {
-		j1.increaseScore(-1);
-		j2.increaseScore(0);
+		j1.setScore (-1);
+		j2.setScore (0);
 		
 	}
 	
 	
 	public void setScoreTest(){
-		j1.increaseScore(500);
-		j1.increaseScore(100);
+		j1.setScore (500);
+		j1.setScore (100);
 		System.out.print(j1.toString());
 		assertEquals("Nombre: Esteban Quito Puntuacion: 600 Cant. movimientos: 0",j1.toString());
 	}

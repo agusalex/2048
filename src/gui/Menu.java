@@ -14,6 +14,9 @@ class Menu {
     public static boolean isShowRankings() {
         return showRankings;
     }
+    public void setShowRankings(boolean b) {
+       showRankings=b;
+    }
 
     private int opcion;
 
@@ -23,12 +26,14 @@ class Menu {
                 if (Game.menu) {
                     Game.matJuego = new Mat2(Game.matrixSize);
                     Game.menu = false;
-
                     Game.matJuego.initialize();
+                    Game.isInRecord=false;
                     if(Game.debug)
                         Game.Log=Game.matJuego.toString();
+
                     setInitGame();
                     setGameInitialized();
+
                 }
 
             } else if (Game.menuOption == 1) { //Opciones
@@ -36,15 +41,26 @@ class Menu {
                 Game.printLog(Game.Log);
 
             } else if (Game.menuOption == 2) {
-
                 showRankings = !showRankings;
-                //TODO RECORDS
+
+
             } else if (Game.menuOption == 3) {
 
                 System.exit(0);
             }
+
             Game.optionSelect = false;
-            opcion = 0;
+            opcion=0;
+
+        }
+
+
+
+        if(!Game.isInRecord&&Game.isRecord()&&Game.gameOver ()){
+            Game.pop.setVisible(true);
+
+
+
         }
 
 

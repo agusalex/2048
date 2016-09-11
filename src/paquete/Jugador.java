@@ -6,22 +6,25 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 
 
-public class Jugador implements Serializable {
+public class Jugador implements Serializable,Comparable {
 
     private static final long serialVersionUID = 1L;
-    private final String name;
+    private String name;
     private int record = 0, movements;
 
 
     public Jugador(String name) {
         this.name = name;
     }
+    public Jugador() {
+        this.name = "Default";
+    }
 
     public void madeMovement() {
         this.movements++;
     }
 
-    public void increaseScore(int record) {
+    public void setScore(int record) {
         if (record < 0)
             throw new IllegalArgumentException("Invalid score for user");
         this.record = record;
@@ -57,7 +60,7 @@ public class Jugador implements Serializable {
         return this.movements;
     }
 
-
+    @Override
     public int compareTo(Object jugador) {
         Jugador j2;
         if (jugador == null)
@@ -69,16 +72,26 @@ public class Jugador implements Serializable {
             else if (j2.record > this.record)
                 return -1;
             else if (j2.record == this.record) {
-                if (j2.getMovements() < this.getMovements())
-                    return -1;
-                if (j2.getMovements() == this.getMovements())
-                    return 0;
+                    if (j2.getMovements() < this.getMovements())
+                        return -1;
+                    if (j2.getMovements() == this.getMovements())
+                        return 0;
                 else return 1;
             } else
                 return 1;
         }
         return 0;
     }
+
+
+    public void copy(Jugador player){
+        this.name = player.name;
+        this.record = player.record;
+        this.movements = player.movements;
+    }
+
+
+
 
 
     private void generarJSON() {
@@ -116,8 +129,8 @@ public class Jugador implements Serializable {
     public static void main(String[] args) {
         Jugador j1 = new Jugador("esteban quito");
         Jugador j2 = new Jugador("dolores de barriga");
-        j1.increaseScore(2000);
-        j2.increaseScore(3000);
+        j1.setScore (2000);
+        j2.setScore (3000);
         for (int i = 0; i < 10; i++) {
             j1.madeMovement();
             if (i % 2 == 0)
@@ -160,6 +173,12 @@ public class Jugador implements Serializable {
         j2 = leerJSON();
         System.out.println(j2);
     }
+    public void setName(String namee) {
+        this.name=namee;
+    }
 
+    public String getName() {
+        return name;
+    }
 }
 

@@ -2,46 +2,58 @@
 
 package gui;
 
+import paquete.Jugador;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
-public class PopUp extends JFrame {
+import static gui.Game.isRecord;
+import static gui.Game.setRecord;
 
-    private static final long serialVersionUID = 2451829341034438685L;
+public class PopUp extends JFrame implements ActionListener{
+    private JTextField textfield1;
+    private JLabel label1;
+    private JButton boton1;
+    public PopUp() {
+        setBounds(0,0,300,150);
+        setTitle("2048 : Nuevo Record");
+        setLocationRelativeTo(null);
+        setLayout(null);
+        label1=new JLabel("Nombre:");
+        label1.setBounds(10,10,100,30);
+        add(label1);
+        textfield1=new JTextField();
+        textfield1.setBounds(120,10,150,20);
+        add(textfield1);
+        boton1=new JButton("Aceptar");
+        boton1.setBounds(10,80,100,30);
+        add(boton1);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        try {
+           this.setIconImage(ImageIO.read(new File("img/icon.png")));
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
 
-    public static JButton inputButton = new JButton("Guardar");
-    public static JTextArea editTextArea = new JTextArea("Ingresar Nombre");
-    public static JTextArea uneditTextArea = new JTextArea();
-
-    public PopUp(String title) {
-        //SET LAYOUT MANAGER (How it arranges components)
-        setLayout(new BorderLayout());
-//////CREATE SWING COMPONENTS////////////
-//OUTPUT TEXT AREA
-        uneditTextArea.setEditable(false);
-
-//INPUT TEXT AREA
-        editTextArea.setBackground(Color.BLUE);
-        editTextArea.setForeground(Color.WHITE);
-
-//SET CONTENT PANE
-        Container c = getContentPane();
-
-//ADD COMPONENTS TO CONTENT PANE
-        c.add(uneditTextArea, BorderLayout.CENTER);
-        c.add(editTextArea, BorderLayout.SOUTH);
-        c.add(inputButton, BorderLayout.WEST);
-       PopUp.inputButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String str = editTextArea.getText();
-                editTextArea.setText(" ");
-                System.out.println(str);
-            }
-        });
+        boton1.addActionListener(this);
     }
-}
 
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==boton1) {
+           Game.Player.setName (textfield1.getText());
+
+            if(Game.isRecord ()){
+                Game.setRecord ();
+            Game.isInRecord=true;}
+            Game.Player=new Jugador ();
+            Menu.SetShowRankings (true);
+            setVisible(false);
+
+        }
+    }
+
+
+}

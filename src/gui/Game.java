@@ -5,10 +5,14 @@ import paquete.Jugador;
 import paquete.Mat2;
 
 import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferStrategy;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 
 public class Game extends Canvas implements Runnable {
@@ -21,7 +25,7 @@ public class Game extends Canvas implements Runnable {
      */
     private static final long serialVersionUID = 2381537138204047441L;
 
-    private final Jugador Player;
+
     public static Mat2 matJuego;
     private Menu mainMenu;
 
@@ -59,7 +63,7 @@ public class Game extends Canvas implements Runnable {
 
     private static boolean countTicks = false;
     private static long Tick = 0; //Cuando se activa ResetTickTimer empieza a contar ticks
-    private int score = 0;
+    private static int score = 0;
 
 
     ////////////////////////////
@@ -69,12 +73,15 @@ public class Game extends Canvas implements Runnable {
     public static int menuOption = 0;
     public static boolean optionSelect = false;
     private static boolean initGame = false;
+    public static boolean isInRecord=false;
 
 
     //tiene un handler
     private Handler handler;
     private static KeyInput keylistener;
-
+    public static PopUp pop;
+    public static LinkedList<Jugador> Jugadores=new LinkedList<Jugador>();
+    public static Jugador Player=new Jugador("Default");
 
 
 
@@ -82,7 +89,7 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {      //TODO la idea es que se cree en la clase de la interfaz ?
 
-        this.Player = new Jugador("Default"); //nuevo jugador
+
         if (matrixSize < 2) {
             throw new IllegalArgumentException("invalid size:" + matrixSize);
         }
@@ -100,6 +107,13 @@ public class Game extends Canvas implements Runnable {
 
         handler = new Handler();
         new Window(this);
+        pop=new PopUp();
+
+        pop.setBounds(0,0,300,150);
+        pop.setLocationRelativeTo(this);
+        pop.setVisible(false);
+
+
         //llama a handler
         //agrega a esta clase la posibilidad de escuchar teclas
         //keyInput toma al handler para acceder a los numeros y a game para acceder a shift y poder
@@ -249,7 +263,7 @@ public class Game extends Canvas implements Runnable {
             handler.render(g);
             drawMatrixLines(g);
             mainMenu.render(g);
-            if(mainMenu.isShowRankings()) {
+            if(Menu.isShowRankings()) {
                 drawRanking(g);
             }
             if (isGameInitialized()) drawScores(g);
@@ -260,20 +274,29 @@ public class Game extends Canvas implements Runnable {
             drawScores(g);
         }
 
+
+        if(gameOver()&&!menu){
+            drawGameover(g);
+        }
+
         g.dispose();
         bs.show();                    //para que muestre el buffer renderizado
     }
 
     private void tick() {
+
+        Player.setScore (matJuego.getScore ());
+       if(countTicks)
+           Tick++;
+
+        if (Tick >= Long.MAX_VALUE - 1)
+            Tick = 0;
         if (menu) {
             mainMenu.tick();
         } else {
 
 
-            if (Tick >= Long.MAX_VALUE - 1)
-                Tick = 0;
 
-            Tick++;
 
             keylistener.tick();
 
@@ -307,10 +330,22 @@ public class Game extends Canvas implements Runnable {
             handler.tick();
 
             //si se termina el juego se vuelve al menu principal
+
             if (gameOver()) {
-                menu = true;
-                matJuego = new Mat2();
-                updateMatrix();
+                if(!countTicks) {
+                    setTickTimer();
+                }
+
+
+                System.out.print(Tick);
+                if(getTickTimer()>30) {
+                    if(isRecord ()){
+
+                        Game.menuOption=2;
+                    }
+                    menu = true;
+                    StopTickTimer();
+                }
             }
 
         }
@@ -407,28 +442,47 @@ public class Game extends Canvas implements Runnable {
     }
 
     public  void drawRanking(Graphics g) {
-        g.setColor(MARCO);
-        g.fillRect(MatrixX + (cellDistance *2) - lineWidth, MatrixY, cellDistance - cellSize, Game.MatrixWIDTH);
+        g.setColor (MARCO);
+        g.fillRect (MatrixX + (cellDistance * 2) - lineWidth, MatrixY, cellDistance - cellSize, Game.MatrixWIDTH);
         int botonX = MatrixX;
-        int ancho = cellDistance *2- lineWidth;
-        int alto = Game.cellSize;
-        int cont=1;
-        for(int i=0;i<matrixSize/2;i++)
+        int ancho = cellDistance * 2 - lineWidth;
+        @SuppressWarnings("UnnecessaryLocalVariable") int alto = Game.cellSize;
+        int cont = 0;
+
+        for (int i = 0; i < matrixSize / 2; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                g.setColor(CELDA);
-                g.fillRoundRect(botonX+Game.cellDistance *i*2, Game.MatrixY + Game.cellDistance * j, ancho, alto, Game.cellAndNumberCurve, Game.cellAndNumberCurve);
-                g.setColor(FONDO);
-                g.drawString(Player+": "+Integer.toString(getScore()), botonX+lineWidth+Game.cellDistance *i*2, Game.MatrixY + cellSize/2+(Game.cellDistance )* j);
+                g.setColor (CELDA);
+                g.fillRoundRect (botonX + Game.cellDistance * i * 2, Game.MatrixY + Game.cellDistance * j, ancho, alto, Game.cellAndNumberCurve, Game.cellAndNumberCurve);
+
+            }
+
+
+        }
+        Jugador jug;
+        for (int i = 0; i < matrixSize / 2; i++) {
+
+            for (int j = 0; j < matrixSize; j++) {
+                if((cont<Jugadores.size ())){
+                   jug=Jugadores.get (cont);
+                }
+                else{
+                    jug=new Jugador ();
+                }
+
+                g.setColor (FONDO);
+                g.drawString (cont+1+"."+jug.getName() + ": " + jug.getRecord (), botonX + lineWidth + Game.cellDistance * i * 2, Game.MatrixY + cellSize / 2 + (Game.cellDistance) * j);
                 cont++;
             }
 
+
+        }
 
 
     }
 
 
-
     private void drawScores(Graphics g) {
+
 
         Font newFont = Game.Fuente.deriveFont(28F);
         g.setFont(newFont);
@@ -438,14 +492,16 @@ public class Game extends Canvas implements Runnable {
         g.setColor(new Color(0xE8DACD));
         g.drawString("Score", (int) (WIDTH / 2.9), HEIGHT / 12);
         g.setColor(Game.FONDO);
-        g.drawString(Integer.toString(getScore()), (int) (WIDTH / 2.75), HEIGHT / 8);
+        String n=Integer.toString (getScore());
+        g.drawString(n, (int) (WIDTH / 2.75)-n.length ()*4, HEIGHT / 8);
 
         g.setColor(new Color(0xBEAC9E));
         g.fillRoundRect((int) (WIDTH / 1.8), HEIGHT / 20, (cellSize), (int) (cellSize / 1.5), cellAndNumberCurve * 2, cellAndNumberCurve * 2);
         g.setColor(new Color(0xE8DACD));
         g.drawString("Best", (int) (WIDTH / 1.73), HEIGHT / 12);
         g.setColor(Game.FONDO);
-        g.drawString(Integer.toString(Player.getRecord()), (int) (WIDTH / 1.69), HEIGHT / 8);
+        n=Integer.toString (getBest());
+        g.drawString(n, (int) (WIDTH / 1.69)-n.length ()*4, HEIGHT / 8);
 
     }
 
@@ -468,11 +524,63 @@ public class Game extends Canvas implements Runnable {
 
 
     private void drawGameover(Graphics g){
-      //TODO CARTEL Y INPUT POR SI EL USER ROMPIO RECORDS
+        int curva = Game.cellAndNumberCurve;
+
+        int botonX = Game.MatrixX + (Game.cellDistance);
+
+        int ancho = (int) ((Game.cellSize * 2) + Game.lineWidth * 1.1);
+        int alto = Game.cellSize;
+        Font newFont = Game.Fuente.deriveFont(28F);
+        g.setFont(newFont);
+
+        g.setColor(new Color(0xBE797B));
+        g.fillRoundRect(botonX, Game.MatrixY + Game.cellDistance, ancho, alto, curva, curva);
+        g.setColor(new Color(0xE8140E));
+        String GO="Game Over";
+        g.drawString(GO, (int) (Game.WIDTH / 2.3)-GO.length()*2, (int) (Game.HEIGHT / 2.5));
+
+    }
+
+    public static int getBest(){
+     if(Jugadores.size()>=1) {
+         if (Player.compareTo (Jugadores.getFirst ( )) == -1) {
+            return  Jugadores.getFirst ( ).getRecord ( );
+
+         }
+     }
+
+       return Player.getRecord ( );
+    }
+
+    public static boolean isRecord(){
+        if((Jugadores.size()<8)&&!Game.isInRecord){
+
+
+
+            return true;
+        }
+        for(Jugador P: Jugadores){
+            if(Game.Player.getRecord()>P.getRecord()){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void setRecord(){
+        Player.setScore (getScore());
+        Jugadores.add (Player);
+
+      //  sortList();
+
+        while(Jugadores.size ()>8){
+            Jugadores.removeLast ();
+        }
 
 
     }
-    public boolean gameOver() {
+
+
+    public static boolean gameOver() {
         return matJuego.gameOver();
     }
 
@@ -494,31 +602,31 @@ public class Game extends Canvas implements Runnable {
 
     public static void printLog(String Log) {
         try {
-            PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
-            System.setOut(out);
+                    PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
+                    System.setOut(out);
 
-            int cont=0;
-            int cont2=0;
-            for (int j = 0; j < Log.length(); j++) {
-                if(Log.charAt(j) != '\n'&&Log.charAt(j) != 'h') {
-                    System.out.print(Log.charAt(j));
+                    int cont=0;
+                    int cont2=0;
+                    for (int j = 0; j < Log.length(); j++) {
+                        if(Log.charAt(j) != '\n'&&Log.charAt(j) != 'h') {
+                            System.out.print(Log.charAt(j));
 
-                if(Log.charAt(j) == '|'){
-                    cont++;
-                }
-                if (cont==4) {
-                    cont2++;
-                    cont=0;
-                    System.out.println();
+                            if(Log.charAt(j) == '|'){
+                                cont++;
+                            }
+                            if (cont==4) {
+                                cont2++;
+                                cont=0;
+                                System.out.println();
 
-                    if (cont2 == 4) {
-                        cont = 0;
-                        cont2=0;
-                        System.out.println();
+                                if (cont2 == 4) {
+                                    cont = 0;
+                                    cont2=0;
+                                    System.out.println();
 
 
 
-                    }
+                                }
 
                 }
                 }
@@ -548,9 +656,23 @@ public class Game extends Canvas implements Runnable {
         this.score = value;
     }
 
-    public int getScore() {
+    public static int getScore() {
         return score;
     }
+
+
+
+    public Jugador bestScore(){
+        Jugador best = new Jugador("best");
+        Jugador current = null;
+        for(int index = 0; index < Jugadores.size (); index++){
+            current = Jugadores.get(index);
+            if(best.compareTo (current) == 1)
+                best.copy (current);
+        }
+        return best;
+    }
+
 
 
 

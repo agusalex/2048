@@ -74,7 +74,7 @@ class KeyInput extends KeyAdapter {
 
             }
 
-            if (Animate)
+            if (Animate&&!Game.gameOver())
                 Game.setTickTimer();
 
         }
