@@ -4,7 +4,6 @@ import paquete.Direction;
 import paquete.Jugador;
 import paquete.Mat2;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.FileOutputStream;
@@ -75,12 +74,9 @@ public class Game extends Canvas implements Runnable {
     //tiene un handler
     private Handler handler;
     private static KeyInput keylistener;
-    public static JButton inputButton = new JButton("Send");
-    public static JTextArea editTextArea = new JTextArea("Type Here!");
-    public static JTextArea uneditTextArea = new JTextArea();
 
 
-        //SET LAYOUT MANAGER (How it arranges components)
+
 
 
 
@@ -103,20 +99,14 @@ public class Game extends Canvas implements Runnable {
         mainMenu = new Menu();
 
         handler = new Handler();
-        Window win=new Window(this);
-
-
+        new Window(this);
         //llama a handler
         //agrega a esta clase la posibilidad de escuchar teclas
         //keyInput toma al handler para acceder a los numeros y a game para acceder a shift y poder
         //mover los numeros en respuesta a las teclas presionadas
         keylistener = new KeyInput(handler, this);
         this.addKeyListener(keylistener);
-
-
-
     }
-
 
     public void play(Direction choice) {
 

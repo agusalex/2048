@@ -1,3 +1,5 @@
+
+
 package gui;
 
 import javax.imageio.ImageIO;
@@ -36,9 +38,8 @@ class Window extends Canvas {
             exc.printStackTrace();
         }
 
-        Frame f=new Frame("Record");
 
-
+        frame.setVisible(true);
 
 
         game.start();
@@ -48,3 +49,4 @@ class Window extends Canvas {
 
 
 }
+

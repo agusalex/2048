@@ -25,7 +25,7 @@ public class JuegoTest {
 		assertEquals(2000,game.getJugador().getRecord());
 		game.increaseScore(34);
 		game.increaseScore(1);
-		assertEquals(35,game.getRecord());
+		assertEquals(35,game.getScore());
 	}
 	
 	@Test

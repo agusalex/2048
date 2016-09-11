@@ -30,7 +30,7 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "Nombre: " + this.name + " Puntuacion: " + this.record + " Cant. movimientos: " + this.movements;
+        return this.name;
     }
 
     @Override
