@@ -1,15 +1,10 @@
 package gui;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 public class Window extends Canvas{
 	public static boolean restart=true;
@@ -34,6 +29,8 @@ public class Window extends Canvas{
 		frame.setLocationRelativeTo(null);  //empieza en el medio
 		
 		frame.add(game);
+
+
 		try {
 		    frame.setIconImage(ImageIO.read(new File("img/icon.png")));
 		}

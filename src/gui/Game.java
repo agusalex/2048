@@ -20,7 +20,7 @@ public class Game extends Canvas implements Runnable{
 	private static final long serialVersionUID = 2381537138204047441L;
 	
 	private final Jugador j1;
-	private  Mat2 matJuego;
+	public static  Mat2 matJuego;
 	private Menu mainMenu;
 	
 	
@@ -45,7 +45,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	private static final long threshold = 3;
 	
 	//////////////////////////////
-	private static final int matrixSize = 4;
+	public static final int matrixSize = 4;
 	static final int cellSize = WIDTH/10;
 	static final int cellDistance = cellSize + WIDTH/70;
 	static int lineWidth=cellDistance-cellSize;
@@ -66,7 +66,17 @@ static final Color CELDA=new Color(0xCDC1B5);
 	public static boolean menu = true;
 	public static int menuOption = 0;
 	public static boolean optionSelect = false;
-	public static boolean rebootGame = false;
+	private static boolean initGame = false;
+
+    public static boolean isGameInitialized() {
+        return GameInitialized;
+    }
+
+    public static void setGameInitialized(boolean gameInitialized) {
+        GameInitialized = gameInitialized;
+    }
+
+    private static boolean GameInitialized=false;
 
 	//tiene un handler
     private Handler handler;
@@ -82,11 +92,11 @@ static final Color CELDA=new Color(0xCDC1B5);
 		if(matrixSize > 10){
 			throw new IllegalArgumentException("invalid size:"+matrixSize);
 		}
-		
+        this.requestFocus();
 		this.matJuego = new Mat2(matrixSize);
 	    System.out.println(this.matJuego);
-		
-		
+
+
 		Fuente = getCustomFont();
 		
 		mainMenu = new Menu();
@@ -100,10 +110,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 		keylistener= new KeyInput(handler,this);
 		this.addKeyListener(keylistener);
 	}
-	
-	
-	
-	private void matrixMenu(){
+
+    public static boolean isMenu() {
+        return menu;
+    }
+
+
+    private void matrixMenu(){
 		handler.addMenuNumber(new Number(MatrixX,MatrixY, 0, 0, 2,this));
 		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance, 0, 0, 0,this));
 		handler.addMenuNumber(new Number(MatrixX,MatrixY + cellDistance*2 , 0 , 0 , 4,this));
@@ -166,7 +179,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 	 * de nuevo para que tenga los valores de la matriz actualizada 
 	 */
 	
-	private void updateMatrix(){
+	public void updateMatrix(){
 		
 		handler.updateNumbers();
         
@@ -205,7 +218,9 @@ static final Color CELDA=new Color(0xCDC1B5);
 	}
 	
 	public void run() {		//CICLO DEL JUEGO
-		//dDIBUJA A LA MATRIZ
+
+
+				//dDIBUJA A LA MATRIZ
 		this.createMatrix();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
@@ -229,8 +244,14 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		stop();
 	}
-	
-	private void tick(){
+
+
+
+    public static void setInitGame(boolean initGame) {
+        Game.initGame = initGame;
+    }
+
+    private void tick(){
 		if(menu){
 			   mainMenu.tick();
 		 }
@@ -246,7 +267,11 @@ static final Color CELDA=new Color(0xCDC1B5);
 				Tick++;
 			
 				keylistener.tick();
-			
+
+                if(initGame){
+                    this.updateMatrix();
+                    initGame=false;
+                }
 				if(keylistener.isAnimate()){
 					if(Game.getTickTimer()>threshold){
 						//mueve y combina llamando a play de juego que llama a SHIFT
@@ -278,8 +303,12 @@ static final Color CELDA=new Color(0xCDC1B5);
 		}
 		
 	}
-	
-	private void render(){
+
+    public static boolean isInitGame() {
+        return initGame;
+    }
+
+    private void render(){
 		BufferStrategy bs = this.getBufferStrategy(); 
 		if(bs == null){ 					//inicializa en null
 			this.createBufferStrategy(3);
@@ -294,13 +323,13 @@ static final Color CELDA=new Color(0xCDC1B5);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		
-		if(menu ){
-			matrixMenu();  
+		if(menu){
+			matrixMenu();
 			drawMatrixBorders(g);
 			handler.render(g);
 			drawMatrixLines(g);
 			mainMenu.render(g);
-			
+			if(isGameInitialized()) drawScores(g);
 		}
 		else if (!menu){
 			drawMatrixBorders(g); 
@@ -313,17 +342,6 @@ static final Color CELDA=new Color(0xCDC1B5);
 		bs.show(); 					//para que muestre el buffer renderizado
 	}
 	
-	
-	public boolean isMenu() {
-		return menu;
-	}
-
-
-
-
-	public void setMenu(boolean menu) {
-		Game.menu = menu;
-	}
 
 
 
@@ -332,6 +350,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		thread = new Thread (this);
 		thread.start();
 		running = true;
+        requestFocusInWindow();
 	}
 	
 	
@@ -536,16 +555,7 @@ static final Color CELDA=new Color(0xCDC1B5);
 		return this.matJuego;
 	}
 	
-	public int getMatrixHEIGHT() {
-		return MatrixHEIGHT;
-	}
 
-
-
-
-	public int getMatrixWIDTH() {
-		return MatrixWIDTH;
-	}
 
 
 	

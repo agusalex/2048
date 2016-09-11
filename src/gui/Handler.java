@@ -18,23 +18,24 @@ public class Handler {
 	
 	
 	public void render(Graphics g){
-		if(Game.menu){
-			for(int x = 0; x< gameMenuNumbers.size();x++){
-				gameMenuNumbers.get(x).render(g);
-			}
-		}
+
+
 		
-		else{
+
 			for(int x = 0; x < gameCells.size(); x++){
 				Cell cell = gameCells.get(x);
 				cell.render(g);
 			}
-		
+			if(!Game.isGameInitialized()) {
+				for (int x = 0; x < gameMenuNumbers.size(); x++) {
+					gameMenuNumbers.get(x).render(g);
+				}
+			}
 			for(int x = 0; x < gameNumbers.size(); x++){
 				Number number = gameNumbers.get(x);
 				number.render(g);
 			}
-		}
+
 		
 	}
 	

@@ -20,7 +20,7 @@ public class Mat2 {
 		
 		Win=false;
 		this.mat = new Integer [n][n];	
-		initialize();
+
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class Mat2 {
 	 * @param x     en alguna fila
 	 * @param y		en alguna columna
 	 */
-	private void initialize(){
+	public void initialize(){
 		addNewRandomCell();
 		addNewRandomCell();
 	}

@@ -1,10 +1,10 @@
 package gui;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
 import paquete.Direction;
 import paquete.Mat2;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 
@@ -106,9 +106,7 @@ public class KeyInput extends KeyAdapter{
 				dir=Direction.RIGHT;
 				
 			}
-			else if(key==KeyEvent.VK_ENTER){
-				Game.optionSelect=true;
-			}
+
 			else if(key == KeyEvent.VK_ESCAPE){
 				if(!Game.menu)
 				Game.menu=true;
@@ -117,7 +115,7 @@ public class KeyInput extends KeyAdapter{
 				}
 				
 			}
-			else if(key==KeyEvent.VK_ENTER){
+			else if(key==KeyEvent.VK_ENTER&&Game.isMenu()){
 				Game.optionSelect=true;
 			}
 			else if(key==KeyEvent.VK_DELETE){
