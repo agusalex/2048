@@ -466,16 +466,14 @@ public class Game extends Canvas implements Runnable {
 
     public static void printLog(String Log) {
         try {
-            File fout = new File("out.txt");
-            FileOutputStream fos = new FileOutputStream(fout);
-
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+            PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
+            System.setOut(out);
 
             int cont=0;
             int cont2=0;
             for (int j = 0; j < Log.length(); j++) {
                 if(Log.charAt(j) != '\n'&&Log.charAt(j) != 'h') {
-                    bw.write(Log.charAt(j));
+                    System.out.print(Log.charAt(j));
 
                 if(Log.charAt(j) == '|'){
                     cont++;
@@ -483,12 +481,12 @@ public class Game extends Canvas implements Runnable {
                 if (cont==4) {
                     cont2++;
                     cont=0;
-                    bw.newLine();
+                    System.out.println();
 
                     if (cont2 == 4) {
                         cont = 0;
                         cont2=0;
-                        bw.newLine();
+                        System.out.println();
 
 
 
@@ -498,15 +496,15 @@ public class Game extends Canvas implements Runnable {
                 }
 
                 if(Log.charAt(j) == 'h'){
-                    bw.newLine();
-                    bw.newLine();
+                    System.out.println();
+                    System.out.println();
                 }
 
 
             }
 
 
-            bw.close();
+           out.close();
         } catch (IOException ignored) {
 
         }
