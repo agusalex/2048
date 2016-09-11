@@ -667,14 +667,22 @@ public class Game extends Canvas implements Runnable {
         Jugador current = null;
         for(int index = 0; index < Jugadores.size (); index++){
             current = Jugadores.get(index);
-            if(best.compareTo (current) == 1)
+            if(best.compareTo (current) == -1)
                 best.copy (current);
         }
         return best;
     }
 
 
+    public void sortList(LinkedList<Jugador> lista, int size){
+        if(lista.size() == size)
+            return;
 
+        Jugador minimo = bestScore();
+        Jugadores.remove (minimo);
+        lista.add (minimo);
+        sortList(lista,size);
+    }
 
 
     public int getCellSize() {

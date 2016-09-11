@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.util.LinkedList;
 
 
 public class Jugador implements Serializable,Comparable {
@@ -126,8 +127,108 @@ public class Jugador implements Serializable,Comparable {
     }
 
 
+    public static Jugador bestScore(LinkedList<Jugador> Jugadores){
+        Jugador best = new Jugador("best");
+        Jugador current = null;
+        for(int index = 0; index < Jugadores.size (); index++){
+            current = Jugadores.get(index);
+            if(best.compareTo (current) == -1)
+                best.copy (current);
+        }
+        return best;
+    }
+
+
+    public static void sortList(LinkedList<Jugador> lista,LinkedList<Jugador> Jugadores, int size){
+        if(lista.size() == size)
+            return;
+
+        Jugador minimo = bestScore(Jugadores);
+        Jugadores.remove (minimo);
+        lista.add(minimo);
+        sortList(lista,Jugadores,size);
+    }
+
+
+
+
     public static void main(String[] args) {
-        Jugador j1 = new Jugador("esteban quito");
+        Jugador j1 = new Jugador ("juan");
+        j1.setScore (200);
+        j1.madeMovement ();
+        Jugador j2 = new Jugador ("jorge");
+        j2.setScore (300);
+        j2.madeMovement ();
+        Jugador j3 = new Jugador ("roverto");
+        j3.setScore (400);
+        j3.madeMovement ();
+        Jugador j4 = new Jugador ("gus");
+        j4.setScore (1000);
+        j4.madeMovement ();
+        Jugador j5 = new Jugador ("tony");
+        j5.setScore (800);
+        j5.madeMovement ();
+        j5.madeMovement ();
+        Jugador j6 = new Jugador ("paul");
+        j6.setScore (9000);
+        j6.madeMovement ();
+        Jugador j8 = new Jugador ("angel");
+        j8.setScore (800);
+        j8.madeMovement ();
+        Jugador j9 = new Jugador ("alfredo");
+        j9.setScore (600);
+        j9.madeMovement ();
+        Jugador j10 = new Jugador ("mat");
+        j10.setScore (500);
+        j10.madeMovement ();
+
+
+        LinkedList<Jugador> list = new LinkedList<Jugador>();
+        list.add (j1);
+        list.add (j2);
+        list.add (j3);
+        list.add (j4);
+        list.add (j5);
+        list.add (j6);
+        list.add (j8);
+        list.add (j9);
+        list.add (j10);
+
+        System.out.println(list);
+
+        System.out.println(bestScore(list));
+        LinkedList<Jugador> sorted = new LinkedList<Jugador> ();
+        sortList (sorted,list,list.size());
+        System.out.println(sorted);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*  Jugador j1 = new Jugador("esteban quito");
         Jugador j2 = new Jugador("dolores de barriga");
         j1.setScore (2000);
         j2.setScore (3000);
@@ -173,6 +274,8 @@ public class Jugador implements Serializable,Comparable {
         j2 = leerJSON();
         System.out.println(j2);
     }
+    */
+
     public void setName(String namee) {
         this.name=namee;
     }
@@ -180,5 +283,9 @@ public class Jugador implements Serializable,Comparable {
     public String getName() {
         return name;
     }
+
+
+
+
 }
 
