@@ -25,6 +25,7 @@ class Menu {
             if (Game.menuOption == 0) {
                 if (Game.menu) {
                     Game.matJuego = new Mat2(Game.matrixSize);
+                
                     Game.menu = false;
                     Game.matJuego.initialize();
                     Game.isInRecord=false;

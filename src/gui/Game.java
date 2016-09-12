@@ -100,6 +100,7 @@ public class Game extends Canvas implements Runnable {
         matJuego = new Mat2(matrixSize);
         System.out.println(matJuego);
 
+        
 
         Fuente = getCustomFont();
 
@@ -278,6 +279,7 @@ public class Game extends Canvas implements Runnable {
         if(gameOver()&&!menu){
             drawGameover(g);
         }
+       
 
         if (win () && !menu){
             drawWin(g);
@@ -342,7 +344,7 @@ public class Game extends Canvas implements Runnable {
 
 
                 System.out.print(Tick);
-                if(getTickTimer()>30) {
+                if(getTickTimer()>50) {
                     if(isRecord ()){
 
                         Game.menuOption=2;
@@ -536,10 +538,10 @@ public class Game extends Canvas implements Runnable {
         g.setFont(newFont);
 
         g.setColor(new Color(0xBE797B));
-        g.fillRoundRect(botonX, Game.MatrixY + Game.cellDistance, ancho, alto, curva, curva);
+        g.fillRoundRect(botonX, Game.MatrixY, ancho, alto, curva, curva);
         g.setColor(new Color(0xE8140E));
         String GO="Game Over";
-        g.drawString(GO, (int) (Game.WIDTH / 2.3)-GO.length()*2, (int) (Game.HEIGHT / 2.5));
+        g.drawString(GO, (int) (Game.WIDTH / 2.3)-GO.length()*2, Game.MatrixY+Game.cellSize/2);
 
     }
 
