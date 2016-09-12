@@ -10,13 +10,16 @@ import static gui.Game.*;
 class Menu {
 
     private static boolean showRankings=false;
+    private static boolean showOptions = false;
 
     public static boolean isShowRankings() {
         return showRankings;
     }
-    public void setShowRankings(boolean b) {
-       showRankings=b;
-    }
+    public static boolean isShowOptions() { return showOptions;}
+
+
+
+    public static void setShowOptions(boolean b){ showOptions=b;}
 
     private int opcion;
 
@@ -25,7 +28,11 @@ class Menu {
             if (Game.menuOption == 0) {
                 if (Game.menu) {
                     Game.matJuego = new Mat2(Game.matrixSize);
-                
+                    if(Game.option.equals("Hard")){
+                        Game.matJuego.mat[1][1]=13;
+
+                    }
+
                     Game.menu = false;
                     Game.matJuego.initialize();
                     Game.isInRecord=false;
@@ -38,8 +45,9 @@ class Menu {
                 }
 
             } else if (Game.menuOption == 1) { //Opciones
+                showOptions = !showOptions;
 
-                Game.printLog(Game.Log);
+
 
             } else if (Game.menuOption == 2) {
                 showRankings = !showRankings;
@@ -56,11 +64,14 @@ class Menu {
 
         }
 
-
+        if(showOptions){
+            Game.optionsPop.setVisible(true);
+            showOptions=false;
+        }
 
         if(!Game.isInRecord&&Game.isRecord()&&Game.gameOver ()){
-            Game.pop.setVisible(true);
-
+            Game.recordPop.setVisible(true);
+            Game.isInRecord=true;
 
 
         }
@@ -100,7 +111,7 @@ class Menu {
         if(!showRankings) {
             g.setColor(new Color(0x92360e));
 
-            g.fillRoundRect(botonXS, botonYS, anchoS, altoS, curva, curva);
+             g.fillRoundRect(botonXS, botonYS, anchoS, altoS, curva, curva);
 
             g.setColor(new Color(0xFF5B3D));
             g.fillRoundRect(botonX, Game.MatrixY, ancho, alto, curva, curva);

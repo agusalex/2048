@@ -10,8 +10,6 @@ import java.awt.image.BufferStrategy;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.io.File;
 
@@ -74,12 +72,16 @@ public class Game extends Canvas implements Runnable {
     public static boolean optionSelect = false;
     private static boolean initGame = false;
     public static boolean isInRecord=false;
+    private static boolean showWin=false;
+    private static boolean alreadyShownWin=false;
 
 
     //tiene un handler
     private Handler handler;
     private static KeyInput keylistener;
-    public static PopUp pop;
+    public static PopUp recordPop;
+    public static PopUp optionsPop;
+    public static String option ="";
     public static LinkedList<Jugador> Jugadores=new LinkedList<Jugador>();
     public static Jugador Player=new Jugador("Default");
     public static Scores rankings ;
@@ -88,7 +90,6 @@ public class Game extends Canvas implements Runnable {
 
 
     public Game() {      //TODO la idea es que se cree en la clase de la interfaz ?
-
 
         if (matrixSize < 2) {
             throw new IllegalArgumentException("invalid size:" + matrixSize);
@@ -119,11 +120,12 @@ public class Game extends Canvas implements Runnable {
 
         handler = new Handler();
         new Window(this);
-        pop=new PopUp();
+        recordPop =new PopUp();
+        optionsPop = new PopUp(true);
 
-        pop.setBounds(0,0,300,150);
-        pop.setLocationRelativeTo(this);
-        pop.setVisible(false);
+        recordPop.setBounds(0,0,300,150);
+        recordPop.setLocationRelativeTo(this);
+        recordPop.setVisible(false);
 
 
         //llama a handler
@@ -292,7 +294,7 @@ public class Game extends Canvas implements Runnable {
         }
        
 
-        if (win () && !menu){
+        if (showWin){
             drawWin(g);
         }
 
@@ -348,6 +350,21 @@ public class Game extends Canvas implements Runnable {
 
             //si se termina el juego se vuelve al menu principal
 
+            if(win () && !menu && !alreadyShownWin){
+                    if(!countTicks) {
+                        setTickTimer();
+                        countTicks=true;
+                        showWin=true;
+
+                }
+                if(getTickTimer()>30) {
+                    showWin=false;
+                    StopTickTimer();
+                    alreadyShownWin=true;
+                }
+            }
+
+
             if (gameOver()) {
                 if(!countTicks) {
                     setTickTimer();
@@ -364,6 +381,7 @@ public class Game extends Canvas implements Runnable {
                     StopTickTimer();
                 }
             }
+
 
         }
 
@@ -463,13 +481,13 @@ public class Game extends Canvas implements Runnable {
         g.fillRect (MatrixX + (cellDistance * 2) - lineWidth, MatrixY, cellDistance - cellSize, Game.MatrixWIDTH);
         int botonX = MatrixX;
         int ancho = cellDistance * 2 - lineWidth;
-        @SuppressWarnings("UnnecessaryLocalVariable") int alto = Game.cellSize;
+
         int cont = 0;
 
         for (int i = 0; i < matrixSize / 2; i++) {
             for (int j = 0; j < matrixSize; j++) {
                 g.setColor (CELDA);
-                g.fillRoundRect (botonX + Game.cellDistance * i * 2, Game.MatrixY + Game.cellDistance * j, ancho, alto, Game.cellAndNumberCurve, Game.cellAndNumberCurve);
+                g.fillRoundRect (botonX + Game.cellDistance * i * 2, Game.MatrixY + Game.cellDistance * j, ancho, Game.cellSize, Game.cellAndNumberCurve, Game.cellAndNumberCurve);
 
             }
 
@@ -487,7 +505,13 @@ public class Game extends Canvas implements Runnable {
                 }
 
                 g.setColor (FONDO);
-                g.drawString (cont+1+"."+jug.getName() + ": " + jug.getRecord (), botonX + lineWidth + Game.cellDistance * i * 2, Game.MatrixY + cellSize / 2 + (Game.cellDistance) * j);
+                String jugName="";
+                String jugSco="";
+                if(!jug.getName().equals("Default")){
+                    jugName=jug.getName()+": ";
+                    jugSco=Integer.toString(jug.getRecord());}
+                g.drawString (cont+1+"."+jugName , botonX + lineWidth + Game.cellDistance * i * 2, Game.MatrixY + cellSize / 2 + (Game.cellDistance) * j);
+                g.drawString(jugSco, botonX + lineWidth + Game.cellDistance * i * 2, Game.MatrixY + (int)(lineWidth*2.5)+ cellSize / 2 + (Game.cellDistance) * j);
                 cont++;
             }
 

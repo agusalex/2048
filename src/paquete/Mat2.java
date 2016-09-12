@@ -1,5 +1,7 @@
 package paquete;
 
+import gui.Game;
+
 @SuppressWarnings("ConstantConditions")
 public class Mat2 {
 
@@ -267,13 +269,23 @@ public class Mat2 {
     private void addNewRandomCell(int cont, int x, int y) {
         Integer elem = mat[x][y];
         //si llego a su destino
-        if (this.isFull())
-            return;
+        if (this.isFull()) return;
 
         if (elem == null && cont == 0) {  //CASO BASE1
-            this.mat[x][y] = aleatorio();
-            this.elements++;
-            return;
+            if (Game.option.equals("Easy")){
+                int n=0;
+                if(Math.random() < 0.5){
+                    this.mat[x][y] = 2;
+                    this.elements++;
+                }
+               else{
+                   return;}
+            }
+           else {
+                this.mat[x][y] = aleatorio();
+                this.elements++;
+            }
+                return;
 
         }
         if (x == this.mat.length - 1 && y == this.mat.length - 1)  //CASO BASE2
@@ -314,7 +326,7 @@ public class Mat2 {
      * busca una posicion al azar y agrega un 2 en la matriz
      * de existir un numero en esa posicion busca otra
      */
-    public void addNewRandomCell() {  // le cambie el nombre
+    public void addNewRandomCell() {
         this.addNewRandomCell(randomPosition(), 0, 0);
     }
 

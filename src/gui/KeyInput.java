@@ -47,7 +47,7 @@ class KeyInput extends KeyAdapter {
                 Mat2 mat2 = game.getMatJuego();
 
                 switch (dir) {
-                    case UP:                            //TODO ajustar threshold segunt cant de elementos asi evitar superosicion
+                    case UP:
                         if (mat2.isRowOrColumnChanged(dir, number.getiY()))
                             number.setSpeedY(-30);
                         Animate = true;
@@ -61,13 +61,13 @@ class KeyInput extends KeyAdapter {
 
                     case LEFT:
                         if (mat2.isRowOrColumnChanged(dir, number.getiX()))
-                            number.setSpeedX(-30);
+                                number.setSpeedX(-30);
                         Animate = true;
                         break;
 
                     case RIGHT:
                         if (mat2.isRowOrColumnChanged(dir, number.getiX()))
-                            number.setSpeedX(30);
+                                number.setSpeedX(30);
                         Animate = true;
                         break;
                 }
@@ -117,10 +117,11 @@ class KeyInput extends KeyAdapter {
             } else if (key == KeyEvent.VK_ENTER && Game.isMenu()) {
 
                 Game.optionSelect = true;
-            } else if (key == KeyEvent.VK_DELETE) {
-                System.exit(0);
             }
+            else if (key == KeyEvent.VK_DELETE) {
+                Game.printLog(Game.Log);
 
+            }
 
             if (Game.menu)
                 dir = null;
@@ -147,8 +148,6 @@ class KeyInput extends KeyAdapter {
             }
 
 
-        } else if (key == KeyEvent.VK_DELETE) {
-            System.exit(0);
         }
 
         if (Game.menuOption > 3)
