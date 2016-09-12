@@ -633,6 +633,7 @@ public class Game extends Canvas implements Runnable {
         LinkedList<Jugador> scores = new LinkedList<Jugador> ();
         sortList(scores,Jugadores.size());
         Jugadores = scores;
+        //se actualiza los scores asi los guarda
         rankings= new Scores ();
         rankings.generarJSON ("High Scores.txt");
 
