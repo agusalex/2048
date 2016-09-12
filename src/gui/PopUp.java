@@ -25,7 +25,7 @@ public class PopUp extends JFrame implements ActionListener{
         label1=new JLabel("Nombre:");
         label1.setBounds(10,10,100,30);
         add(label1);
-        textfield1=new JTextField();
+        textfield1=new JTextField("");
         textfield1.setBounds(120,10,150,20);
         add(textfield1);
         boton1=new JButton("Aceptar");
@@ -51,7 +51,7 @@ public class PopUp extends JFrame implements ActionListener{
             Game.Player=new Jugador ();
             Menu.SetShowRankings (true);
             setVisible(false);
-
+            textfield1.setText ("");
         }
     }
 

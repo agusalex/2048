@@ -45,6 +45,7 @@ class Menu {
                 showRankings = !showRankings;
 
 
+
             } else if (Game.menuOption == 3) {
 
                 System.exit(0);

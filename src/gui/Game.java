@@ -13,7 +13,7 @@ import java.io.PrintStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
-
+import java.io.File;
 
 public class Game extends Canvas implements Runnable {
 
@@ -82,8 +82,8 @@ public class Game extends Canvas implements Runnable {
     public static PopUp pop;
     public static LinkedList<Jugador> Jugadores=new LinkedList<Jugador>();
     public static Jugador Player=new Jugador("Default");
-
-
+    public static Scores rankings ;
+    public String archivo = "High Scores.txt";
 
 
 
@@ -100,8 +100,19 @@ public class Game extends Canvas implements Runnable {
         matJuego = new Mat2(matrixSize);
         System.out.println(matJuego);
 
-        
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //al ser la primer jugada no existe el archivo
+        rankings = new Scores();
+        //si exsite el archivo lo carga
+        File f = new File(archivo);
+        if(f.exists ()){
+            rankings = Scores.leerJSON (archivo);
+            //de cargarse la lista de jugadores pasa a ser la del archivo
+            Jugadores = rankings.records;
+        }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         Fuente = getCustomFont();
 
         mainMenu = new Menu();
@@ -468,7 +479,7 @@ public class Game extends Canvas implements Runnable {
         for (int i = 0; i < matrixSize / 2; i++) {
 
             for (int j = 0; j < matrixSize; j++) {
-                if((cont<Jugadores.size ())){
+                if((cont<Jugadores.size())){
                    jug=Jugadores.get (cont);
                 }
                 else{
@@ -622,7 +633,8 @@ public class Game extends Canvas implements Runnable {
         LinkedList<Jugador> scores = new LinkedList<Jugador> ();
         sortList(scores,Jugadores.size());
         Jugadores = scores;
-
+        rankings= new Scores ();
+        rankings.generarJSON ("High Scores.txt");
 
         while(Jugadores.size ()>8){
             Jugadores.removeLast ();

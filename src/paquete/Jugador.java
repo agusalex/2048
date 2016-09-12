@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 
-public class Jugador implements Serializable,Comparable {
+public class Jugador implements Comparable , Serializable{
 
     private static final long serialVersionUID = 1L;
     private String name;
@@ -92,36 +92,7 @@ public class Jugador implements Serializable,Comparable {
     }
 
 
-    private void generarJSON() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(this);
 
-        try {
-
-            FileWriter writer = new FileWriter("El esteban.txt");
-            writer.write(json);
-            writer.close();
-            System.out.println("a");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private static Jugador leerJSON() {
-
-        Gson gson = new Gson();
-        Jugador ret = null;
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("El esteban.txt"));
-            ret = gson.fromJson(br, Jugador.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
 
 
     public static Jugador bestScore(LinkedList<Jugador> Jugadores){
@@ -146,6 +117,15 @@ public class Jugador implements Serializable,Comparable {
         sortList(lista,Jugadores,size);
     }
 
+
+
+    public void setName(String namee) {
+        this.name=namee;
+    }
+
+    public String getName() {
+        return name;
+    }
 
 
 
@@ -197,6 +177,8 @@ public class Jugador implements Serializable,Comparable {
         LinkedList<Jugador> sorted = new LinkedList<Jugador> ();
         sortList (sorted,list,list.size());
         System.out.println(sorted);
+
+
     }
 
 
@@ -225,61 +207,10 @@ public class Jugador implements Serializable,Comparable {
 
 
 
-      /*  Jugador j1 = new Jugador("esteban quito");
-        Jugador j2 = new Jugador("dolores de barriga");
-        j1.setScore (2000);
-        j2.setScore (3000);
-        for (int i = 0; i < 10; i++) {
-            j1.madeMovement();
-            if (i % 2 == 0)
-                j2.madeMovement();
-        }
-
-        try {
-            //
-            //para obtener la direccion de los proyectos
-            File file = new File(".");
-            System.out.println(file.getAbsolutePath());
-            //
 
 
-            FileOutputStream fos = new FileOutputStream("jugador.txt");
-            ObjectOutputStream oup = new ObjectOutputStream(fos);
-
-            oup.writeObject(j1);
-            oup.writeObject(j2);
-            oup.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
-        try {
-            FileInputStream fis = new FileInputStream("jugador.txt");
-            ObjectInputStream in = new ObjectInputStream(fis);
-
-            j1 = (Jugador) in.readObject();
-            j2 = (Jugador) in.readObject();
-            System.out.println(j1);
-            System.out.println(j2);
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        j1.generarJSON();
-        j2 = leerJSON();
-        System.out.println(j2);
-    }
-    */
-
-    public void setName(String namee) {
-        this.name=namee;
-    }
-
-    public String getName() {
-        return name;
-    }
 
 
 
