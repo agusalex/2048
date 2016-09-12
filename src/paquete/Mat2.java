@@ -400,9 +400,7 @@ public class Mat2 {
      * @return true si esta llena y no se combino, false si no esta llena o si se combino alguna
      */
     public boolean gameOver() {
-        if (isWin())
-            return true;
-        else if (isFull() && !isCombinable())
+        if (isFull() && !isCombinable())
             return true;
         else if (!isFull() || isCombinable())
             return false;
@@ -410,7 +408,7 @@ public class Mat2 {
     }
 
 
-    private boolean isWin() {
+   public boolean isWin() {
         return Win;
     }
 

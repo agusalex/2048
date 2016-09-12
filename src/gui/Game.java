@@ -279,6 +279,10 @@ public class Game extends Canvas implements Runnable {
             drawGameover(g);
         }
 
+        if (win () && !menu){
+            drawWin(g);
+        }
+
         g.dispose();
         bs.show();                    //para que muestre el buffer renderizado
     }
@@ -482,8 +486,6 @@ public class Game extends Canvas implements Runnable {
 
 
     private void drawScores(Graphics g) {
-
-
         Font newFont = Game.Fuente.deriveFont(28F);
         g.setFont(newFont);
 
@@ -541,6 +543,24 @@ public class Game extends Canvas implements Runnable {
 
     }
 
+    private void drawWin(Graphics g){
+        int curva = Game.cellAndNumberCurve;
+
+        int botonX = Game.MatrixX + (Game.cellDistance);
+
+        int ancho = (int) ((Game.cellSize * 2) + Game.lineWidth * 1.1);
+        int alto = Game.cellSize;
+        Font newFont = Game.Fuente.deriveFont(28F);
+        g.setFont(newFont);
+
+        g.setColor(new Color(0xBE797B));
+        g.fillRoundRect(botonX, Game.MatrixY + Game.cellDistance, ancho, alto, curva, curva);
+        g.setColor(new Color(0xE8140E));
+        String GO="Ganaste";
+        g.drawString(GO, (int) (Game.WIDTH / 2.3)-GO.length()*2, (int) (Game.HEIGHT / 2.5));
+
+    }
+
     public static int getBest(){
      if(Jugadores.size()>=1) {
          if (Player.compareTo (Jugadores.getFirst ( )) == -1) {
@@ -586,9 +606,9 @@ public class Game extends Canvas implements Runnable {
         if(lista.size() == size)
             return;
 
-        Jugador minimo = bestScore();
-        Jugadores.remove (minimo);
-        lista.add (minimo);
+        Jugador best = bestScore();
+        Jugadores.remove (best);
+        lista.add (best);
         sortList(lista,size);
     }
 
@@ -612,6 +632,10 @@ public class Game extends Canvas implements Runnable {
 
     public static boolean gameOver() {
         return matJuego.gameOver();
+    }
+
+    public static boolean win(){
+        return matJuego.isWin();
     }
 
     public static void setTickTimer() {

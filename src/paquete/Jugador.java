@@ -92,9 +92,6 @@ public class Jugador implements Serializable,Comparable {
     }
 
 
-
-
-
     private void generarJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(this);
