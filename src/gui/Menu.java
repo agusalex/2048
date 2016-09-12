@@ -30,9 +30,7 @@ class Menu {
                     Game.matJuego = new Mat2(Game.matrixSize);
                     if(Game.option.equals("Hard")){
                         Game.matJuego.mat[1][1]=13;
-
                     }
-
                     Game.menu = false;
                     Game.matJuego.initialize();
                     Game.isInRecord=false;
@@ -70,8 +68,9 @@ class Menu {
         }
 
         if(!Game.isInRecord&&Game.isRecord()&&Game.gameOver ()){
+
             Game.recordPop.setVisible(true);
-            Game.isInRecord=true;
+
 
 
         }

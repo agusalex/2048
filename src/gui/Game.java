@@ -617,7 +617,9 @@ public class Game extends Canvas implements Runnable {
             return true;
         }
         for(Jugador P: Jugadores){
+
             if(Game.Player.getRecord()>P.getRecord()){
+                System.out.print(P.getName()+"es record");
                 return true;
             }
         }

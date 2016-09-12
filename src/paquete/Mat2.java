@@ -102,6 +102,7 @@ public class Mat2 {
      * @param Direction la direccion en la que se mueve la funcion
      */
     public void Shift(Direction Direction) {
+        Game.Player.madeMovement();
         Integer[][] copy = copiarMatriz();
         hasCombined = false;
         for (int x = 0; x < mat.length; x++) {

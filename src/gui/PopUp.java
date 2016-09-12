@@ -80,19 +80,18 @@ public class PopUp extends JFrame implements ActionListener, ItemListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==boton1) {
-            String name = (textfield1.getText());
-            if(name.length() >= 11)
-                Game.Player.setName(name.substring(0,10));
+            Game.Player.setName (textfield1.getText());
 
             if(Game.isRecord ()){
                 Game.setRecord ();
-            Game.isInRecord=true;}
+                Game.isInRecord=true;}
             Game.Player=new Jugador ();
             Menu.SetShowRankings (true);
             setVisible(false);
             textfield1.setText ("");
+
         }
-        if (e.getSource()==boton2) {
+        else if (e.getSource()==boton2) {
             Game.option =(String)combo1.getSelectedItem();
             Menu.setShowOptions(false);
             setVisible(false);
