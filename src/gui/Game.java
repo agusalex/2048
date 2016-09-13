@@ -292,7 +292,7 @@ public class Game extends Canvas implements Runnable {
         if(gameOver()&&!menu){
             drawGameover(g);
         }
-       
+
 
         if (showWin){
             drawWin(g);

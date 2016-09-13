@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import paquete.Jugador;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Serializable;
+import java.io.*;
 import java.util.LinkedList;
 
 
@@ -45,6 +42,17 @@ public class Scores implements Serializable{
             ret = gson.fromJson (br, Scores.class);
         }
         catch(Exception e){
+        System.out.print("eror");
+            try{
+                FileWriter writer = new FileWriter(archivo);
+                writer.write("{}");
+                writer.close();
+                BufferedReader br = new BufferedReader (new FileReader (archivo));
+                ret = gson.fromJson (br, Scores.class);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
             e.printStackTrace ();
         }
 

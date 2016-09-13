@@ -122,6 +122,7 @@ class Menu {
 
 
         g.setColor(new Color(0xEDC53F));
+
         g.fillRoundRect(botonX, Game.MatrixY + Game.cellDistance, ancho, alto, curva, curva);
         g.setColor(new Color(0x766B60));
 
