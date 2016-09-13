@@ -6,26 +6,27 @@ import paquete.Jugador;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 
 
 public class PopUp extends JFrame implements ActionListener, ItemListener {
     private JTextField textfield1;
-    private JLabel label1;
     private JButton boton1;
     private JButton boton2;
     private JComboBox combo1;
     private JLabel label2;
-    private boolean cartelRanking=true;
 
     public PopUp() {
         setBounds(0, 0, 300, 170);
         setLocationRelativeTo(null);
         setLayout(null);
 
-        label1 = new JLabel("Nombre:");
+        JLabel label1 = new JLabel("Nombre:");
         label1.setBounds(10, 10, 100, 30);
         add(label1);
 
@@ -48,8 +49,8 @@ public class PopUp extends JFrame implements ActionListener, ItemListener {
         boton1.addActionListener(this);
     }
 
-    public PopUp(boolean opciones) {
-        cartelRanking=false;
+    public PopUp(boolean b) {
+
         setBounds(0, 0, 300, 170);
         setLocationRelativeTo(null);
         setLayout(null);
@@ -71,11 +72,13 @@ public class PopUp extends JFrame implements ActionListener, ItemListener {
         boton2.addActionListener(this);
     }
 
+    public static void main(String args[]){
+        PopUp p=new PopUp();
+        p.setVisible(true);
+    }
 
     public void itemStateChanged(ItemEvent e) {
-        if (e.getSource()==combo1) {
-            String seleccionado=(String)combo1.getSelectedItem();
-        }
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -93,20 +96,11 @@ public class PopUp extends JFrame implements ActionListener, ItemListener {
         }
         else if (e.getSource()==boton2) {
             Game.option =(String)combo1.getSelectedItem();
-            Menu.setShowOptions(false);
+            Menu.setShowOptions();
             setVisible(false);
 
         }
 
-    }
-
-
-
-
-
-    public static void main(String args[]){
-        PopUp p=new PopUp();
-        p.setVisible(true);
     }
 
 }

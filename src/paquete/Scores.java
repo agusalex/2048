@@ -1,8 +1,8 @@
-package gui;
+package paquete;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import paquete.Jugador;
+import gui.Game;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ public class Scores implements Serializable{
 
     private static final long serialVersionUID = 2L;
 
-     LinkedList<Jugador> records;
+    private LinkedList<Jugador> records;
 
     public Scores(){
         records = Game.Jugadores;
@@ -113,4 +113,7 @@ public class Scores implements Serializable{
 
     }
 
+    public LinkedList<Jugador> getrecords() {
+        return records;
+    }
 }

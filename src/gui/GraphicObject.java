@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.Graphics;
-
 abstract class GraphicObject {
 
     int x;
@@ -16,10 +14,6 @@ abstract class GraphicObject {
         this.x = x;
         this.y = y;
     }
-
-    public abstract void tick();
-
-    public abstract void render(Graphics g);
 
 
 

@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.LinkedList;
 
 /*

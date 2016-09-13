@@ -1,9 +1,6 @@
 package paquete;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.*;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 
@@ -57,16 +54,14 @@ public class Jugador implements Comparable , Serializable{
         return this.record;
     }
 
-    public int getMovements() {
+    private int getMovements() {
         return this.movements;
     }
 
     @Override
     public int compareTo(Object jugador) {
         Jugador j2;
-        if (jugador == null)
-            return 1;
-        else if (jugador instanceof Jugador) {
+        if (jugador instanceof Jugador) {
             j2 = (Jugador) jugador;
             if (j2.name == null)
                 return 1;
@@ -95,19 +90,19 @@ public class Jugador implements Comparable , Serializable{
 
 
 
-    public static Jugador bestScore(LinkedList<Jugador> Jugadores){
+    private static Jugador bestScore(LinkedList<Jugador> Jugadores){
         Jugador best = new Jugador("best");
-        Jugador current = null;
-        for(int index = 0; index < Jugadores.size (); index++){
-            current = Jugadores.get(index);
-            if(best.compareTo (current) == -1)
-                best.copy (current);
+        Jugador current;
+        for (Jugador Jugadore : Jugadores) {
+            current = Jugadore;
+            if (best.compareTo(current) == -1)
+                best.copy(current);
         }
         return best;
     }
 
 
-    public static void sortList(LinkedList<Jugador> lista,LinkedList<Jugador> Jugadores, int size){
+    private static void sortList(LinkedList<Jugador> lista, LinkedList<Jugador> Jugadores, int size){
         if(lista.size() == size)
             return;
 

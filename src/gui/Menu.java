@@ -19,7 +19,7 @@ class Menu {
 
 
 
-    public static void setShowOptions(boolean b){ showOptions=b;}
+    public static void setShowOptions(){ showOptions= false;}
 
     private int opcion;
 

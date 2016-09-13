@@ -32,6 +32,14 @@ public class Mat2 {
 
     }
 
+    private static int aleatorio() {
+        //int option=(int)(Math.random()*10);
+
+        return Math.random() < 0.9 ? 2 : 4;
+        //return  num % 2 == 0 ? num : num+1;
+
+
+    }
 
     /**
      * asigna dos numeros 2 en la matriz en una posicion aleatoria
@@ -41,14 +49,13 @@ public class Mat2 {
         addNewRandomCell();
     }
 
-
     /**
      * esta funcion mueve de izq a derecha todos los elementos de la fila, despues de que estos fueron combinados
      *
      * @param dir      la direccion en la que se mueve la funcion
      * @param filaoCol es la fila o columna en la que se opera
      */
-    public void Move(Direction dir, int filaoCol) {
+    private void Move(Direction dir, int filaoCol) {
         int from, to, indexDir, x, y, indexAux;
 
         boolean xaxis, yaxis;
@@ -110,7 +117,7 @@ public class Mat2 {
             Move(Direction, x);
         }
 
-        if (!this.esIgual(copy) && !hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
+        if (this.equals(copy) && !hasCombined)    // con solo combinar ya se agrega una nueva celda dado que se mueve
             addNewRandomCell();
         else if (hasCombined)
             addNewRandomCell();
@@ -163,7 +170,6 @@ public class Mat2 {
         return new Object[]{from, to, indexDir, x, y, xaxis, yaxis};
     }
 
-
     /**
      * combina las celdas que tengan mismo numero, revisa de izquierda a derecha, buscando un numero identico a la celda actual
      * una vez que los combina, pasa a buscar otra operacion
@@ -172,7 +178,7 @@ public class Mat2 {
      * @param filaoCol la fila o columna sobre la que se opera
      * @return true si se realizo por lo menos una combinacion en alguna fila, o columna
      */
-    public void combineCells(Direction dir, int filaoCol) {
+    private void combineCells(Direction dir, int filaoCol) {
         int from, to, indexDir, x, y;
         boolean xaxis, yaxis;
 
@@ -266,7 +272,6 @@ public class Mat2 {
 
     }
 
-
     private void addNewRandomCell(int cont, int x, int y) {
         Integer elem = mat[x][y];
         //si llego a su destino
@@ -274,7 +279,7 @@ public class Mat2 {
 
         if (elem == null && cont == 0) {  //CASO BASE1
             if (Game.option.equals("Easy")){
-                int n=0;
+
                 if(Math.random() < 0.5){
                     this.mat[x][y] = 2;
                     this.elements++;
@@ -311,7 +316,6 @@ public class Mat2 {
 
     }
 
-
     /**
      * usada para buscar una posicion al azar de la matriz para agregar 2
      *
@@ -322,17 +326,15 @@ public class Mat2 {
         return (int) (Math.random() * (totalElements - this.elements));
     }
 
-
     /**
      * busca una posicion al azar y agrega un 2 en la matriz
      * de existir un numero en esa posicion busca otra
      */
-    public void addNewRandomCell() {
+    private void addNewRandomCell() {
         this.addNewRandomCell(randomPosition(), 0, 0);
     }
 
-
-    public Integer[][] copiarMatriz() {
+    private Integer[][] copiarMatriz() {
         Integer[][] copy = new Integer[mat.length][mat.length];
         for (int x = 0; x < mat.length; x++) {
             for (int y = 0; y < mat.length; y++) {
@@ -342,7 +344,6 @@ public class Mat2 {
         }
         return copy;
     }
-
 
     @Override
     public boolean equals(Object another) {
@@ -381,14 +382,12 @@ public class Mat2 {
 
     }
 
-
     /**
      * @return devuelve si esta llena la matriz
      */
-    public boolean isFull() {
+    private boolean isFull() {
         return this.elements == mat.length * mat.length;
     }
-
 
     @Override
     public String toString() {
@@ -406,7 +405,6 @@ public class Mat2 {
         return numeros;
     }
 
-
     /**
      * revisa si esta llena y si se combino alguna celda
      *
@@ -420,7 +418,6 @@ public class Mat2 {
         return false;
     }
 
-
    public boolean isWin() {
         return Win;
     }
@@ -430,7 +427,7 @@ public class Mat2 {
      *
      * @return true si existe al menos una fila o columna para combinar
      */
-    public boolean isCombinable() {
+    private boolean isCombinable() {
         boolean ret = false;
         for (int row = 0; row < mat.length; row++) {
             ret = ret || isCombinable(Direction.RIGHT, row) || isCombinable(Direction.DOWN, row);
@@ -522,21 +519,11 @@ public class Mat2 {
         m.combineCells(dir, row_Column);
         m.Move(dir, row_Column);
 
-        return !this.esIgual(copy);
+        return this.equals(copy);
 
     }
 
-
-    private static int aleatorio() {
-        //int option=(int)(Math.random()*10);
-
-        return Math.random() < 0.9 ? 2 : 4;
-        //return  num % 2 == 0 ? num : num+1;
-
-
-    }
-
-    public boolean esIgual(Integer[][] copy) {
+    private boolean equals(Integer[][] copy) {
         for (int x = 0; x < mat.length; x++) {
             for (int y = 0; y < mat.length; y++) {
 
@@ -546,15 +533,15 @@ public class Mat2 {
                 if (actualMat != null && actualOther != null) {
 
                     if (!actualMat.equals(actualOther))
-                        return false;
+                        return true;
                 } else if (actualMat == null && actualOther != null)
-                    return false;
+                    return true;
 
                 else if (actualMat != null)
-                    return false;
+                    return true;
             }
         }
-        return true;
+        return false;
     }
 
     public int getScore() {
